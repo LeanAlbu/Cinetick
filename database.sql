@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS `frameDB` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `frameDB`;
+
+--TABELA FILMES--
+CREATE TABLE IF NOT EXISTS `filmes`(
+   `id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID())),
+   `title` VARCHAR(255) NOT NULL,
+   `release_year` YEAR,
+   `director` VARCHAR(255),
+   `description` TEXT,
+   PRIMARY KEY (id)
+)ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `users`(
+   `id` BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID())),
+   `name` VARCHAR(255) NOT NULL,
+   `email` VARCHAR(255) NOT NULL,
+   `password` VARCHAR(255) NOT NULL,
+   PRIMARY KEY (id)
+)ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
