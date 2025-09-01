@@ -5,13 +5,8 @@ class Database {
     private $connection;
 
     private function __construct() {
-        $host = 'localhost';
-        $user = 'root';
-        $password = ''; // Default XAMPP password
-        $database = 'frameDB';
-
         try {
-            $this->connection = new PDO("mysql:host=$host;dbname=$database", $user, $password);
+            $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             // Log the error and re-throw the exception

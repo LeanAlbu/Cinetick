@@ -27,3 +27,5 @@ $router = new Router();
 
 $router->addRoute('GET', '/', HomeController::class, "show_index");
 
+$router->dispatch();
+

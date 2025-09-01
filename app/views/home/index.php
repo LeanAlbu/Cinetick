@@ -5,6 +5,6 @@
    </head>
    <body>
       <h1>BEM-VINDO</h1>
-      <p>Selectione</p>
+      <p>Selecione</p>
    </body>
    </html>
