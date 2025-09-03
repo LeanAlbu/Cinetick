@@ -1,6 +1,8 @@
 <?php
-class HomeController{
+class HomeController extends Controller{
    public function show_index(){
-      require_once BASE_PATH . '/app/views/home/index.php';
+      $userModel = new UserModel();
+      $users = $userModel->getAllUsers();
+      $this->view('home/index', ['users' => $users]);
    }
 }
