@@ -4,8 +4,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'frameDB');
+define('DB_NAME', 'cinetickDB');
 
-// Configuração da URL base
-define('BASE_URL', 'http://localhost/frame/public');
-?>
+
+

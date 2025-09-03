@@ -1,7 +1,7 @@
 <?php
 class UserController extends Controller {
     public function show_user_form(){
-        require_once BASE_PATH . '/app/views/user/form.php';
+        $this->view('user/form');
     }
 
     public function store_user(){
@@ -24,35 +24,76 @@ class UserController extends Controller {
         if(empty($password)){
             $errors[] = "A senha é obrigatória";
         } else {
-            if(!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/', $password)){
+            if(!preg_match('/^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,}$/u', $password)){
                 $errors[] = "A senha deve ter pelo menos 8 caracteres, incluindo letras e números";
             }
         }
 
-        // Se houver erros, redireciona
         if (!empty($errors)) {
-            // Você pode salvar os erros na sessão se quiser exibi-los depois
-            // $_SESSION['errors'] = $errors;
-            header('Location: ' . BASE_URL . '/error'); 
-            exit;
+            error_log("Validation errors: " . implode(", ", $errors));
+            // Redirect back with errors
+            $_SESSION['errors'] = $errors;
+            // Store old input except password
+            $_SESSION['old_input'] = [
+                'name' => $name,
+                'email' => $email,
+            ];
+            $this->redirect('/user/create');
         }
 
-        // Monta array de dados (não precisa do ID)
         $data = [
             'name' => $name,
             'email' => $email,
             'password' => $password
         ];
 
-        $UserModel = new UserModel();
-        $success = $UserModel->saveUser($data);
+        $userModel = new UserModel();
+        $success = $userModel->saveUser($data);
+
+        error_log("User save success: " . ($success ? 'true' : 'false'));
 
         if ($success) {
-            header('Location: ' . BASE_URL . '/index'); 
+            $this->redirect('/');
         } else {
-            header('Location: ' . BASE_URL . '/error'); 
+            $_SESSION['errors'] = ['Erro ao salvar usuário.'];
+            $this->redirect('/user/create');
         }
         exit;
+    }
+
+    public function show_login_form() {
+        $this->view('user/login');
+    }
+
+    public function login() {
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
+
+        if (!$email || !$password) {
+            $_SESSION['error_message'] = 'Email e senha são obrigatórios.';
+            $this->redirect('/login');
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->findByEmail($email);
+
+        if ($user && password_verify($password, $user['password'])) {
+            session_regenerate_id();
+            $_SESSION['user_id'] = $user['uuid'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_role'] = $user['role'];
+
+            $this->redirect('/');
+        } else {
+            $_SESSION['error_message'] = 'Email ou senha inválidos.';
+            $this->redirect('/login');
+        }
+    }
+
+    public function logout() {
+        $_SESSION = [];
+        session_destroy();
+        $this->redirect('/login');
     }
 }
 

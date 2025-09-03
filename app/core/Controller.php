@@ -1,7 +1,7 @@
 <?php
 
 class Controller {
-    public function view($view, $data = []) {
+    protected function view($view, $data = []) {
         // Extract data to be used in the view
         extract($data);
 
@@ -13,6 +13,20 @@ class Controller {
             // Handle view not found error
             self::handleError("View not found: {$viewPath}");
         }
+    }
+
+    protected function redirect($path) {
+        $location = BASE_URL . $path;
+        error_log("Redirecting to: " . $location);
+        if (headers_sent()) {
+            error_log("Headers already sent. Cannot redirect.");
+            // Fallback: output a meta refresh or JavaScript redirect
+            echo "<meta http-equiv=\"refresh\" content=\"0;url=" . htmlspecialchars($location) . "\">";
+            echo "<script>window.location.href=\"" . htmlspecialchars($location) . "\";</script>";
+        } else {
+            header('Location: ' . $location);
+        }
+        exit;
     }
 
     public static function handleError($message) {
