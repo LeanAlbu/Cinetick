@@ -5,10 +5,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 define('BASE_PATH', dirname(__DIR__));
-define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
 
-session_start();
 require_once BASE_PATH . '/config.php';
+session_start();
+
 
 //LOADER DAS CLASSES
 
@@ -47,5 +47,4 @@ $router->addRoute('POST', '/filmes/store', FilmeController::class, 'store');
 
 $router->dispatch();
 
-$router->dispatch();
 
