@@ -58,7 +58,35 @@
     <section class="movie-section">
         <h2 class="section-title">Próximos Lançamentos</h2>
         <div class="movie-list">
+            <div class="movie-card">
+                <img src="<?= BASE_URL ?>/img/swag.jpg" alt="Pôster do Filme">
+                <div class="movie-info">
+                    <h3> SWAG </h3>
+                    <p>2016 - 1h48min</p>
+                </div>
             </div>
+            <div class="movie-card">
+                <img src="<?= BASE_URL ?>/img/swag1.jpg" alt="Pôster do Filme">
+                <div class="movie-info">
+                    <h3> FAMILY </h3>
+                    <p>Ano - Duração</p>
+                </div>
+            </div>
+            <div class="movie-card">
+                <img src="<?= BASE_URL ?>/img/swag2.png" alt="Pôster do Filme">
+                <div class="movie-info">
+                    <h3> SWAG II </h3>
+                    <p>Ano - Duração</p>
+                </div>
+            </div>
+            <div class="movie-card">
+                <img src="<?= BASE_URL ?>/img/jbb.jpg" alt="Pôster do Filme">
+                <div class="movie-info">
+                    <h3> JUSTIN BIEBER </h3>
+                    <p>Ano - Duração</p>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 

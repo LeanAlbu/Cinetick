@@ -26,7 +26,7 @@ body {
 
 .main-nav a.active,
 .main-nav a:hover {
-    color: var(--accent-color); /* Amarelo/Laranja */
+    color: var(--accent-color); 
 }
 
 main.container {
@@ -325,28 +325,23 @@ main.container {
     width: 100%;
 }
 
-/* ======================================== */
-/* ESTILOS DO SELO "EM BREVE"               */
-/* ======================================== */
-
-/* 1. Prepara o card para ser um container de posicionamento */
 .movie-card {
-    position: relative; /* ESSENCIAL: Torna o card uma referência para o selo */
+    position: relative; 
 }
 
-/* 2. Estiliza o selo */
+
 .selo-em-breve {
-    position: absolute; /* ESSENCIAL: Permite que o selo flutue sobre a imagem */
-    top: 10px;          /* Distância do topo */
-    left: 10px;         /* Distância da esquerda */
+    position: absolute; 
+    top: 10px;          
+    left: 10px;         
     
-    background-color: var(--cor-principal); /* Usa o roxo do cabeçalho */
+    background-color: var(--cor-principal); 
     color: var(--cor-texto-claro);
     padding: 5px 10px;
     font-size: 14px;
     font-weight: bold;
     border-radius: 5px;
-    z-index: 10; /* Garante que o selo fique na frente da imagem */
+    z-index: 10; 
 }
 
 @media (max-width: 992px) {
