@@ -2,13 +2,13 @@
 
 class FilmeController extends Controller {
 
-    public function __construct() {
+    /* public function __construct() {
         // Block access to the entire controller if the user is not logged in.
         if (!isset($_SESSION['user_id'])) {
             header('Location: ' . BASE_URL . '/login');
             exit;
         }
-    }
+    } */
 
     public function index() {
         $filmeModel = new FilmeModel();
@@ -26,6 +26,15 @@ class FilmeController extends Controller {
         }
 
         $this->view('filme/form');
+    }
+
+    public function emCartaz() {
+        require_once BASE_PATH . '/app/Views/filme/em-cartaz.php';
+    }
+
+    public function futurosLancamentos()
+    {
+        require_once BASE_PATH . '/app/Views/filme/futuros-lancamentos.php';
     }
 
     public function store() {

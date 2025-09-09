@@ -5,10 +5,10 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 define('BASE_PATH', dirname(__DIR__));
-define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])));
 
-session_start();
 require_once BASE_PATH . '/config.php';
+session_start();
+
 
 //LOADER DAS CLASSES
 
@@ -39,13 +39,15 @@ $router->addRoute('GET', '/logout', UserController::class, 'logout');
 $router->addRoute('GET', '/user/create', UserController::class, 'show_user_form');
 $router->addRoute('POST', '/user/store', UserController::class, 'store_user');
 
+
+
 // Rotas de Filmes (Protegidas no Controller)
 $router->addRoute('GET', '/filmes', FilmeController::class, 'index');
 $router->addRoute('GET', '/filmes/create', FilmeController::class, 'create');
 $router->addRoute('POST', '/filmes/store', FilmeController::class, 'store');
-
+$router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
+$router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
 
 $router->dispatch();
 
-$router->dispatch();
 
