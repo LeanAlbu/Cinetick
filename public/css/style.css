@@ -24,6 +24,11 @@ body {
     align-items: center;
 }
 
+.main-nav a.active,
+.main-nav a:hover {
+    color: var(--accent-color); /* Amarelo/Laranja */
+}
+
 main.container {
     max-width: 1100px;
     margin: 2rem auto;
@@ -269,5 +274,90 @@ main.container {
 .banner-carousel .swiper-button-next,
 .banner-carousel .swiper-button-prev {
     color: var(--cor-texto-claro) !important; 
+}
+
+
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 25px; 
+}
+
+
+.movie-card {
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+}
+
+.card-footer {
+    padding: 15px;
+    border-top: 1px solid #333; 
+}
+
+.btn-comprar {
+    display: block;
+    padding: 10px;
+    background-color: #333;
+    color: var(--cor-texto-claro);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-comprar:hover {
+    background-color: #555;
+}
+
+
+.movie-card {
+    height: 100%;
+    width: 100%;
+}
+
+
+.movie-card img {
+    height: 380px; 
+    object-fit: cover; 
+    width: 100%;
+}
+
+/* ======================================== */
+/* ESTILOS DO SELO "EM BREVE"               */
+/* ======================================== */
+
+/* 1. Prepara o card para ser um container de posicionamento */
+.movie-card {
+    position: relative; /* ESSENCIAL: Torna o card uma referência para o selo */
+}
+
+/* 2. Estiliza o selo */
+.selo-em-breve {
+    position: absolute; /* ESSENCIAL: Permite que o selo flutue sobre a imagem */
+    top: 10px;          /* Distância do topo */
+    left: 10px;         /* Distância da esquerda */
+    
+    background-color: var(--cor-principal); /* Usa o roxo do cabeçalho */
+    color: var(--cor-texto-claro);
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10; /* Garante que o selo fique na frente da imagem */
+}
+
+@media (max-width: 992px) {
+    .movie-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media (max-width: 576px) {
+    .movie-grid {
+        grid-template-columns: repeat(1, 1fr); 
+    }
 }
 

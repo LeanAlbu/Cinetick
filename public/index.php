@@ -39,11 +39,14 @@ $router->addRoute('GET', '/logout', UserController::class, 'logout');
 $router->addRoute('GET', '/user/create', UserController::class, 'show_user_form');
 $router->addRoute('POST', '/user/store', UserController::class, 'store_user');
 
+
+
 // Rotas de Filmes (Protegidas no Controller)
 $router->addRoute('GET', '/filmes', FilmeController::class, 'index');
 $router->addRoute('GET', '/filmes/create', FilmeController::class, 'create');
 $router->addRoute('POST', '/filmes/store', FilmeController::class, 'store');
-
+$router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
+$router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
 
 $router->dispatch();
 
