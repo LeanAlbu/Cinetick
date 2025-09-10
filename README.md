@@ -4,6 +4,7 @@ Projeto de sistema para cinemas.
 ## cinetick
 ### Descrição 
 Protótipo de Tela:
+
 ![Tela de Inicial](./prototipos/home.png)
 
 Cinetick é um site de cinema, que possui funcionalidade de registro e acesso para clientes e administradores. O sistema possui um catalogo abrangente de filmes em cartaz permitindo que os clientes escolhem e compre os ingressos. A plataforma também integra um sistema de pagamento online, garantido um sistema de compra pratica e segura.
@@ -16,9 +17,11 @@ RF02 - Login do Usuário
 
 RF03 - Catálogo de filmes
 
-RF04 - Compra de ingressos
+RF04 - Futuros lançamentos
 
-RF05 - Pagamento Online
+RF05 - Compra de ingressos
+
+RF06 - Pagamento Online
 
 ### User Stories
 
@@ -32,16 +35,27 @@ prototipo de tela:
 
 2. Como um cliente cadastrado, desejo recuperar minha senha caso a esqueça, para garantir que possa acessar minha conta novamente. Para isso, devo clicar em "Esqueci minha senha" logo abaixo de "Cadastre-se", que abrirá uma página para recuperação de senha.
  
-Protótipo de Tela: 
-(./prototipos/login.png)
+Protótipo de Tela:
+
+![Tela de Login](./prototipos/login.png)
 
 **RF03 - Catálogo de filmes**
 1. Como um cliente logado, quero poder visualizar o catálogo completo de filmes disponiveis no Cinetick, para que eu possa escolher o que desejo comprar. Para isso, na tela principal, devo ter acesso a uma lista organizada com descrições e imagens dos filmes. 
 
 Protótipo de Tela:
-(./prototipos/catalogo.png)
 
-**RF04 - Compra de ingressos**
+![Tela de catalogo](./prototipos/catalogo.png)
+
+**RF05 - Futuros lançamentos**
+1. como cliente logado, quero ter a previa dos lançamentos, saber a data de lançamento e o gênero do filme.
+
+prototipo de tela:
+
+![Tela de lançamentos](./prototipos/lançamentos.png)
+
+**RF05 - Compra de ingressos**
 1. Como um cliente logado, quero poder comprar ingressos dos filmes escolhidos, para que eu possa revisar minhas escolhas antes de finalizar a compra. Para isso, devo clicar em "Comprar ingressos" abaixo do poster do filme selecionado. 
  
-(./prototipos/catalogo.png)
+Prototipo de tela:
+
+![Tela de ingressos](./prototipos/catalogo.png)
