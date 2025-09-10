@@ -1,4 +1,4 @@
-<?php require_once BASE_PATH . '/app/views/templates/header.php'; ?>
+<?php require_once BASE_PATH . '/app/Views/templates/header.php'; ?>
 
 <div class="content-wrapper">
 
@@ -59,4 +59,4 @@
 
 </div>
 
-<?php require_once BASE_PATH . '/app/views/templates/footer.php'; ?>
+<?php require_once BASE_PATH . '/app/Views/templates/footer.php'; ?>

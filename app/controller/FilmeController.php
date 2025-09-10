@@ -29,7 +29,9 @@ class FilmeController extends Controller {
     }
 
     public function emCartaz() {
-        require_once BASE_PATH . '/app/Views/filme/em-cartaz.php';
+        $filmeModel = new FilmeModel();
+        $data['filmes'] = $filmeModel->getAllFilmes();
+        $this->view('filme/em-cartaz', $data);
     }
 
     public function futurosLancamentos()

@@ -36,7 +36,7 @@ class Router
 
         foreach ($this->routes as $route) {
             // Substitui parâmetros dinâmicos {id} → (?P<id>[a-zA-Z0-9_]+)
-            $route_pattern = preg_replace('/\{([a-zA-Z0-9_]+)}/', '(?P<$1>[a-zA-Z0-9_]+)', $route['path']);
+            $route_pattern = preg_replace('/\{([a-zA-Z0-9_]+)}/', '(?P<$1>[a-zA-Z0-9_-]+)', $route['path']);
             $route_pattern = '#^' . $route_pattern . '$#';
 
             // Verifica se a rota bate com a URL
@@ -60,7 +60,7 @@ class Router
 
                 // Remove os índices numéricos dos matches e chama a action
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
-                call_user_func_array([$controller, $action], $params);
+                call_user_func_array([$controller, $action], array_values($params));
                 return;
             }
         }

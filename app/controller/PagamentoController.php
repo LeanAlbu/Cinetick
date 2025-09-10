@@ -11,24 +11,37 @@ class PagamentoController extends Controller {
     }
 
     // Mostra o formulário de pagamento
-    public function create() {
-        $this->view('pagamento/form');
+    public function create($filme_id) {
+        $filmeModel = new FilmeModel();
+        $filme = $filmeModel->getFilmeById($filme_id);
+
+        if (!$filme) {
+            // Handle movie not found
+            $this->sendNotFound("Filme não encontrado.");
+            return;
+        }
+
+        $this->view('pagamento/form', ['filme' => $filme]);
     }
 
     // Processa o pagamento
     public function store() {
+        $filme_id = filter_input(INPUT_POST, 'filme_id', FILTER_DEFAULT);
+        $valor = filter_input(INPUT_POST, 'valor', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
         $data = [
             'user_id' => $_SESSION['user_id'],
+            'filme_id' => $filme_id,
             'cpf'     => filter_input(INPUT_POST, 'cpf', FILTER_DEFAULT),
             'cartao'  => filter_input(INPUT_POST, 'cartao', FILTER_DEFAULT),
-            'valor'   => filter_input(INPUT_POST, 'valor', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'valor'   => $valor,
             'status'  => 'aprovado' // Simulação de pagamento aprovado
         ];
 
         // Validação simples
-        if (empty($data['cpf']) || empty($data['cartao']) || empty($data['valor'])) {
+        if (empty($data['cpf']) || empty($data['cartao']) || empty($data['valor']) || empty($data['filme_id'])) {
             $_SESSION['error_message'] = 'Preencha todos os campos.';
-            header('Location: ' . BASE_URL . '/pagamento/create');
+            header('Location: ' . BASE_URL . '/pagamento/create/' . $filme_id);
             exit;
         }
 
@@ -40,7 +53,7 @@ class PagamentoController extends Controller {
             header('Location: ' . BASE_URL . '/pagamento/sucesso');
         } else {
             $_SESSION['error_message'] = 'Erro ao processar pagamento.';
-            header('Location: ' . BASE_URL . '/pagamento/create');
+            header('Location: ' . BASE_URL . '/pagamento/create/' . $filme_id);
         }
         exit;
     }

@@ -48,6 +48,11 @@ $router->addRoute('POST', '/filmes/store', FilmeController::class, 'store');
 $router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
 $router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
 
+// Rotas de Pagamento
+$router->addRoute('GET', '/pagamento/create/{id}', PagamentoController::class, 'create');
+$router->addRoute('POST', '/pagamento/store', PagamentoController::class, 'store');
+$router->addRoute('GET', '/pagamento/sucesso', PagamentoController::class, 'sucesso');
+
 $router->dispatch();
 
 
