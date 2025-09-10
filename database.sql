@@ -2,7 +2,6 @@ CREATE DATABASE IF NOT EXISTS `cinetickDB` DEFAULT CHARACTER SET utf8mb4 COLLATE
 USE `cinetickDB`;
 
 
->>>>>>> feature/login
 CREATE TABLE IF NOT EXISTS `filmes`(
    `id` BINARY(16) NOT NULL,
    `title` VARCHAR(255) NOT NULL,
