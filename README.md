@@ -1,7 +1,4 @@
-# Frame
-Projeto de sistema para cinemas.
-
-## cinetick
+# Cinetick
 ### Descrição 
 Protótipo de Tela:
 
