@@ -1,58 +1,41 @@
 # Cinetick
-### Descrição 
-Protótipo de Tela:
 
-![Tela de Inicial](./prototipos/home.png)
+O Cinetick é uma plataforma voltada para gestão e implementação do ambiente virtual de franquias de cinema, focando amplamente na interação do sistema com o usuário, permitindo que este veja os filmes em cartaz, suas avaliações e comentários de outros usuários, adquira medalhas e interaja diretamente  com uma comunidade focada na sétima arte.
 
-Cinetick é um site de cinema, que possui funcionalidade de registro e acesso para clientes e administradores. O sistema possui um catalogo abrangente de filmes em cartaz permitindo que os clientes escolhem e compre os ingressos. A plataforma também integra um sistema de pagamento online, garantido um sistema de compra pratica e segura.
+Para os usuários o Cinetick representa uma mescla ideal entre a eficiência de comprar seus ingressos pela internet e a diversão de uma rede-social onde todos tem um interesse em comum. Juntando o útil ao agradável o Cinetick pretende entregar ao usuário final um ambiente rico em cultura, praticidade e integração.
 
-### Requisitos Funcionais do Projeto
+Para os administradores o Cinetick apresenta a simplificação do serviço de fazer cinema, sem a necessidade de filas, check-ups locais ou dinheiro físico, o Cinetick permite ao admin gerir de forma eficiente e simplificada seus cinemas, salas e comunidade, criando uma corrente forte e próxima de clientes.
 
-RF01 - Cadastro do Usuário
+## Respaldo Técnico:
 
-RF02 - Login do Usuário
+As tecnologias utilizadas neste projeto foram
 
-RF03 - Catálogo de filmes
+- PHP
+- Servidor XAMPP (Apache)
+- Banco de dados relacional
+- HTML5 e CSS
 
-RF04 - Futuros lançamentos
+### Sprint 1: Esqueleto sólido e funcional.
 
-RF05 - Compra de ingressos
+Valor da Sprint: Neste primeiro momento de desenvolvimento, demos larga ênfase na produção de um esqueleto sólido que comporte a adição de funcionalidades futuras, nesta etapa asseguramos ao cliente um protótipo funcional já munido de suas ferramentas fundamentais, garantido segurança mas ainda permitindo alterações majoritárias.
 
-RF06 - Pagamento Online
+Funcionalidades:
 
-### User Stories
+- Página inicial
+- Filmes em cartaz
+- Compra de Ingressos
+- Cadastro simples de usuário
+- Adição de Filmes
+- Padronização estética inicial
 
-**RF01 - Cadastro do Usuário** 
-1. Como um cliente, quero poder criar uma conta no sistema para acessar o site, registrando minhas informações pessoais, como nome, e-mail. Para isso, na tela de login devo clicar em "Cadastre-se" logo abaixo do botão "Login". Ao clicar irá abrir o formulário de cadastro, no qual devo preencher todos os dados para concluir o cadastro.
+### Sprint 2: Implementações avançadas
 
-prototipo de tela:
+Valor da Sprint: Nesta iteração visamos trazer uma versão próxima da final das funcionalidades já adicionadas, assegurando que o projeto esteja já em um estado funcional e polido dentro das suas ferramentas básicas. Também já existe nesta fase um sistema completo de login com cargos, permissões e ferramentas de segurança.
 
-**RF02 - Login do Usuário**
-1. Como um cliente cadastrado, quero poder acessar a plataforma utilizando meu e-mail e senha, para gerenciar minha conta e utilizar os serviços do Cinetick. Para isso, devo preencher os campos e-mail e senha com os dados cadastrados.
+Funcionalidades:
 
-2. Como um cliente cadastrado, desejo recuperar minha senha caso a esqueça, para garantir que possa acessar minha conta novamente. Para isso, devo clicar em "Esqueci minha senha" logo abaixo de "Cadastre-se", que abrirá uma página para recuperação de senha.
- 
-Protótipo de Tela:
-
-![Tela de Login](./prototipos/login.png)
-
-**RF03 - Catálogo de filmes**
-1. Como um cliente logado, quero poder visualizar o catálogo completo de filmes disponiveis no Cinetick, para que eu possa escolher o que desejo comprar. Para isso, na tela principal, devo ter acesso a uma lista organizada com descrições e imagens dos filmes. 
-
-Protótipo de Tela:
-
-![Tela de catalogo](./prototipos/catalogo.png)
-
-**RF05 - Futuros lançamentos**
-1. como cliente logado, quero ter a previa dos lançamentos, saber a data de lançamento e o gênero do filme.
-
-prototipo de tela:
-
-![Tela de lançamentos](./prototipos/lançamentos.png)
-
-**RF05 - Compra de ingressos**
-1. Como um cliente logado, quero poder comprar ingressos dos filmes escolhidos, para que eu possa revisar minhas escolhas antes de finalizar a compra. Para isso, devo clicar em "Comprar ingressos" abaixo do poster do filme selecionado. 
- 
-Prototipo de tela:
-
-![Tela de ingressos](./prototipos/catalogo.png)
+- Sistema de login avançado
+- Padronização estética final
+- Compra de ingressos - FINAL
+- Filmes em cartaz - FINAL
+- Banco de dados de filmes
