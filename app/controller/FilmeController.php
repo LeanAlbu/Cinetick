@@ -30,13 +30,15 @@ class FilmeController extends Controller {
 
     public function emCartaz() {
         $filmeModel = new FilmeModel();
-        $data['filmes'] = $filmeModel->getAllFilmes();
+        $data['filmes'] = $filmeModel->getFilmeDeTeste();
         $this->view('filme/em-cartaz', $data);
     }
 
     public function futurosLancamentos()
     {
-        require_once BASE_PATH . '/app/Views/filme/futuros-lancamentos.php';
+        $filmeModel = new FilmeModel();
+        $data['filmes'] = $filmeModel->getUpcomingReleases();
+        $this->view('filme/futuros-lancamentos', $data);
     }
 
     public function store() {

@@ -24,41 +24,49 @@
     <section class="movie-section">
         <h2 class="section-title">Em alta</h2>
         <div class="movie-list">
-            <div class="movie-card">
-                <img src="<?= BASE_URL ?>/img/filme1.png" alt="Pôster do Filme">
-                <div class="movie-info">
-                    <h3>Alice no País das Maravilhas</h3>
-                    <p>2016 - 1h48min</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="<?= BASE_URL ?>/img/filme2.png" alt="Pôster do Filme">
-                <div class="movie-info">
-                    <h3>Título do Filme 2</h3>
-                    <p>Ano - Duração</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="<?= BASE_URL ?>/img/filme3.jpg" alt="Pôster do Filme">
-                <div class="movie-info">
-                    <h3>Título do Filme 3</h3>
-                    <p>Ano - Duração</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="<?= BASE_URL ?>/img/filme1.png" alt="Pôster do Filme">
-                <div class="movie-info">
-                    <h3>Título do Filme 4</h3>
-                    <p>Ano - Duração</p>
-                </div>
-            </div>
+            <?php if (isset($data['emCartaz']) && !empty($data['emCartaz'])): ?>
+                <?php 
+                    $posters = ["filme1.png", "filme2.png", "filme3.jpg", "filme4.png"];
+                    $i = 0;
+                ?>
+                <?php foreach (array_slice($data['emCartaz'], 0, 4) as $filme): ?>
+                    <div class="movie-card">
+                        <img src="<?= BASE_URL ?>/img/<?= $posters[$i] ?>" alt="Pôster do Filme">
+                        <div class="movie-info">
+                            <h3><?= htmlspecialchars($filme['title']) ?></h3>
+                            <p><?= htmlspecialchars($filme['release_year']) ?> - Duração</p>
+                        </div>
+                    </div>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Nenhum filme em cartaz no momento.</p>
+            <?php endif; ?>
         </div>
     </section>
 
     <section class="movie-section">
         <h2 class="section-title">Próximos Lançamentos</h2>
         <div class="movie-list">
-            </div>
+            <?php if (isset($data['futurosLancamentos']) && !empty($data['futurosLancamentos'])): ?>
+                <?php 
+                    $posters = ["swag.jpg", "swag1.jpg", "swag2.png", "jbb.jpg"];
+                    $i = 0;
+                ?>
+                <?php foreach ($data['futurosLancamentos'] as $filme): ?>
+                    <div class="movie-card">
+                        <img src="<?= BASE_URL ?>/img/<?= $posters[$i] ?>" alt="Pôster do Filme">
+                        <div class="movie-info">
+                            <h3><?= htmlspecialchars($filme['title']) ?></h3>
+                            <p><?= htmlspecialchars($filme['release_year']) ?> - Duração</p>
+                        </div>
+                    </div>
+                    <?php $i = ($i + 1) % count($posters); ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Nenhum lançamento futuro no momento.</p>
+            <?php endif; ?>
+        </div>
     </section>
 </div>
 
