@@ -1,7 +1,8 @@
 <?php require_once BASE_PATH . '/app/Views/templates/header.php'; ?>
 
-<div class="main-content-wrapper">
-    <div class="auth-container">
+<div class="modal-overlay active">
+    <div class="modal-content">
+        <button class="modal-close" onclick="history.back()">&times;</button>
         <h2>Login</h2>
         <?php if (isset($_SESSION['error_message'])): ?>
             <p class="error-message"><?php echo $_SESSION['error_message']; ?></p>
@@ -18,7 +19,7 @@
             </div>
             <button type="submit" class="btn-primary">Entrar</button>
         </form>
-        <p class="auth-link">Não tem uma conta? <a href="<?= BASE_URL ?>/user/create">Registre-se</a></p>
+        <p class="signup-link">Não tem uma conta? <a href="<?= BASE_URL ?>/user/create">Registre-se</a></p>
     </div>
 </div>
 
