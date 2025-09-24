@@ -89,7 +89,7 @@ Nesta iteração, visamos trazer uma versão próxima da final das funcionalidad
 | André Victor Carvalho Alves | 2022114738 | [@Andr206](https://github.com/Andr206) |
 | Eduardo Alves Silva | 2023110516 | [@dudupn](https://github.com/dudupn) |
 | Lean de Albuquerque Pereira | [Matrícula] | [@LeanAlbu](https://github.com/LeanAlbu) |
-| Maria Fernanda Gomes Mendonça | 2021 | [@mafezzzz](https://github.com/mafezzzz) |
+| Maria Fernanda Gomes Mendonça | 2021112536 | [@mafezzzz](https://github.com/mafezzzz) |
 | Murilo Bezerra Valiati | [Matrícula] | [@Murilo-Valiati](https://github.com/Murilo-Valiati)|
 
 ## 📄 Licença
