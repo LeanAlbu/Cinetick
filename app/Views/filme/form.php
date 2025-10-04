@@ -28,7 +28,7 @@
             <?php unset($_SESSION['error_message']); ?>
         <?php endif; ?>
 
-        <form action="/filmes/store" method="POST">
+        <form action="/filmes/store" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Título</label>
                 <input type="text" id="title" name="title" required>
@@ -44,6 +44,10 @@
             <div class="form-group">
                 <label for="description">Descrição</label>
                 <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="imagem">Imagem do Cartaz</label>
+                <input type="file" id="imagem" name="imagem" accept="image/*">
             </div>
             <button type="submit">Salvar Filme</button>
         </form>
