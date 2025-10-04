@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `filmes`(
    `release_year` YEAR,
    `director` VARCHAR(255),
    `description` TEXT,
+   `imagem_url` VARCHAR(255) NULL,
    PRIMARY KEY (id)
 )ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
