@@ -13,7 +13,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="<?= BASE_URL ?>/js/scripts.js"></script>
+    <script src="<?= FRONT_ASSETS_URL ?>/js/scripts.js"></script>
     
 </body>
 </html>
