@@ -12,8 +12,8 @@
                         <?php
                             // Define a URL da imagem. Se não houver, usa uma imagem padrão.
                             $imageUrl = (!empty($filme['imagem_url']))
-                                        ? BASE_URL . htmlspecialchars($filme['imagem_url'])
-                                        : BASE_URL . '/img/placeholder.png'; // Adicione uma imagem 'placeholder.png' em public/img/
+                                        ? FRONT_ASSETS_URL . htmlspecialchars($filme['imagem_url'])
+                                        : FRONT_ASSETS_URL . '/img/placeholder.png'; // Adicione uma imagem 'placeholder.png' em frontEnd/img/
                         ?>
                         <img src="<?= $imageUrl ?>" alt="Pôster de <?= htmlspecialchars($filme['title']) ?>">
                         <div class="movie-info">

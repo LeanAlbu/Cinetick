@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineTick</title>
-    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/img/favicon.png">
+    <link rel="icon" type="image/png" href="<?= FRONT_ASSETS_URL ?>/img/favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +12,13 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
+    <link rel="stylesheet" href="<?= FRONT_ASSETS_URL ?>/css/style.css">
 </head>
 <body>
 
     <header class="main-header">
         <a href="<?= BASE_URL ?>/" class="logo-container">
-            <img src="<?= BASE_URL ?>/img/logo.png" alt="Logo CineTick">
+            <img src="<?= FRONT_ASSETS_URL ?>/img/logo.png" alt="Logo CineTick">
             <span>CineTick</span>
         </a>
         
@@ -37,8 +37,4 @@
         </div>
     </header>
 
-    <main> 
-<?php require_once BASE_PATH . '/app/Views/templates/header.php'; ?>
-
-
-<?php require_once BASE_PATH . '/app/Views/templates/footer.php'; ?>
+    <main>
