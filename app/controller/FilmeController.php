@@ -53,7 +53,8 @@ class FilmeController extends Controller {
             'title' => filter_input(INPUT_POST, 'title', FILTER_DEFAULT),
             'release_year' => filter_input(INPUT_POST, 'release_year', FILTER_SANITIZE_NUMBER_INT),
             'director' => filter_input(INPUT_POST, 'director', FILTER_DEFAULT),
-            'description' => filter_input(INPUT_POST, 'description', FILTER_DEFAULT)
+            'description' => filter_input(INPUT_POST, 'description', FILTER_DEFAULT),
+            'imagem_url' => null // Default value
         ];
 
         // Basic validation
@@ -63,8 +64,33 @@ class FilmeController extends Controller {
             exit;
         }
 
+        // --- INÍCIO DA LÓGICA DE UPLOAD ---
+        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'img/filmes/'; // Diretório dentro da pasta 'public'
+            // Garanta que o diretório de upload exista
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $fileName = uniqid() . '_' . basename($_FILES['imagem']['name']);
+            $targetPath = $uploadDir . $fileName;
+
+            // Move o arquivo do diretório temporário para o diretório de destino
+            if (move_uploaded_file($_FILES['imagem']['tmp_name'], $targetPath)) {
+                // Salva o caminho relativo para ser usado no src da tag <img>
+                $data['imagem_url'] = '/' . $targetPath;
+            } else {
+                // Opcional: Lidar com falha no upload
+                $_SESSION['error_message'] = 'Erro ao fazer upload da imagem.';
+                header('Location: ' . BASE_URL . '/filmes/create');
+                exit;
+            }
+        }
+        // --- FIM DA LÓGICA DE UPLOAD ---
+
         $filmeModel = new FilmeModel();
-        $success = $filmeModel->saveFilme($data);
+        // Você precisará ajustar o método saveFilme para aceitar 'imagem_url'
+        $success = $filmeModel->saveFilme($data); 
 
         if ($success) {
             header('Location: ' . BASE_URL . '/filmes');
