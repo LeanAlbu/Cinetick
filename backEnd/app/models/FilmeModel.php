@@ -64,4 +64,37 @@ class FilmeModel extends Model {
     public function getUpcomingReleases() {
         return $this->getAllFilmesExcept('Filme de Teste');
     }
+
+    public function updateFilme($id, $data) {
+        try {
+            $binary_id = hex2bin(str_replace('-', '', $id));
+            $sql = "UPDATE filmes SET title = :title, release_year = :release_year, director = :director, description = :description, imagem_url = :imagem_url WHERE id = :id";
+            $stmt = $this->db_connection->prepare($sql);
+
+            $stmt->bindParam(':id', $binary_id);
+            $stmt->bindParam(':title', $data['title']);
+            $stmt->bindParam(':release_year', $data['release_year']);
+            $stmt->bindParam(':director', $data['director']);
+            $stmt->bindParam(':description', $data['description']);
+            $stmt->bindParam(':imagem_url', $data['imagem_url']);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error updating filme: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteFilme($id) {
+        try {
+            $binary_id = hex2bin(str_replace('-', '', $id));
+            $sql = "DELETE FROM filmes WHERE id = :id";
+            $stmt = $this->db_connection->prepare($sql);
+            $stmt->bindParam(':id', $binary_id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error deleting filme: " . $e->getMessage());
+            return false;
+        }
+    }
 }

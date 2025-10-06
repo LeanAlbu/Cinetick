@@ -1,103 +1,99 @@
 <?php
 
-class FilmeController extends Controller {
+class FilmeController extends ApiController {
+    private $filmeModel;
 
-    /* public function __construct() {
-        // Block access to the entire controller if the user is not logged in.
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ' . BASE_URL . '/login');
-            exit;
-        }
-    } */
+    public function __construct() {
+        $this->filmeModel = new FilmeModel();
+    }
 
+    private function isAdmin() {
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+    }
+
+    // GET /filmes
     public function index() {
-        $filmeModel = new FilmeModel();
-        $data['filmes'] = $filmeModel->getAllFilmes();
-        
-        $this->view('filme/index', $data);
+        $filmes = $this->filmeModel->getAllFilmes();
+        $this->sendJsonResponse($filmes);
     }
 
-    public function create() {
-        // Admin-only check
-        if ($_SESSION['user_role'] !== 'admin') {
-            http_response_code(403);
-            echo "<h1>403 Forbidden</h1><p>Acesso negado. Apenas administradores podem adicionar filmes.</p>";
-            exit;
-        }
-
-        $this->view('filme/form');
-    }
-
-    public function emCartaz() {
-        $filmeModel = new FilmeModel();
-        $data['filmes'] = $filmeModel->getFilmeDeTeste();
-        $this->view('filme/em-cartaz', $data);
-    }
-
-    public function futurosLancamentos()
-    {
-        $filmeModel = new FilmeModel();
-        $data['filmes'] = $filmeModel->getUpcomingReleases();
-        $this->view('filme/futuros-lancamentos', $data);
-    }
-
-    public function store() {
-        // Admin-only check
-        if ($_SESSION['user_role'] !== 'admin') {
-            http_response_code(403);
-            echo "<h1>403 Forbidden</h1><p>Acesso negado.</p>";
-            exit;
-        }
-
-        $data = [
-            'title' => filter_input(INPUT_POST, 'title', FILTER_DEFAULT),
-            'release_year' => filter_input(INPUT_POST, 'release_year', FILTER_SANITIZE_NUMBER_INT),
-            'director' => filter_input(INPUT_POST, 'director', FILTER_DEFAULT),
-            'description' => filter_input(INPUT_POST, 'description', FILTER_DEFAULT),
-            'imagem_url' => null // Default value
-        ];
-
-        // Basic validation
-        if (empty($data['title'])) {
-            $_SESSION['error_message'] = 'O título é obrigatório.';
-            header('Location: ' . BASE_URL . '/filmes/create');
-            exit;
-        }
-
-        // --- INÍCIO DA LÓGICA DE UPLOAD ---
-        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = 'img/filmes/'; // Diretório dentro da pasta 'public'
-            // Garanta que o diretório de upload exista
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-
-            $fileName = uniqid() . '_' . basename($_FILES['imagem']['name']);
-            $targetPath = $uploadDir . $fileName;
-
-            // Move o arquivo do diretório temporário para o diretório de destino
-            if (move_uploaded_file($_FILES['imagem']['tmp_name'], $targetPath)) {
-                // Salva o caminho relativo para ser usado no src da tag <img>
-                $data['imagem_url'] = '/' . $targetPath;
-            } else {
-                // Opcional: Lidar com falha no upload
-                $_SESSION['error_message'] = 'Erro ao fazer upload da imagem.';
-                header('Location: ' . BASE_URL . '/filmes/create');
-                exit;
-            }
-        }
-        // --- FIM DA LÓGICA DE UPLOAD ---
-
-        $filmeModel = new FilmeModel();
-        // Você precisará ajustar o método saveFilme para aceitar 'imagem_url'
-        $success = $filmeModel->saveFilme($data); 
-
-        if ($success) {
-            header('Location: ' . BASE_URL . '/filmes');
+    // GET /filmes/{id}
+    public function show($id) {
+        $filme = $this->filmeModel->getFilmeById($id);
+        if ($filme) {
+            $this->sendJsonResponse($filme);
         } else {
-            $_SESSION['error_message'] = 'Erro ao salvar o filme.';
-            header('Location: ' . BASE_URL . '/filmes/create');
+            $this->sendJsonError('Filme não encontrado.', 404);
         }
-        exit;
+    }
+
+    // POST /filmes (Admin Only)
+    public function store() {
+        if (!$this->isAdmin()) {
+            $this->sendJsonError('Acesso negado.', 403);
+            return;
+        }
+
+        $data = $this->getJsonInput();
+        $required_fields = ['title', 'release_year', 'director', 'description', 'imagem_url'];
+        foreach ($required_fields as $field) {
+            if (empty($data[$field])) {
+                $this->sendJsonError("O campo '{$field}' é obrigatório.");
+                return;
+            }
+        }
+
+        if ($this->filmeModel->saveFilme($data)) {
+            $this->sendJsonResponse(['message' => 'Filme criado com sucesso.'], 201);
+        } else {
+            $this->sendJsonError('Erro ao salvar o filme.', 500);
+        }
+    }
+
+    // PUT /filmes/{id} (Admin Only)
+    public function update($id) {
+        if (!$this->isAdmin()) {
+            $this->sendJsonError('Acesso negado.', 403);
+            return;
+        }
+
+        $data = $this->getJsonInput();
+        if (empty($data)) {
+            $this->sendJsonError('Dados inválidos.');
+            return;
+        }
+
+        if ($this->filmeModel->updateFilme($id, $data)) {
+            $this->sendJsonResponse(['message' => 'Filme atualizado com sucesso.']);
+        } else {
+            $this->sendJsonError('Erro ao atualizar o filme.', 500);
+        }
+    }
+
+    // DELETE /filmes/{id} (Admin Only)
+    public function destroy($id) {
+        if (!$this->isAdmin()) {
+            $this->sendJsonError('Acesso negado.', 403);
+            return;
+        }
+
+        if ($this->filmeModel->deleteFilme($id)) {
+            $this->sendJsonResponse(['message' => 'Filme deletado com sucesso.']);
+        } else {
+            $this->sendJsonError('Erro ao deletar o filme.', 500);
+        }
+    }
+
+    // GET /em-cartaz
+    public function emCartaz() {
+        $filmes = $this->filmeModel->getAllFilmesExcept('Filme de Teste');
+        $this->sendJsonResponse($filmes);
+    }
+
+    // GET /futuros-lancamentos
+    public function futurosLancamentos() {
+        $filmes = $this->filmeModel->getUpcomingReleases();
+        $this->sendJsonResponse($filmes);
     }
 }
+

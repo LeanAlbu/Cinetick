@@ -1,56 +1,48 @@
 <?php
 
-class PagamentoController extends Controller {
+class PagamentoController extends ApiController {
 
-    public function __construct() {
-        // Apenas usuários logados podem acessar
+    private function requireLogin() {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: ' . BASE_URL . '/login');
+            $this->sendJsonError('Autenticação necessária.', 401);
             exit;
         }
     }
 
-    // Mostra o formulário de pagamento
-    public function create($filme_id) {
-        $filmeModel = new FilmeModel();
-        $filme = $filmeModel->getFilmeById($filme_id);
-
-        if (!$filme) {
-            // Handle movie not found
-            $this->sendNotFound("Filme não encontrado.");
-            return;
-        }
-
-        $this->view('pagamento/form', ['filme' => $filme]);
-    }
-
-    // Processa o pagamento
+    // POST /pagamentos
     public function store() {
-        $filme_id = filter_input(INPUT_POST, 'filme_id', FILTER_DEFAULT);
-        $valor = filter_input(INPUT_POST, 'valor', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $cpf = filter_input(INPUT_POST, 'cpf', FILTER_DEFAULT);
-        $cartao = filter_input(INPUT_POST, 'cartao', FILTER_DEFAULT);
+        $this->requireLogin();
+
+        $data = $this->getJsonInput();
+
+        $filme_id = $data['filme_id'] ?? null;
+        $valor = $data['valor'] ?? null;
+        $cpf = $data['cpf'] ?? null;
+        $cartao = $data['cartao'] ?? null; // Em um app real, isso seria tratado com muito mais segurança (ex: tokenização)
 
         // Validação
         if (empty($cpf) || empty($cartao) || empty($valor) || empty($filme_id)) {
-            $_SESSION['error_message'] = 'Preencha todos os campos.';
-            header('Location: ' . BASE_URL . '/pagamento/create/' . $filme_id);
-            exit;
+            $this->sendJsonError('Todos os campos são obrigatórios: filme_id, valor, cpf, cartao.');
+            return;
         }
 
         if (strlen($cpf) != 11) {
-            $_SESSION['error_message'] = 'CPF inválido.';
-            header('Location: ' . BASE_URL . '/pagamento/create/' . $filme_id);
-            exit;
+            $this->sendJsonError('CPF inválido.');
+            return;
         }
 
         if (strlen($cartao) != 16) {
-            $_SESSION['error_message'] = 'Número de cartão inválido.';
-            header('Location: ' . BASE_URL . '/pagamento/create/' . $filme_id);
-            exit;
+            $this->sendJsonError('Número de cartão inválido.');
+            return;
         }
 
-        $data = [
+        $filmeModel = new FilmeModel();
+        if (!$filmeModel->getFilmeById($filme_id)) {
+            $this->sendJsonError('Filme não encontrado.', 404);
+            return;
+        }
+
+        $pagamentoData = [
             'user_id' => $_SESSION['user_id'],
             'filme_id' => $filme_id,
             'cpf'     => $cpf,
@@ -59,20 +51,12 @@ class PagamentoController extends Controller {
         ];
 
         $pagamentoModel = new PagamentoModel();
-        $success = $pagamentoModel->savePagamento($data);
+        $success = $pagamentoModel->savePagamento($pagamentoData);
 
         if ($success) {
-            // Redireciona para página de sucesso
-            header('Location: ' . BASE_URL . '/pagamento/sucesso');
+            $this->sendJsonResponse(['message' => 'Pagamento processado com sucesso.'], 201);
         } else {
-            $_SESSION['error_message'] = 'Erro ao processar pagamento.';
-            header('Location: ' . BASE_URL . '/pagamento/create/' . $filme_id);
+            $this->sendJsonError('Erro ao processar pagamento.', 500);
         }
-        exit;
-    }
-
-    // Página de sucesso
-    public function sucesso() {
-        $this->view('pagamento/sucesso');
     }
 }

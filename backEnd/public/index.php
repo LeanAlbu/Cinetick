@@ -1,4 +1,15 @@
 <?php
+
+// Lida com requisições de pre-flight do CORS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 ob_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -31,27 +42,25 @@ $router = new Router();
 
 //------ROTAS------
 
-// Rotas de Usuário e Autenticação
-$router->addRoute('GET', '/', HomeController::class, "show_index");
-$router->addRoute('GET', '/login', UserController::class, 'show_login_form');
+// Rotas de Usuário e Autenticação (API)
+$router->addRoute('POST', '/users', UserController::class, 'store_user');
 $router->addRoute('POST', '/login', UserController::class, 'login');
-$router->addRoute('GET', '/logout', UserController::class, 'logout');
-$router->addRoute('GET', '/user/create', UserController::class, 'show_user_form');
-$router->addRoute('POST', '/user/store', UserController::class, 'store_user');
+$router->addRoute('POST', '/logout', UserController::class, 'logout');
 
+// Rota principal
+$router->addRoute('GET', '/', HomeController::class, "show_index");
 
-
-// Rotas de Filmes (Protegidas no Controller)
+// Rotas de Filmes (API)
 $router->addRoute('GET', '/filmes', FilmeController::class, 'index');
-$router->addRoute('GET', '/filmes/create', FilmeController::class, 'create');
-$router->addRoute('POST', '/filmes/store', FilmeController::class, 'store');
+$router->addRoute('GET', '/filmes/{id}', FilmeController::class, 'show');
+$router->addRoute('POST', '/filmes', FilmeController::class, 'store');
+$router->addRoute('PUT', '/filmes/{id}', FilmeController::class, 'update');
+$router->addRoute('DELETE', '/filmes/{id}', FilmeController::class, 'destroy');
 $router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
 $router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
 
-// Rotas de Pagamento
-$router->addRoute('GET', '/pagamento/create/{id}', PagamentoController::class, 'create');
-$router->addRoute('POST', '/pagamento/store', PagamentoController::class, 'store');
-$router->addRoute('GET', '/pagamento/sucesso', PagamentoController::class, 'sucesso');
+// Rotas de Pagamento (API)
+$router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');
 
 $router->dispatch();
 

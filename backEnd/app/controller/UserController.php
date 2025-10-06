@@ -1,77 +1,59 @@
 <?php
-class UserController extends Controller {
-    public function show_user_form(){
-        $this->view('user/form');
-    }
+class UserController extends ApiController {
 
+    // POST /users
     public function store_user(){
+        $data = $this->getJsonInput();
         $errors = [];
 
-        // validar nome
-        $name = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
-        if (empty($name)){
+        // Validar nome
+        if (empty($data['name'])){
             $errors[] = "O nome é obrigatório";
         }
 
-        // validar email
-        $email = filter_input(INPUT_POST, 'email', FILTER_DEFAULT);
-        if(empty($email)){
+        // Validar email
+        if(empty($data['email'])){
             $errors[] = "O email é obrigatório";
         }
 
-        // validar senha
-        $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
-        if(empty($password)){
+        // Validar senha
+        if(empty($data['password'])){
             $errors[] = "A senha é obrigatória";
         } else {
-            if(!preg_match('/^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,}$/u', $password)){
+            if(!preg_match('/^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,}$/u', $data['password'])){
                 $errors[] = "A senha deve ter pelo menos 8 caracteres, incluindo letras e números";
             }
         }
 
         if (!empty($errors)) {
-            error_log("Validation errors: " . implode(", ", $errors));
-            // Redirect back with errors
-            $_SESSION['errors'] = $errors;
-            // Store old input except password
-            $_SESSION['old_input'] = [
-                'name' => $name,
-                'email' => $email,
-            ];
-            $this->redirect('/user/create');
+            $this->sendJsonError(implode(", ", $errors));
+            return;
         }
-
-        $data = [
-            'name' => $name,
-            'email' => $email,
-            'password' => $password
-        ];
 
         $userModel = new UserModel();
+        if ($userModel->findByEmail($data['email'])) {
+            $this->sendJsonError("Este email já está em uso.", 409); // 409 Conflict
+            return;
+        }
+        
         $success = $userModel->saveUser($data);
 
-        error_log("User save success: " . ($success ? 'true' : 'false'));
-
         if ($success) {
-            $this->redirect('/');
+            $this->sendJsonResponse(['message' => 'Usuário criado com sucesso.'], 201);
         } else {
-            $_SESSION['errors'] = ['Erro ao salvar usuário.'];
-            $this->redirect('/user/create');
+            $this->sendJsonError('Erro ao salvar usuário.', 500);
         }
-        exit;
     }
 
-    public function show_login_form() {
-        $this->view('user/login');
-    }
-
+    // POST /login
     public function login() {
-        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-        $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
+        $data = $this->getJsonInput();
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
 
         if (!$email || !$password) {
-            $_SESSION['error_message'] = 'Email e senha são obrigatórios.';
-            $this->redirect('/login');
+            $this->sendJsonError('Email e senha são obrigatórios.', 400);
+            return;
         }
 
         $userModel = new UserModel();
@@ -83,17 +65,24 @@ class UserController extends Controller {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_role'] = $user['role'];
 
-            $this->redirect('/');
+            $this->sendJsonResponse([
+                'message' => 'Login bem-sucedido.',
+                'user' => [
+                    'id' => $user['uuid'],
+                    'name' => $user['name'],
+                    'role' => $user['role']
+                ]
+            ]);
         } else {
-            $_SESSION['error_message'] = 'Email ou senha inválidos.';
-            $this->redirect('/login');
+            $this->sendJsonError('Email ou senha inválidos.', 401); // 401 Unauthorized
         }
     }
 
+    // POST /logout
     public function logout() {
         $_SESSION = [];
         session_destroy();
-        $this->redirect('/login');
+        $this->sendJsonResponse(['message' => 'Logout bem-sucedido.']);
     }
 }
 

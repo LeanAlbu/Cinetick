@@ -9,9 +9,8 @@ class Database {
             $this->connection = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            // Log the error and re-throw the exception
-            error_log("Erro ao conectar ao banco de dados: " . $e->getMessage());
-            throw new PDOException($e->getMessage(), (int)$e->getCode());
+            // FORÇAR A EXIBIÇÃO DO ERRO PARA DEPURAÇÃO
+            die("Falha na conexão com o banco de dados: " . $e->getMessage());
         }
     }
 
