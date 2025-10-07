@@ -86,14 +86,22 @@ class FilmeController extends ApiController {
 
     // GET /em-cartaz
     public function emCartaz() {
-        $filmes = $this->filmeModel->getAllFilmesExcept('Filme de Teste');
-        $this->sendJsonResponse($filmes);
+        try {
+            $filmes = $this->filmeModel->getAllFilmesExcept('Filme de Teste');
+            $this->sendJsonResponse($filmes);
+        } catch (Throwable $e) {
+            $this->sendJsonError('Erro ao buscar filmes em cartaz: ' . $e->getMessage(), 500);
+        }
     }
 
     // GET /futuros-lancamentos
     public function futurosLancamentos() {
-        $filmes = $this->filmeModel->getUpcomingReleases();
-        $this->sendJsonResponse($filmes);
+        try {
+            $filmes = $this->filmeModel->getUpcomingReleases();
+            $this->sendJsonResponse($filmes);
+        } catch (Throwable $e) {
+            $this->sendJsonError('Erro ao buscar futuros lançamentos: ' . $e->getMessage(), 500);
+        }
     }
 }
 

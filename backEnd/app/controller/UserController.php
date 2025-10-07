@@ -63,14 +63,14 @@ class UserController extends ApiController {
             session_regenerate_id();
             $_SESSION['user_id'] = $user['uuid'];
             $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_role'] = $user['role'] ?? null;
 
             $this->sendJsonResponse([
                 'message' => 'Login bem-sucedido.',
                 'user' => [
                     'id' => $user['uuid'],
                     'name' => $user['name'],
-                    'role' => $user['role']
+                    'role' => $user['role'] ?? null
                 ]
             ]);
         } else {
@@ -85,4 +85,3 @@ class UserController extends ApiController {
         $this->sendJsonResponse(['message' => 'Logout bem-sucedido.']);
     }
 }
-

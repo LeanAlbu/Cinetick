@@ -14,4 +14,3 @@ define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . $project_path . '/backEnd
 
 // URL base para os assets do frontend (CSS, JS, Imagens)
 define('FRONT_ASSETS_URL', 'http://' . $_SERVER['HTTP_HOST'] . $project_path . '/frontEnd');
-

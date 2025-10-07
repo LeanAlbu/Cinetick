@@ -63,5 +63,3 @@ $router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futuro
 $router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');
 
 $router->dispatch();
-
-

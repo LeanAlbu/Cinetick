@@ -76,10 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`);
+            const result = await response.json(); // Tenta parsear o JSON em todos os casos
+
             if (!response.ok) {
-                throw new Error(`Erro na rede: ${response.statusText}`);
+                // Se a API retornou um erro no corpo do JSON, usa essa mensagem
+                const errorMessage = result.error || `Erro na rede: ${response.statusText}`;
+                throw new Error(errorMessage);
             }
-            const movies = await response.json();
+
+            const movies = result;
 
             if (movies.length === 0) {
                 container.innerHTML = '<p>Nenhum filme encontrado no momento.</p>';
@@ -87,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.innerHTML = movies.map(createMovieCard).join('');
             }
         } catch (error) {
-            console.error(`Falha ao buscar filmes do endpoint ${endpoint}:`, error);
-            container.innerHTML = '<p>Não foi possível carregar os filmes. Tente novamente mais tarde.</p>';
+            console.error(`Falha ao buscar filmes do endpoint ${endpoint}:`, error.message);
+            container.innerHTML = `<p>Não foi possível carregar os filmes. Tente novamente mais tarde. (${error.message})</p>`;
         }
     }
 
