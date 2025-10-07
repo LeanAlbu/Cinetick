@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - CineTick</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo-container">
+            <img src="img/logo.png" alt="Logo CineTick">
+            <span>CineTick</span>
+        </a>
+        
+       <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="em-cartaz.html">Em Cartaz</a>
+            <a href="futuros-lancamentos.html">Futuros Lançamentos</a>
+            <span id="admin-link-placeholder"></span>
+        </nav>
+        
+        <div class="user-login">
+            <a href="#" id="login-link">Entrar</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="modal-overlay active" style="transform: none; opacity: 1; position: relative; justify-content: center; background: none;">
+            <div class="modal-content" style="height: auto; max-width: 420px; margin-top: 40px;">
+                <a href="index.html" class="modal-close" style="text-decoration: none;">&times;</a>
+                <h2>Registrar</h2>
+                
+                <div id="register-error" class="error-message" style="display: none; text-align: left; margin-bottom: 15px;"></div>
+
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Registrar</button>
+                </form>
+                <p class="signup-link">Já tem uma conta? <a href="#" id="login-link-from-register">Faça login</a></p>
+            </div>
+        </div>
+    </main> 
+
+    <!-- Este modal de login fica escondido e é controlado pelo scripts.js -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>Acessar o CineTick</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email-login" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password-login" name="password" required>
+                </div>
+                <button type="submit" class="login-button email">Acessar por E-mail</button>
+            </form>
+            <p id="login-error" class="error-message" style="display: none;"></p>
+            <p class="signup-link">
+                Não tem conta? <a href="cadastro.html">Crie uma agora</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/cadastro.js"></script>
+    
+</body>
+</html>

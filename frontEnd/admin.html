@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - CineTick</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo-container">
+            <img src="img/logo.png" alt="Logo CineTick">
+            <span>CineTick</span>
+        </a>
+        
+       <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="em-cartaz.html">Em Cartaz</a>
+            <a href="futuros-lancamentos.html">Futuros Lançamentos</a>
+            <span id="admin-link-placeholder"></span>
+        </nav>
+        
+        <div class="user-login">
+            <a href="#" id="login-link">Entrar</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="content-wrapper">
+            <section class="admin-section">
+                <h2 class="section-title">Painel do Administrador</h2>
+                
+                <div class="admin-form-container">
+                    <h3>Adicionar Novo Filme</h3>
+                    <form id="add-movie-form">
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input type="text" id="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="release_year">Ano de Lançamento</label>
+                            <input type="number" id="release_year" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="director">Diretor</label>
+                            <input type="text" id="director" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imagem_url">URL da Imagem</label>
+                            <input type="text" id="imagem_url" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Descrição</label>
+                            <textarea id="description" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Adicionar Filme</button>
+                    </form>
+                </div>
+
+                <div class="admin-list-container">
+                    <h3>Filmes Cadastrados</h3>
+                    <div class="movie-grid" id="admin-movie-list">
+                        <!-- Lista de filmes para admin será inserida aqui -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main> 
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Scripts de autenticação e UI geral -->
+    <script src="js/scripts.js"></script>
+    <!-- Script específico da página de admin -->
+    <script src="js/admin.js"></script>
+    
+</body>
+</html>

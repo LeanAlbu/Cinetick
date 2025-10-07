@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineTick</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo-container">
+            <img src="img/logo.png" alt="Logo CineTick">
+            <span>CineTick</span>
+        </a>
+        
+       <nav class="main-nav">
+            <a href="index.html" class="active">Home</a>
+            <a href="em-cartaz.html">Em Cartaz</a>
+            <a href="futuros-lancamentos.html">Futuros Lançamentos</a>
+            <span id="admin-link-placeholder"></span>
+        </nav>
+        
+        <div class="user-login">
+            <a href="#" id="login-link">Entrar</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="banner-principal">
+            <div class="swiper banner-carousel">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="img/banner.png" alt="Banner de filme 1">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="img/filme1.png" alt="Banner de filme 2">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="img/filme2.png" alt="Banner de filme 3">
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </section>
+
+        <div class="content-wrapper">
+            <section class="movie-section">
+                <h2 class="section-title">Em alta</h2>
+                <div class="movie-list" id="em-alta-list">
+                    <!-- Filmes "Em Alta" serão inseridos aqui pelo JavaScript -->
+                </div>
+            </section>
+
+            <section class="movie-section">
+                <h2 class="section-title">Próximos Lançamentos</h2>
+                <div class="movie-list" id="lancamentos-list">
+                    <!-- Filmes "Próximos Lançamentos" serão inseridos aqui pelo JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main> 
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>Acessar o CineTick</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-button email">Acessar por E-mail</button>
+            </form>
+            <p id="login-error" class="error-message" style="display: none;"></p>
+            <p class="signup-link">
+                Não tem conta? <a href="cadastro.html">Crie uma agora</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/scripts.js"></script>
+    
+</body>
+</html>

@@ -22,7 +22,7 @@ class Controller {
             error_log("Headers already sent. Cannot redirect.");
             // Fallback: output a meta refresh or JavaScript redirect
             echo "<meta http-equiv=\"refresh\" content=\"0;url=" . htmlspecialchars($location) . "\">";
-            echo "<script>window.location.href=\"" . htmlspecialchars($location) . "\";</script>";
+            echo "<script>window.location.href=\"" . htmlspecialchars($location) . "\";<\/script>";
         } else {
             header('Location: ' . $location);
         }
