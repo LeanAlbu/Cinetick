@@ -62,7 +62,28 @@ class FilmeModel extends Model {
     }
 
     public function getUpcomingReleases() {
-        return $this->getAllFilmesExcept('Filme de Teste');
+        $currentYear = date('Y');
+        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, title, release_year, director, description, imagem_url FROM filmes WHERE release_year > :currentYear";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->bindParam(':currentYear', $currentYear);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getFilmesByReleaseYear($year) {
+        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, title, release_year, director, description, imagem_url FROM filmes WHERE release_year = :year";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->bindParam(':year', $year);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getFilmesByReleaseYears($years) {
+        $placeholders = implode(',', array_fill(0, count($years), '?'));
+        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, title, release_year, director, description, imagem_url FROM filmes WHERE release_year IN ($placeholders)";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->execute($years);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function updateFilme($id, $data) {
