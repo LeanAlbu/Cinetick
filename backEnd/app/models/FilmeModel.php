@@ -34,7 +34,7 @@ class FilmeModel extends Model {
 
             $stmt->bindParam(':id', $binary_uuid);
             $stmt->bindParam(':title', $data['title']);
-            $stmt->bindParam(':release_year', $data['release_year']);
+            $stmt->bindParam(':release_year', $data['release_year'], PDO::PARAM_INT);
             $stmt->bindParam(':director', $data['director']);
             $stmt->bindParam(':description', $data['description']);
             $stmt->bindParam(':imagem_url', $data['imagem_url']);

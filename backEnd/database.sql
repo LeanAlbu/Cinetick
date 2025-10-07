@@ -40,6 +40,8 @@ CREATE TABLE IF NOT EXISTS `pagamentos`(
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
+
+
 INSERT INTO filmes (id, title, release_year, director, description) VALUES
 (UNHEX(REPLACE(UUID(),'-','')), 'Filme de Teste', 2023, 'Diretor de Teste', 'Este é um filme de teste para verificar a funcionalidade.');
 
