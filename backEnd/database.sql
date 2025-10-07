@@ -48,3 +48,6 @@ INSERT INTO filmes (id, title, release_year, director, description) VALUES
 (UNHEX(REPLACE(UUID(),'-','')), 'Avatar: O Caminho da Água', 2022, 'James Cameron', 'Jake Sully e Ney\'tiri formaram uma família e estão fazendo de tudo para permanecerem juntos. No entanto, eles devem sair de casa e explorar as regiões de Pandora quando uma antiga ameaça ressurge.'),
 (UNHEX(REPLACE(UUID(),'-','')), 'Super Mario Bros. O Filme', 2023, 'Aaron Horvath, Michael Jelenic', 'Mario é um encanador qualquer no Brooklyn que, junto com seu irmão Luigi, vai parar no reino dos cogumelos, governado pela Princesa Peach. Mas o reino está em perigo: o malvado Bowser quer destruir tudo e se casar com Peach.'),
 (UNHEX(REPLACE(UUID(),'-','')), 'Homem-Aranha: Através do Aranhaverso', 2023, 'Joaquim Dos Santos, Kemp Powers, Justin K. Thompson', 'Miles Morales é transportado para o multiverso, onde encontra uma equipe de Pessoas-Aranha encarregada de proteger sua própria existência. Quando os heróis discordam sobre como lidar com uma nova ameaça, Miles se vê confrontando as outras Aranhas e deve redefinir o que significa ser um herói.');
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
+(UNHEX(REPLACE(UUID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');

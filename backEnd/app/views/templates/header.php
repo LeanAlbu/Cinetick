@@ -33,7 +33,11 @@
         </nav>
         
         <div class="user-login">
-            <a href="#" id="login-link">Entrar</a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="<?= BASE_URL ?>/profile">Perfil</a>
+            <?php else: ?>
+                <a href="#" id="login-link">Entrar</a>
+            <?php endif; ?>
         </div>
     </header>
 

@@ -41,4 +41,11 @@ class UserModel extends Model {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function promoteUser($userId) {
+        $sql = "UPDATE users SET role = 'admin' WHERE id = UNHEX(REPLACE(:id, '-', ''))";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->bindParam(':id', $userId);
+        return $stmt->execute();
+    }
 }
