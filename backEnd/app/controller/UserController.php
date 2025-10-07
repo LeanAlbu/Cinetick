@@ -84,4 +84,14 @@ class UserController extends ApiController {
         session_destroy();
         $this->sendJsonResponse(['message' => 'Logout bem-sucedido.']);
     }
+
+    // GET /profile
+    public function profile() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . BASE_URL . '/login');
+            exit;
+        }
+
+        $this->renderView('user/profile');
+    }
 }

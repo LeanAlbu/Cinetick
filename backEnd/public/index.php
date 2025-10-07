@@ -46,6 +46,10 @@ $router = new Router();
 $router->addRoute('POST', '/users', UserController::class, 'store_user');
 $router->addRoute('POST', '/login', UserController::class, 'login');
 $router->addRoute('POST', '/logout', UserController::class, 'logout');
+$router->addRoute('GET', '/profile', UserController::class, 'profile');
+$router->addRoute('GET', '/admin', AdminController::class, 'index');
+$router->addRoute('GET', '/admin/users', AdminController::class, 'users');
+$router->addRoute('POST', '/admin/users/promote', AdminController::class, 'promote');
 
 // Rota principal
 $router->addRoute('GET', '/', HomeController::class, "show_index");
