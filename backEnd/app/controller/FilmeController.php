@@ -87,7 +87,9 @@ class FilmeController extends ApiController {
     // GET /em-cartaz
     public function emCartaz() {
         try {
-            $filmes = $this->filmeModel->getAllFilmesExcept('Filme de Teste');
+            $currentYear = date('Y');
+            $years = [$currentYear, $currentYear - 1];
+            $filmes = $this->filmeModel->getFilmesByReleaseYears($years);
             $this->sendJsonResponse($filmes);
         } catch (Throwable $e) {
             $this->sendJsonError('Erro ao buscar filmes em cartaz: ' . $e->getMessage(), 500);

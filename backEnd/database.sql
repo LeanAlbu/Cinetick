@@ -40,14 +40,9 @@ CREATE TABLE IF NOT EXISTS `pagamentos`(
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO filmes (id, title, release_year, director, description) VALUES
-(UNHEX(REPLACE(UUID(),'-','')), 'Filme de Teste', 2023, 'Diretor de Teste', 'Este é um filme de teste para verificar a funcionalidade.');
 
-INSERT INTO filmes (id, title, release_year, director, description) VALUES
-(UNHEX(REPLACE(UUID(),'-','')), 'Gato de Botas 2', 2022, 'Joel Crawford', 'O Gato de Botas descobre que sua paixão pela aventura cobrou seu preço: ele queimou oito de suas nove vidas. Ele parte em uma jornada épica para encontrar o mítico Último Desejo e restaurar suas nove vidas.'),
-(UNHEX(REPLACE(UUID(),'-','')), 'Avatar: O Caminho da Água', 2022, 'James Cameron', 'Jake Sully e Ney\'tiri formaram uma família e estão fazendo de tudo para permanecerem juntos. No entanto, eles devem sair de casa e explorar as regiões de Pandora quando uma antiga ameaça ressurge.'),
-(UNHEX(REPLACE(UUID(),'-','')), 'Super Mario Bros. O Filme', 2023, 'Aaron Horvath, Michael Jelenic', 'Mario é um encanador qualquer no Brooklyn que, junto com seu irmão Luigi, vai parar no reino dos cogumelos, governado pela Princesa Peach. Mas o reino está em perigo: o malvado Bowser quer destruir tudo e se casar com Peach.'),
-(UNHEX(REPLACE(UUID(),'-','')), 'Homem-Aranha: Através do Aranhaverso', 2023, 'Joaquim Dos Santos, Kemp Powers, Justin K. Thompson', 'Miles Morales é transportado para o multiverso, onde encontra uma equipe de Pessoas-Aranha encarregada de proteger sua própria existência. Quando os heróis discordam sobre como lidar com uma nova ameaça, Miles se vê confrontando as outras Aranhas e deve redefinir o que significa ser um herói.');
+
+
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (UNHEX(REPLACE(UUID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');
