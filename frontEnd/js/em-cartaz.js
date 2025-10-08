@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
+    const API_BASE_URL = '../backEnd/public';
 
     /**
      * Cria o HTML para um card de filme com botão de compra.
@@ -9,20 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function createMovieCard(filme) {
         const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
-        // O link de compra será tratado no futuro, por enquanto leva para #
-        const purchaseLink = `#/pagamento/${filme.id}`;
+        const detailLink = `filme.html?id=${filme.id}`;
 
         return `
-            <div class="movie-card">
-                <img src="${imageUrl}" alt="Pôster de ${filme.title}">
-                <div class="movie-info">
-                    <h3>${filme.title}</h3>
-                    <p>${filme.release_year} - ${filme.director}</p>
+            <a href="${detailLink}" class="movie-card-link">
+                <div class="movie-card">
+                    <img src="${imageUrl}" alt="Pôster de ${filme.title}">
+                    <div class="movie-info">
+                        <h3>${filme.title}</h3>
+                        <p>${filme.release_year} - ${filme.director}</p>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a href="${purchaseLink}" class="btn-comprar"> Comprar Ingresso </a>
-                </div>
-            </div>
+            </a>
         `;
     }
 

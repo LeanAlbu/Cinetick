@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineTick</title>
+    <title>Detalhes do Filme - CineTick</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
     <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
@@ -21,57 +17,24 @@
             <img src="img/logo.png" alt="Logo CineTick">
             <span>CineTick</span>
         </a>
-        
-       <nav class="main-nav">
-            <a href="index.html" class="active">Home</a>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
             <a href="em-cartaz.html">Em Cartaz</a>
             <a href="futuros-lancamentos.html">Futuros Lançamentos</a>
             <span id="admin-link-placeholder"></span>
         </nav>
-        
         <div class="user-login">
             <a href="#" id="login-link">Entrar</a>
         </div>
     </header>
 
     <main>
-        <section class="banner-principal">
-            <div class="swiper banner-carousel">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="img/banner.png" alt="Banner de filme 1">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/filme1.png" alt="Banner de filme 2">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/filme2.png" alt="Banner de filme 3">
-                    </div>
-                </div>
-                <div class="swiper-pagination"></div>
-
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
-        </section>
-
-        <div class="content-wrapper">
-            <section class="movie-section">
-                <h2 class="section-title">Em alta</h2>
-                <div class="movie-list" id="em-alta-list">
-                    <!-- Filmes "Em Alta" serão inseridos aqui pelo JavaScript -->
-                </div>
-            </section>
-
-            <section class="movie-section">
-                <h2 class="section-title">Próximos Lançamentos</h2>
-                <div class="movie-list" id="lancamentos-list">
-                    <!-- Filmes "Próximos Lançamentos" serão inseridos aqui pelo JavaScript -->
-                </div>
-            </section>
+        <div class="content-wrapper" id="movie-detail-container">
+            <!-- Detalhes do filme serão inseridos aqui pelo JavaScript -->
         </div>
-    </main> 
+    </main>
 
+    <!-- Modal de Login (reutilizado de outros scripts) -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close">&times;</button>
@@ -94,9 +57,32 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- Modal de Pagamento -->
+    <div id="payment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>Comprar Ingresso</h2>
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="cpf">CPF (somente números)</label>
+                    <input type="text" id="cpf" name="cpf" required maxlength="11" pattern="[0-9]{11}">
+                </div>
+                <div class="form-group">
+                    <label for="cartao">Número do Cartão (somente números)</label>
+                    <input type="text" id="cartao" name="cartao" required maxlength="16" pattern="[0-9]{16}">
+                </div>
+                <div class="form-group">
+                    <p>Valor: <strong>R$ 25,00</strong></p>
+                </div>
+                <button type="submit" class="login-button email">Confirmar Pagamento</button>
+            </form>
+            <p id="payment-error" class="error-message" style="display: none;"></p>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/scripts.js"></script>
-    
+    <script src="js/filme.js"></script>
+
 </body>
 </html>
