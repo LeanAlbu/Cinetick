@@ -1,3 +1,14 @@
+/**
+ * Verifica se o usuário está logado checando o localStorage.
+ * Esta função é definida globalmente para que outros scripts possam usá-la
+ * antes do DOM estar completamente carregado, evitando race conditions.
+ * @returns {boolean} - True se o usuário está logado, false caso contrário.
+ */
+window.isUserLoggedIn = function() {
+    return localStorage.getItem('cinetick_user') !== null;
+};
+
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- CONFIGURAÇÃO DOS CARROSSÉIS (Swiper.js) ---
@@ -44,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- CARREGAMENTO DE DADOS DA API ---
 
     // URL base da nossa API backend
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
+    const API_BASE_URL = '../backEnd/public';
 
     /**
      * Cria o HTML para um card de filme.
@@ -152,21 +163,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- LÓGICA DE AUTENTICAÇÃO VISUAL ---
     function setupAuthUI() {
-        const user = JSON.parse(localStorage.getItem('cinetick_user'));
         const adminPlaceholder = document.getElementById('admin-link-placeholder');
         const loginLink = document.getElementById('login-link');
+        let user = null;
+
+        try {
+            const storedUser = localStorage.getItem('cinetick_user');
+            if (storedUser) {
+                user = JSON.parse(storedUser);
+            }
+        } catch (e) {
+            console.error("Erro ao ler dados do usuário do localStorage. Limpando sessão.", e);
+            localStorage.removeItem('cinetick_user');
+        }
 
         if (user) {
             // Usuário está logado
             loginLink.textContent = 'Sair';
             loginLink.href = '#';
-            loginLink.addEventListener('click', async (e) => {
+            
+            // Para evitar adicionar múltiplos event listeners, removemos o antigo antes de adicionar um novo
+            const newLoginLink = loginLink.cloneNode(true);
+            loginLink.parentNode.replaceChild(newLoginLink, loginLink);
+
+            newLoginLink.addEventListener('click', async (e) => {
                 e.preventDefault();
-                // Chamar a API de logout
-                await fetch(`${API_BASE_URL}/logout`, { method: 'POST' });
-                // Limpar o localStorage e recarregar a página
-                localStorage.removeItem('cinetick_user');
-                window.location.reload();
+                try {
+                    await fetch(`${API_BASE_URL}/logout`, { method: 'POST' });
+                } catch(err) {
+                    console.error("API de logout falhou, mas o logout prosseguirá no front-end.", err);
+                } finally {
+                    localStorage.removeItem('cinetick_user');
+                    window.location.reload();
+                }
             });
 
             if (user.role === 'admin' && adminPlaceholder) {
@@ -177,10 +206,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Usuário não está logado
             loginLink.textContent = 'Entrar';
             loginLink.href = '#';
-            loginLink.addEventListener('click', (e) => {
+
+            // Para evitar adicionar múltiplos event listeners, removemos o antigo antes de adicionar um novo
+            const newLoginLink = loginLink.cloneNode(true);
+            loginLink.parentNode.replaceChild(newLoginLink, loginLink);
+
+            newLoginLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('login-modal').classList.add('active');
             });
+            
+            if(adminPlaceholder) {
+                adminPlaceholder.innerHTML = ''; // Limpa o link de admin se o usuário não estiver logado
+            }
         }
     }
 
