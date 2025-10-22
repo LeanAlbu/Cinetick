@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 1. VERIFICAÇÃO DE SEGURANÇA
     if (!user || user.role !== 'admin') {
-        // Se não for admin, redireciona para a home após um alerta
         Swal.fire({
             icon: 'error',
             title: 'Acesso Negado',
@@ -13,54 +12,77 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(() => {
             window.location.href = 'index.html';
         });
-        // Impede a execução do resto do script
-        return; 
+        return;
     }
 
-    const movieListContainer = document.getElementById('admin-movie-list');
-    const addMovieForm = document.getElementById('add-movie-form');
+    const movieGridContainer = document.getElementById('admin-movie-list');
+    const movieForm = document.getElementById('add-movie-form');
+    const formTitle = document.querySelector('.admin-form-container h3');
+    const submitButton = movieForm.querySelector('button[type="submit"]');
+    const cancelEditButton = document.getElementById('cancel-edit');
+
+    let moviesData = []; // Cache para os dados dos filmes
 
     // 2. FUNÇÕES DE RENDERIZAÇÃO E API
 
-    /**
-     * Cria o HTML para um card de filme na visão do admin (com botão de excluir)
-     */
     function createAdminMovieCard(filme) {
         const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
         return `
-            <div class="movie-card">
+            <div class="movie-card" data-id="${filme.id}">
                 <img src="${imageUrl}" alt="Pôster de ${filme.title}">
                 <div class="movie-info">
                     <h3>${filme.title}</h3>
                     <p>${filme.director}</p>
                 </div>
                 <div class="card-footer">
+                    <button class="btn-edit" data-id="${filme.id}">Editar</button>
                     <button class="btn-delete" data-id="${filme.id}">Excluir</button>
                 </div>
             </div>
         `;
     }
 
-    /**
-     * Carrega e exibe todos os filmes
-     */
     async function loadMovies() {
         try {
             const response = await fetch(`${API_BASE_URL}/filmes`);
-            const movies = await response.json();
-            movieListContainer.innerHTML = movies.map(createAdminMovieCard).join('');
+            moviesData = await response.json();
+            movieGridContainer.innerHTML = moviesData.map(createAdminMovieCard).join('');
         } catch (error) {
             console.error('Falha ao carregar filmes:', error);
-            movieListContainer.innerHTML = '<p>Erro ao carregar filmes.</p>';
+            movieGridContainer.innerHTML = '<p>Erro ao carregar filmes.</p>';
         }
+    }
+
+    function populateFormForEdit(movieId) {
+        const movie = moviesData.find(m => m.id == movieId);
+        if (!movie) return;
+
+        document.getElementById('movieId').value = movie.id;
+        document.getElementById('title').value = movie.title;
+        document.getElementById('release_year').value = movie.release_year;
+        document.getElementById('director').value = movie.director;
+        document.getElementById('description').value = movie.description;
+        document.getElementById('imagem_url').value = movie.imagem_url;
+
+        formTitle.textContent = 'Editar Filme';
+        submitButton.textContent = 'Atualizar Filme';
+        cancelEditButton.style.display = 'inline-block';
+    }
+
+    function resetForm() {
+        movieForm.reset();
+        document.getElementById('movieId').value = '';
+        formTitle.textContent = 'Adicionar Novo Filme';
+        submitButton.textContent = 'Adicionar Filme';
+        cancelEditButton.style.display = 'none';
     }
 
     // 3. EVENT LISTENERS
 
-    // Listener para o formulário de adicionar filme
-    addMovieForm.addEventListener('submit', async (e) => {
+    movieForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const newMovie = {
+        const movieId = document.getElementById('movieId').value;
+        const movieData = {
             title: document.getElementById('title').value,
             release_year: document.getElementById('release_year').value,
             director: document.getElementById('director').value,
@@ -68,38 +90,44 @@ document.addEventListener('DOMContentLoaded', function() {
             imagem_url: document.getElementById('imagem_url').value,
         };
 
+        const isEditing = !!movieId;
+        const url = isEditing ? `${API_BASE_URL}/filmes/${movieId}` : `${API_BASE_URL}/filmes`;
+        const method = isEditing ? 'PUT' : 'POST';
+
         try {
-            const response = await fetch(`${API_BASE_URL}/filmes`, {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newMovie)
+                body: JSON.stringify(movieData)
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Erro ao adicionar filme');
+                throw new Error(errorData.error || `Erro ao ${isEditing ? 'atualizar' : 'adicionar'} filme`);
             }
 
-            Swal.fire('Sucesso!', 'Filme adicionado com sucesso.', 'success');
-            addMovieForm.reset();
-            loadMovies(); // Recarrega a lista
+            Swal.fire('Sucesso!', `Filme ${isEditing ? 'atualizado' : 'adicionado'} com sucesso.`, 'success');
+            resetForm();
+            loadMovies();
         } catch (error) {
             Swal.fire('Erro!', error.message, 'error');
         }
     });
 
-    // Listener para os botões de excluir (usando delegação de evento)
-    movieListContainer.addEventListener('click', async (e) => {
-        if (e.target.classList.contains('btn-delete')) {
-            const movieId = e.target.dataset.id;
-            
+    movieGridContainer.addEventListener('click', async (e) => {
+        const target = e.target;
+        const movieId = target.dataset.id;
+
+        if (target.classList.contains('btn-edit')) {
+            populateFormForEdit(movieId);
+        } else if (target.classList.contains('btn-delete')) {
             const result = await Swal.fire({
                 title: 'Você tem certeza?',
                 text: "Você não poderá reverter isso!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Sim, pode excluir!',
                 cancelButtonText: 'Cancelar'
             });
@@ -109,20 +137,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     const response = await fetch(`${API_BASE_URL}/filmes/${movieId}`, {
                         method: 'DELETE'
                     });
-
                     if (!response.ok) {
                         const errorData = await response.json();
                         throw new Error(errorData.error || 'Erro ao excluir filme');
                     }
-
                     Swal.fire('Excluído!', 'O filme foi excluído.', 'success');
-                    loadMovies(); // Recarrega a lista
+                    loadMovies();
                 } catch (error) {
                     Swal.fire('Erro!', error.message, 'error');
                 }
             }
         }
     });
+
+    cancelEditButton.addEventListener('click', resetForm);
 
     // 4. CARREGAMENTO INICIAL
     loadMovies();

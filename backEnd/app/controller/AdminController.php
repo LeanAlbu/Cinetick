@@ -23,6 +23,12 @@ class AdminController extends Controller {
         $this->renderView('admin/users', ['users' => $users]);
     }
 
+    public function filmes() {
+        $filmeModel = new FilmeModel();
+        $filmes = $filmeModel->getAllFilmes();
+        $this->renderView('admin/filmes', ['filmes' => $filmes]);
+    }
+
     public function promote() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userId = $_POST['user_id'] ?? null;

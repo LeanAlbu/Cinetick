@@ -106,5 +106,9 @@ class FilmeController extends ApiController {
             $this->sendJsonError('Erro ao buscar futuros lançamentos: ' . $e->getMessage(), 500);
         }
     }
-}
 
+    public function todos() {
+        $filmes = $this->filmeModel->getAllFilmes();
+        $this->sendJsonResponse($filmes);
+    }
+}
