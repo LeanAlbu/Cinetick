@@ -62,6 +62,7 @@ $router->addRoute('PUT', '/filmes/{id}', FilmeController::class, 'update');
 $router->addRoute('DELETE', '/filmes/{id}', FilmeController::class, 'destroy');
 $router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
 $router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
+$router->addRoute('GET', '/filmes/todos', FilmeController::class, 'todos');
 
 // Rotas de Pagamento (API)
 $router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');
