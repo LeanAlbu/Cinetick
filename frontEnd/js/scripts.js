@@ -158,8 +158,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- INICIA O CARREGAMENTO DOS DADOS ---
+    /**
+     * Cria o HTML para um slide do carrossel.
+     * @param {object} filme - O objeto do filme vindo da API.
+     * @returns {string} - A string HTML do slide.
+     */
+    function createCarouselSlide(filme) {
+        const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
+        return `
+            <div class="swiper-slide">
+                <a href="filme.html?id=${filme.id}">
+                    <img src="${imageUrl}" alt="Banner de ${filme.title}">
+                </a>
+            </div>
+        `;
+    }
+
+    /**
+     * Busca filmes para o carrossel e os insere no DOM.
+     */
+    async function fetchAndDisplayCarouselMovies() {
+        const carouselWrapper = document.querySelector('.banner-carousel .swiper-wrapper');
+        if (!carouselWrapper) return;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/filmes/todos`);
+            const result = await response.json();
+
+            if (!response.ok) {
+                const errorMessage = result.error || `Erro na rede: ${response.statusText}`;
+                throw new Error(errorMessage);
+            }
+
+            const movies = result;
+
+            if (movies.length > 0) {
+                carouselWrapper.innerHTML = movies.map(createCarouselSlide).join('');
+                bannerSwiper.update(); // Atualiza o Swiper após adicionar os slides
+            }
+        } catch (error) { 
+            console.error(`Falha ao buscar filmes para o carrossel:`, error.message);
+        }
+    }
+
+    fetchAndDisplayCarouselMovies();
     fetchAndDisplayMovies('/em-cartaz', 'em-alta-list');
-    fetchAndDisplayMovies('/futuros-lancamentos', 'lancamentos-list');
 
     // --- LÓGICA DE AUTENTICAÇÃO VISUAL ---
     function setupAuthUI() {
