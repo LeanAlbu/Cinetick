@@ -1,8 +1,16 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+    const paymentModal = document.getElementById('payment-modal');
+    const paymentForm = document.getElementById('payment-form');
+    const paymentError = document.getElementById('payment-error');
+    const closePaymentModal = paymentModal.querySelector('.modal-close');
+    const btnContinuar = document.getElementById('btn-continuar');
+
   const fileiras = ["H","G","F","E","D","C","B","A"];
   const cadeirasPorFileira = 10;
   const ocupados = ["E4","E5","F3","F7"];  /*exemplo*/
+  const VALOR_INGRESSO = 25.00;
+  let currentFilmeId = null;
 
   const container = document.getElementById("assentos-conteiner");
   if (!container) return;
@@ -42,4 +50,74 @@ document.addEventListener("DOMContentLoaded", () => {
     filaDiv.appendChild(assentosDiv);
     container.appendChild(filaDiv);
   });
+  
+  btnContinuar.addEventListener('click', () => {
+    const selecionados = document.querySelectorAll('.assento.selecionado').length;
+    const valorTotal = selecionados * VALOR_INGRESSO;
+    document.getElementById('valor-ingresso').textContent = `R$ ${valorTotal.toFixed(2)}`;
+
+    paymentModal.style.display = 'flex';
+    paymentError.style.display = 'none';
+  });
+
+  closePaymentModal.addEventListener('click', () => {
+            paymentModal.classList.remove('flex');
+  });
+
+  window.addEventListener('click', (event) => {
+            if (event.target === paymentModal) {
+              paymentModal.classList.remove('active');
+            }
+  });
+
+  paymentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    paymentError.style.display = 'none';
+
+    const formData = new FormData(paymentForm);
+        const data = {
+            filme_id: currentFilmeId,
+            valor: valorTotal,
+            cpf: formData.get('cpf'),
+            cartao: formData.get('cartao')
+        };
+
+    try {
+            const response = await fetch('../backEnd/public/pagamentos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Ocorreu um erro no pagamento.');
+            }
+
+      paymentModal.classList.remove('active');
+      Swal.fire({
+                title: 'Sucesso!',
+                text: 'Seu ingresso foi comprado com sucesso!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+        }).then(() => {
+                window.location.href = 'index.html';
+      });
+
+      } catch (error) {
+            paymentError.textContent = error.message;
+            paymentError.style.display = 'block';
+      }
+    });
+
+    const filmeId = getFilmeIdFromUrl();
+    if (filmeId) {
+        fetchFilmeDetails(filmeId);
+    } else {
+        movieDetailContainer.innerHTML = '<p class="error-message">ID do filme não fornecido.</p>';
+    }
+
 });
