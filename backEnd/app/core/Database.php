@@ -10,7 +10,9 @@ class Database {
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             // FORÇAR A EXIBIÇÃO DO ERRO PARA DEPURAÇÃO
-            die("Falha na conexão com o banco de dados: " . $e->getMessage());
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Falha na conexão com o banco de dados.', 'details' => $e->getMessage()]);
+            exit();
         }
     }
 

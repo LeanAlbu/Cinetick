@@ -88,7 +88,8 @@ class FilmeController extends ApiController {
     public function emCartaz() {
         try {
             $currentYear = date('Y');
-            $years = [$currentYear, $currentYear - 1];
+            $startYear = $currentYear - 40;
+            $years = range($startYear, $currentYear);
             $filmes = $this->filmeModel->getFilmesByReleaseYears($years);
             $this->sendJsonResponse($filmes);
         } catch (Throwable $e) {
@@ -96,14 +97,11 @@ class FilmeController extends ApiController {
         }
     }
 
-    // GET /futuros-lancamentos
-    public function futurosLancamentos() {
-        try {
-            $filmes = $this->filmeModel->getUpcomingReleases();
-            $this->sendJsonResponse($filmes);
-        } catch (Throwable $e) {
-            $this->sendJsonError('Erro ao buscar futuros lançamentos: ' . $e->getMessage(), 500);
-        }
+
+
+    public function todos() {
+        $filmes = $this->filmeModel->getAllFilmes();
+        error_log("FilmeController::todos - Sending JSON response.");
+        $this->sendJsonResponse($filmes);
     }
 }
-

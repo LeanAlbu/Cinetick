@@ -10,6 +10,7 @@ class ApiController extends Controller {
     protected function sendJsonResponse($data, $statusCode = 200) {
         header('Content-Type: application/json');
         http_response_code($statusCode);
+        error_log("ApiController::sendJsonResponse - Data: " . json_encode($data));
         echo json_encode($data);
         exit;
     }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Filmes</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="index.html" class="logo-container">
+            <img src="img/logo.png" alt="Logo CineTick">
+            <span>CineTick</span>
+        </a>
+        
+       <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="em-cartaz.html">Em Cartaz</a>
+
+            <a href="todos-os-filmes.html">Todos os Filmes</a>
+            <span id="admin-link-placeholder"></span>
+        </nav>
+        
+        <div class="user-login">
+            <a href="#" id="login-link">Entrar</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="content-wrapper">
+            <section class="admin-section">
+                <h2 class="section-title">Gerenciar Filmes</h2>
+                <div id="filmes-list">
+                    <!-- A lista de filmes será inserida aqui pelo JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
+    <script src="js/admin-filmes.js"></script>
+</body>
+</html>

@@ -8,11 +8,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -25,7 +25,7 @@
        <nav class="main-nav">
             <a href="index.html" class="active">Home</a>
             <a href="em-cartaz.html">Em Cartaz</a>
-            <a href="futuros-lancamentos.html">Futuros Lançamentos</a>
+            <a href="todos-os-filmes.html">Todos os Filmes</a>
             <span id="admin-link-placeholder"></span>
         </nav>
         
@@ -38,15 +38,6 @@
         <section class="banner-principal">
             <div class="swiper banner-carousel">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="img/banner.png" alt="Banner de filme 1">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/filme1.png" alt="Banner de filme 2">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="img/filme2.png" alt="Banner de filme 3">
-                    </div>
                 </div>
                 <div class="swiper-pagination"></div>
 
@@ -58,17 +49,12 @@
         <div class="content-wrapper">
             <section class="movie-section">
                 <h2 class="section-title">Em alta</h2>
-                <div class="movie-list" id="em-alta-list">
+                <div class="movie-grid" id="em-alta-list">
                     <!-- Filmes "Em Alta" serão inseridos aqui pelo JavaScript -->
                 </div>
             </section>
 
-            <section class="movie-section">
-                <h2 class="section-title">Próximos Lançamentos</h2>
-                <div class="movie-list" id="lancamentos-list">
-                    <!-- Filmes "Próximos Lançamentos" serão inseridos aqui pelo JavaScript -->
-                </div>
-            </section>
+
         </div>
     </main> 
 
@@ -85,7 +71,7 @@
                     <label for="password">Senha</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" class="login-button email">Acessar por E-mail</button>
+                <button type="submit" class="btn btn-primary">Acessar por E-mail</button>
             </form>
             <p id="login-error" class="error-message" style="display: none;"></p>
             <p class="signup-link">
