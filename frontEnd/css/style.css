@@ -366,6 +366,112 @@ main.container {
     opacity: 0.9;
 }
 
+/* sala de cinema */
+
+.centralizar {
+    width: 100%;    
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    min-height: 80vh; 
+}
+
+.sala-cinema {
+  max-width: 900px;
+  text-align: center;
+  margin: 40px 0;
+}
+
+.tela {
+  background-color: #ccc;
+  color: #000;
+  width: 80%;
+  margin: 0 auto 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.assentos-container {
+  display: flex;
+  flex-direction: column-reverse; /* para começar da fileira A */
+  align-items: center;
+  gap: 10px;
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px;
+  gap: 10px;
+}
+
+.fila-label {
+  background-color: #fff;
+  line-height: 34px;
+  font-size: 21px;
+  font-weight: bold;
+  margin-right: 15px;
+  color: #000;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.assentos {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  gap: 8px;
+}
+
+.assento {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 40px;
+  text-align: center;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.assento.livre {
+  background-color: #00cc00;
+}
+
+.assento.ocupado {
+  background-color: #cc0000;
+  cursor: not-allowed;
+}
+
+.assento.selecionado {
+  background-color: #ffcc00;
+}
+
+.assento:hover:not(.ocupado) {
+  transform: scale(1.1);
+}
+
+.btn-continuar {
+  margin-top: 30px;
+  padding: 24px 48px;
+  font-family: 'Fjalla One', sans-serif;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a2862;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-continuar:hover {
+  background-color: #ddd;
+}
+
 /* Movie Detail Page Styles */
 .movie-detail-card {
     display: flex;

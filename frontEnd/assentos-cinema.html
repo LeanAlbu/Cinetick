@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assentos - CineTick</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <header class="main-header">
+        <a href="index.html" class="logo-container">
+            <img src="img/logo.png" alt="Logo CineTick">
+            <span>CineTick</span>
+        </a>           
+    </header>
+    
+    <main class="centralizar">
+        <section class="sala-cinema">
+            <!--cria os assentos, js gera as poltronas-->
+            <div id="assentos-conteiner" class="assentos-conteiner"></div>
+            <button id="btn-continuar" class="btn-continuar">Continuar</button>
+
+             <div id="payment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>Comprar Ingresso</h2>
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="cpf">CPF (somente números)</label>
+                    <input type="text" id="cpf" name="cpf" required maxlength="11" pattern="[0-9]{11}">
+                </div>
+                <div class="form-group">
+                    <label for="cartao">Número do Cartão (somente números)</label>
+                    <input type="text" id="cartao" name="cartao" required maxlength="16" pattern="[0-9]{16}">
+                </div>
+                <div class="form-group">
+                    <p p id="valor-ingresso">Valor: <strong>R$ 0,00</strong></p>
+                </div>
+                <button type="submit" class="login-button email">Confirmar Pagamento</button>
+            </form>
+            <p id="payment-error" class="error-message" style="display: none;"></p>
+        </div>
+    </div>
+
+           <!-- <div id="payment-modal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <form id="payment-form">
+                <input id="cpf" type="text" placeholder="CPF" />
+                <input id="cartao" type="text" placeholder="Número do cartão" />
+                <p id="valor-ingresso">R$ 0,00</p>
+                <p id="payment-error" style="display:none;color:red;"></p>
+                <button type="button" id="confirmar-pagamento">Confirmar</button>
+                </form>
+            </div>
+            </div>
+        -->
+        </section>
+    </main>
+    <!--script especifico pra essa pagina-->
+    <script src="../frontEnd/js/sala-cine.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../frontEnd/js/scripts.js"></script>
+</body>
+</html>
