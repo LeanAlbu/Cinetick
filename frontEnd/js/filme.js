@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleBuyTicketClick = () => {
         if (isUserLoggedIn()) {
-            paymentModal.classList.add('active');
+            window.location.href = 'assentos-cinema.html';
         } else {
             // Reutiliza a lógica do modal de login do script.js
             const loginModal = document.getElementById('login-modal');
