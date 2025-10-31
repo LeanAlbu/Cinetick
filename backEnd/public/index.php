@@ -55,14 +55,20 @@ $router->addRoute('POST', '/admin/users/promote', AdminController::class, 'promo
 $router->addRoute('GET', '/', HomeController::class, "show_index");
 
 // Rotas de Filmes (API)
-$router->addRoute('GET', '/filmes', FilmeController::class, 'index');
-$router->addRoute('GET', '/filmes/{id}', FilmeController::class, 'show');
-$router->addRoute('POST', '/filmes', FilmeController::class, 'store');
-$router->addRoute('PUT', '/filmes/{id}', FilmeController::class, 'update');
-$router->addRoute('DELETE', '/filmes/{id}', FilmeController::class, 'destroy');
-$router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
-$router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
-$router->addRoute('GET', '/filmes/todos', FilmeController::class, 'todos');
+$router->addRoute('GET', '/api/filmes', FilmeController::class, 'index');
+$router->addRoute('GET', '/api/filmes/{id}', FilmeController::class, 'show');
+$router->addRoute('POST', '/api/filmes', FilmeController::class, 'store');
+$router->addRoute('PUT', '/api/filmes/{id}', FilmeController::class, 'update');
+$router->addRoute('DELETE', '/api/filmes/{id}', FilmeController::class, 'destroy');
+$router->addRoute('GET', '/api/em-cartaz', FilmeController::class, 'emCartaz');
+$router->addRoute('GET', '/api/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
+$router->addRoute('GET', '/api/filmes/todos', FilmeController::class, 'todos');
+
+// Rotas de Filmes (Views)
+$router->addRoute('GET', '/em-cartaz', FilmeController::class, 'showEmCartazPage');
+$router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'showFuturosLancamentosPage');
+$router->addRoute('GET', '/filmes/todos', FilmeController::class, 'showTodosPage');
+$router->addRoute('GET', '/filme/{id}', FilmeController::class, 'showFilmeDetailPage');
 
 // Rotas de Pagamento (API)
 $router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');

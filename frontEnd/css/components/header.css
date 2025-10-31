@@ -1,0 +1,58 @@
+/* HEADER */
+
+.main-header {
+    background: linear-gradient(180deg, rgba(69, 28, 123, 0.64) 0%, rgba(22, 22, 22, 0.42) 100%);
+    padding: 15px 40px;
+    font-family: 'Fjalla One', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-container img {
+    height: 35px;
+    margin-right: 12px;
+}
+
+.logo-container span {
+    color: var(--text-color-light);
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.main-nav a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.main-nav a.active,
+.main-nav a:hover {
+    color: var(--accent-color);
+}
+
+.user-login a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Fjalla One', sans-serif;
+}
+
+.user-login a:hover {
+    color: var(--accent-color);
+}
+
+.user-login img {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}

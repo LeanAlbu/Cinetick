@@ -1,0 +1,40 @@
+/* BUTTONS */
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-continuar {
+  margin-top: 30px;
+  padding: 24px 48px;
+  font-family: 'Fjalla One', sans-serif;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a2862;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-continuar:hover {
+  background-color: #ddd;
+}

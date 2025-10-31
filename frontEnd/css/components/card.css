@@ -1,0 +1,57 @@
+/* MOVIE SECTION & CARDS */
+
+.movie-section {
+    margin-top: 40px; 
+}
+
+.section-title {
+    font-family: 'Fjalla One', sans-serif;
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color); 
+    padding-bottom: 10px;
+    display: inline-block; 
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px; 
+}
+
+.movie-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.movie-card {
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+    background-color: #1c1c1c;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.movie-card img {
+    height: auto; 
+    aspect-ratio: 2 / 3;
+    object-fit: cover; 
+    width: 100%;
+}
+
+@media (max-width: 992px) {
+    .movie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    }
+}
