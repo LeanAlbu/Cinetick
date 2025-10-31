@@ -1,3 +1,33 @@
+import { fetchAndDisplayMovies } from './api.js';
+
+function createCarouselSlide(filme) {
+    const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
+    return `
+        <div class="swiper-slide">
+            <a href="filme/${filme.id}">
+                <img src="${imageUrl}" alt="Banner de ${filme.title}">
+            </a>
+        </div>
+    `;
+}
+
+async function fetchCarouselMovies(swiperInstance) {
+    const carouselWrapper = document.querySelector('.banner-carousel .swiper-wrapper');
+    if (!carouselWrapper) return;
+
+    try {
+        const response = await fetch('../backEnd/public/api/filmes/todos');
+        const result = await response.json();
+
+        if (response.ok && result.length > 0) {
+            carouselWrapper.innerHTML = result.map(createCarouselSlide).join('');
+            swiperInstance.update();
+        }
+    } catch (error) { 
+        console.error(`Falha ao buscar filmes para o carrossel:`, error.message);
+    }
+}
+
 export function initializeCarousels() {
     const bannerSwiper = new Swiper('.banner-carousel', {
         loop: true,
@@ -15,6 +45,8 @@ export function initializeCarousels() {
             disableOnInteraction: false,
         },
     });
+
+    fetchCarouselMovies(bannerSwiper);
 }
 
 export function initializeLoginModal() {

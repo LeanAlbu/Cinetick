@@ -1,12 +1,15 @@
-/* HEADER */
-
 .main-header {
-    background: linear-gradient(180deg, rgba(69, 28, 123, 0.64) 0%, rgba(22, 22, 22, 0.42) 100%);
+    background-color: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(10px);
     padding: 15px 40px;
-    font-family: 'Fjalla One', sans-serif;
+    font-family: var(--font-family-headings);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo-container {
@@ -32,18 +35,22 @@
     margin: 0 20px;
     font-size: 18px;
     transition: color 0.3s ease;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
 }
 
 .main-nav a.active,
 .main-nav a:hover {
     color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
 }
 
 .user-login a {
     color: var(--text-color-light);
     text-decoration: none;
     font-size: 16px;
-    font-family: 'Fjalla One', sans-serif;
+    font-family: var(--font-family-headings);
+    transition: color 0.3s ease;
 }
 
 .user-login a:hover {
@@ -55,4 +62,13 @@
     width: 45px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+@media (max-width: 992px) {
+    .main-header {
+        padding: 15px 20px;
+    }
+    .main-nav {
+        display: none; /* Simple solution for now, could be a hamburger menu */
+    }
 }

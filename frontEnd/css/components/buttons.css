@@ -1,20 +1,25 @@
-/* BUTTONS */
-
 .btn {
     display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.25rem;
+    padding: 12px 25px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
     text-decoration: none;
     font-weight: bold;
     text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: var(--font-family-body);
+    font-size: 1rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
 }
 
 .btn-primary {
     background-color: var(--accent-color);
-    color: var(--primary-color);
+    color: var(--text-color-dark);
+    width: 100%;
 }
 
 .btn-primary:hover {
@@ -22,19 +27,11 @@
 }
 
 .btn-continuar {
-  margin-top: 30px;
-  padding: 24px 48px;
-  font-family: 'Fjalla One', sans-serif;
-  border: none;
-  border-radius: 8px;
-  background-color: #1a2862;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 30px;
-  font-weight: bold;
-  transition: 0.2s;
+    margin-top: 30px;
+    font-family: var(--font-family-headings);
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
 }
-
 .btn-continuar:hover {
-  background-color: #ddd;
+    opacity: 0.9;
 }

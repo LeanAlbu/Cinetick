@@ -1,28 +1,40 @@
-/* Banner Principal */
-.banner-carousel{
-    max-width: 1400px;
-    margin: 40px auto; 
-    padding: 0 40px;   
-}
-
 .banner-carousel {
     width: 100%;
-    height: 400px; 
+    height: 450px;
     border-radius: 12px;
+    overflow: hidden;
 }
 
 .banner-carousel .swiper-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
-
 .banner-carousel .swiper-pagination-bullet-active {
-    background: var(--cor-destaque) !important; 
+    background: var(--accent-color) !important;
 }
 
 .banner-carousel .swiper-button-next,
 .banner-carousel .swiper-button-prev {
-    color: var(--cor-texto-claro) !important; 
+    color: var(--text-color-light) !important;
+    transition: background-color 0.3s ease;
+    background-color: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.banner-carousel .swiper-button-next:hover,
+.banner-carousel .swiper-button-prev:hover {
+    background-color: rgba(0,0,0,0.6);
+}
+
+@media (max-width: 768px) {
+    .banner-carousel {
+        height: 300px;
+    }
 }

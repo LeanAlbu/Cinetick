@@ -1,13 +1,15 @@
-/* ADMIN PAGE */
-
 .admin-section {
     display: flex;
     gap: 2rem;
+    align-items: flex-start;
 }
 
 .admin-form-container {
     flex: 1;
-    max-width: 400px;
+    max-width: 450px;
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
 }
 
 .admin-list-container {
@@ -18,7 +20,6 @@
     .admin-section {
         flex-direction: column;
     }
-
     .admin-form-container {
         max-width: 100%;
     }

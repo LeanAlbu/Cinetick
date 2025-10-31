@@ -1,32 +1,27 @@
-/* CINEMA SEATING */
-
-.centralizar {
-    width: 100%;    
-    display: flex;
-    justify-content: center; 
-    align-items: center;   
-    min-height: 80vh; 
-}
-
 .sala-cinema {
   max-width: 900px;
   text-align: center;
-  margin: 40px 0;
+  margin: 40px auto;
+  padding: 2rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
 }
 
 .tela {
   background-color: #ccc;
   color: #000;
   width: 80%;
-  margin: 0 auto 20px;
+  margin: 0 auto 30px;
   padding: 10px;
   border-radius: 5px;
   font-weight: bold;
+  font-family: var(--font-family-headings);
+  letter-spacing: 1px;
 }
 
 .assentos-container {
   display: flex;
-  flex-direction: column-reverse; /* para começar da fileira A */
+  flex-direction: column-reverse;
   align-items: center;
   gap: 10px;
 }
@@ -34,54 +29,67 @@
 .fila {
   display: flex;
   align-items: center;
-  margin-bottom: 1px;
   gap: 10px;
 }
 
 .fila-label {
-  background-color: #fff;
-  line-height: 34px;
-  font-size: 21px;
+  color: #ccc;
   font-weight: bold;
-  margin-right: 15px;
-  color: #000;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 5px;
+  width: 20px;
+  text-align: center;
 }
 
 .assentos {
   display: grid;
-  grid-template-columns: repeat(10, 40px);
+  grid-template-columns: repeat(10, 1fr);
   gap: 8px;
 }
 
 .assento {
   width: 40px;
   height: 40px;
-  border-radius: 8px;
-  font-size: 18px;
+  border-radius: 6px;
+  font-size: 1rem;
   font-weight: bold;
   line-height: 40px;
   text-align: center;
-  margin: 5px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  border: 1px solid rgba(0,0,0,0.2);
 }
 
 .assento.livre {
-  background-color: #00cc00;
+  background-color: #4CAF50; /* Verde */
+  color: white;
 }
 
 .assento.ocupado {
-  background-color: #cc0000;
+  background-color: #444;
   cursor: not-allowed;
 }
 
 .assento.selecionado {
-  background-color: #ffcc00;
+  background-color: var(--accent-color);
+  color: var(--text-color-dark);
 }
 
-.assento:hover:not(.ocupado) {
+.assento:not(.ocupado):hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .assentos {
+        grid-template-columns: repeat(8, 1fr);
+    }
+    .assento {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .assentos {
+        grid-template-columns: repeat(6, 1fr);
+    }
 }

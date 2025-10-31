@@ -29,7 +29,7 @@
 
             <a href="<?= BASE_URL ?>/" class="<?= (str_ends_with($current_page_uri, '/public/') || str_ends_with($current_page_uri, '/public/index.php')) ? 'active' : '' ?>">Home</a>
             <a href="<?= BASE_URL ?>/em-cartaz" class="<?= (str_ends_with($current_page_uri, '/em-cartaz')) ? 'active' : '' ?>">Em Cartaz</a>
-            <a href="<?= BASE_URL ?>/futuros-lancamentos" class="<?= (str_ends_with($current_page_uri, '/futuros-lancamentos')) ? 'active' : '' ?>">Futuros Lançamentos</a>
+
         </nav>
         
         <div class="user-login">
