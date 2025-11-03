@@ -84,6 +84,25 @@ class FilmeController extends ApiController {
         }
     }
 
+    // VIEW RENDERERS
+
+    public function showEmCartazPage() {
+        $this->view('filme/em-cartaz', ['page_script' => 'em-cartaz.js']);
+    }
+
+    public function showFuturosLancamentosPage() {
+        $this->view('filme/futuros-lancamentos', ['page_script' => 'futuros-lancamentos.js']);
+    }
+
+    public function showTodosPage() {
+        $this->view('filme/todos', ['page_script' => 'todos-os-filmes.js']);
+    }
+
+    public function showFilmeDetailPage($id) {
+        $this->view('filme/index', ['id' => $id, 'page_script' => 'filme.js']);
+    }
+
+
     // GET /em-cartaz
     public function emCartaz() {
         try {

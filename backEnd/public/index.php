@@ -10,38 +10,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-// DICA: Para produção, mude 'display_errors' para 0 e ative o log de erros.
-// ini_set('display_errors', 0);
-// ini_set('log_errors', 1);
+ob_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-// É uma boa prática definir o tipo de conteúdo padrão para JSON em uma API
-header('Content-Type: application/json');
 
 define('BASE_PATH', dirname(__DIR__));
 
 require_once BASE_PATH . '/config.php';
 session_start();
 
-// LOADER DAS CLASSES
+
+//LOADER DAS CLASSES
+
 spl_autoload_register(function($class_name){
-    $paths = [
+   $paths = [
       BASE_PATH . '/app/core/',
       BASE_PATH . '/app/controller/',
       BASE_PATH . '/app/models/'
-    ];
-    foreach($paths as $path){
-        $file = $path . $class_name . '.php';
-        if (file_exists($file)){
-            require_once $file;
-            return;
-        }
-    }
+   ];
+   foreach($paths as $path){
+      $file = $path . $class_name . '.php';
+      if (file_exists($file)){
+         require_once $file;
+         return;
+      }
+   }
 });
-
 $router = new Router();
+
 
 //------ROTAS------
 
@@ -58,18 +55,20 @@ $router->addRoute('POST', '/admin/users/promote', AdminController::class, 'promo
 $router->addRoute('GET', '/', HomeController::class, "show_index");
 
 // Rotas de Filmes (API)
-$router->addRoute('GET', '/filmes', FilmeController::class, 'index');
+$router->addRoute('GET', '/api/filmes', FilmeController::class, 'index');
+$router->addRoute('GET', '/api/em-cartaz', FilmeController::class, 'emCartaz');
+$router->addRoute('GET', '/api/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
+$router->addRoute('GET', '/api/filmes/todos', FilmeController::class, 'todos');
+$router->addRoute('GET', '/api/filmes/{id}', FilmeController::class, 'show'); // Rota genérica por último
+$router->addRoute('POST', '/api/filmes', FilmeController::class, 'store');
+$router->addRoute('PUT', '/api/filmes/{id}', FilmeController::class, 'update');
+$router->addRoute('DELETE', '/api/filmes/{id}', FilmeController::class, 'destroy');
 
-// ***** CORREÇÃO AQUI *****
-// A rota específica `/filmes/todos` deve vir ANTES da rota genérica `/filmes/{id}`
-$router->addRoute('GET', '/filmes/todos', FilmeController::class, 'todos');
-$router->addRoute('GET', '/em-cartaz', FilmeController::class, 'emCartaz');
-
-// Agora a rota genérica pode capturar IDs de filmes sem confundir com "todos"
-$router->addRoute('GET', '/filmes/{id}', FilmeController::class, 'show');
-$router->addRoute('POST', '/filmes', FilmeController::class, 'store');
-$router->addRoute('PUT', '/filmes/{id}', FilmeController::class, 'update');
-$router->addRoute('DELETE', '/filmes/{id}', FilmeController::class, 'destroy');
+// Rotas de Filmes (Views)
+$router->addRoute('GET', '/em-cartaz', FilmeController::class, 'showEmCartazPage');
+$router->addRoute('GET', '/futuros-lancamentos', FilmeController::class, 'showFuturosLancamentosPage');
+$router->addRoute('GET', '/filmes/todos', FilmeController::class, 'showTodosPage');
+$router->addRoute('GET', '/filme/{id}', FilmeController::class, 'showFilmeDetailPage');
 
 // Rotas de Pagamento (API)
 $router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');
