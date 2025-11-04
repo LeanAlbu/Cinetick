@@ -63,7 +63,8 @@ export function setupAuthUI() {
 
     if (user) {
         // User is logged in
-        loginLink.textContent = 'Sair';
+        //loginLink.textContent = 'Sair';
+        loginLink.style.display = 'none';
         loginLink.href = '#';
         handleLogout(loginLink);
 
@@ -89,3 +90,56 @@ export function setupAuthUI() {
         }
     }
 }
+
+export function setupUserMenu() {
+    const user = JSON.parse(localStorage.getItem('cinetick_user'));
+    const avatar = document.getElementById('user-avatar');
+    const dropdown = document.getElementById('user-dropdown');
+    const userName = document.getElementById('user-name');
+    const logoutLink = document.getElementById('logout-link');
+
+    if (!user) {
+        document.querySelector('.user-menu').style.display = 'none';
+        return;
+    }
+
+    // Exibir nome
+    userName.textContent = user.name;
+
+    // Exemplo: avatar aleatório usando UI Avatars
+    avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=444&color=fff`;
+
+    // Toggle menu ao clicar
+    avatar.addEventListener('click', () => {
+        dropdown.classList.toggle('active');
+    });
+
+    // Sair
+    logoutLink.addEventListener('click', (e) => {
+    localStorage.removeItem('cinetick_user');
+    document.querySelector('.user-menu').style.display = 'none';
+
+     const loginLink = document.getElementById('login-link');
+    if (loginLink) {
+        loginLink.style.display = 'inline-block';
+        loginLink.textContent = 'Entrar';
+        loginLink.href = '#';
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const loginModal = document.getElementById('login-modal');
+            loginModal.classList.add('active');
+        });
+    }
+     window.location.reload();
+
+    });
+
+    // Fechar caso clique fora
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.user-menu')) {
+            dropdown.classList.remove('active');
+        }
+    });
+}
+
+setupUserMenu();
