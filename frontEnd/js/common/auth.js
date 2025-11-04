@@ -1,4 +1,4 @@
-const API_BASE_URL = '../backEnd/public';
+const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
 
 export function isUserLoggedIn() {
     return localStorage.getItem('cinetick_user') !== null;
@@ -79,8 +79,8 @@ export function setupAuthUI() {
         // User is not logged in
         loginLink.textContent = 'Entrar';
         loginLink.href = '#';
+        const closeLogin = document.getElementById('close-login');
         loginLink.addEventListener('click', (e) => {
-            e.preventDefault();
             loginModal.classList.add('active');
         });
 

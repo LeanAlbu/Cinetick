@@ -56,6 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const valorTotal = selecionados * VALOR_INGRESSO;
     document.getElementById('valor-ingresso').textContent = `R$ ${valorTotal.toFixed(2)}`;
 
+  const compra = {
+      id: 'p_' + Date.now(),
+      userId: usuarioId || (localStorage.getItem('cinetick_user') ? JSON.parse(localStorage.getItem('cinetick_user')).id : 'demo-1'),
+      movieId: Number(filmeId),
+      movieTitle: filmeTitle || 'Título',
+      date: new Date().toISOString().slice(0,10),
+      seats: selecionados,
+      total: valorTotal
+  };
+
     paymentModal.style.display = 'flex';
     paymentError.style.display = 'none';
   });
