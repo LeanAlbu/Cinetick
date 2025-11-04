@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos os Filmes - CineTick</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+  /* Pequeno estilo local só pra visualizar */
+  .profile { max-width:800px; margin:40px auto; background:#fff; color:#111; padding:20px; border-radius:8px;}
+  .profile h2 { margin-top:0; }
+  .purchases { margin-top:20px; }
+  .purchase { border-bottom:1px solid #eee; padding:10px 0; display:flex; justify-content:space-between }
+  .empty { color:#666; text-align:center; padding:20px 0 }
+  .btn-demo { margin-top:10px }
+</style>
+</head>
+
+</head>
+<body>
+  <main class="profile">
+    <div id="user-info">
+      <h2>Perfil</h2>
+      <p id="user-name">Visitante</p>
+      <p id="user-email"></p>
+      <button id="btn-logout" style="display:none;">Sair</button>
+      <button id="btn-demo-login" class="btn-demo">Entrar em modo demo</button>
+    </div>
+
+    <section class="purchases">
+      <h3>Minhas Compras</h3>
+      <div id="purchases-list"></div>
+      <div id="no-purchases" class="empty" style="display:none;">Nenhuma compra encontrada.</div>
+    </section>
+  </main>
+
+  <script type="module" src="/Cinetick/frontEnd/js/perfil.js"></script> <!-- ajuste o path -->
+</body>
