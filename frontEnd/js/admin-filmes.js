@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = '../backEnd/public';
+    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
 
     async function fetchAndDisplayFilmes() {
         const container = document.getElementById('filmes-list');

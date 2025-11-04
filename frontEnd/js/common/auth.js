@@ -71,7 +71,7 @@ export function setupAuthUI() {
         if (user.role === 'admin') {
             const adminNav = document.querySelector('.main-nav');
             const adminLink = document.createElement('a');
-            adminLink.href = `../admin/users`;
+            adminLink.href = `../prototipos/admin.html`;
             adminLink.textContent = 'Admin';
             adminNav.appendChild(adminLink);
         }
