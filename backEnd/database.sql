@@ -40,7 +40,19 @@ CREATE TABLE IF NOT EXISTS `pagamentos`(
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
-
+CREATE TABLE IF NOT EXISTS `comments`(
+   `id` INT AUTO_INCREMENT NOT NULL,
+   `filme_id` BINARY(16) NOT NULL,
+   `user_id` BINARY(16) NOT NULL,
+   `comment` TEXT NOT NULL,
+   `rating` INT NOT NULL,
+   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (id),
+   FOREIGN KEY (user_id) REFERENCES users(id),
+   FOREIGN KEY (filme_id) REFERENCES filmes(id)
+)ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
 
 
 

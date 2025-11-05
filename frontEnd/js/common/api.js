@@ -5,7 +5,7 @@ const API_BASE_URL = '../backEnd/public';
  * @param {object} filme - O objeto do filme vindo da API.
  * @returns {string} - A string HTML do card.
  */
-function createMovieCard(filme) {
+export function createMovieCard(filme) {
     const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
     return `
         <a href="filme/${filme.id}" class="movie-card-link">
@@ -20,14 +20,11 @@ function createMovieCard(filme) {
 }
 
 /**
- * Busca filmes de um endpoint da API e os insere no DOM.
+ * Busca filmes de um endpoint da API.
  * @param {string} endpoint - O endpoint da API (ex: '/filmes/em-cartaz').
- * @param {string} elementId - O ID do elemento onde os cards serão inseridos.
+ * @returns {Promise<Array>} - Uma promessa que resolve para um array de filmes.
  */
-export async function fetchAndDisplayMovies(endpoint, elementId) {
-    const container = document.getElementById(elementId);
-    if (!container) return;
-
+export async function fetchMovies(endpoint) {
     try {
         const response = await fetch(`${API_BASE_URL}/api${endpoint}`);
         const result = await response.json();
@@ -36,14 +33,42 @@ export async function fetchAndDisplayMovies(endpoint, elementId) {
             const errorMessage = result.error || `Erro na rede: ${response.statusText}`;
             throw new Error(errorMessage);
         }
-
-        if (result.length === 0) {
-            container.innerHTML = '<p>Nenhum filme encontrado no momento.</p>';
-        } else {
-            container.innerHTML = result.map(createMovieCard).join('');
-        }
+        return result;
     } catch (error) {
         console.error(`Falha ao buscar filmes do endpoint ${endpoint}:`, error.message);
-        container.innerHTML = `<p>Não foi possível carregar os filmes. Tente novamente mais tarde.</p>`;
+        throw error; // Re-lança o erro para ser tratado por quem chamou
+    }
+}
+
+/**
+ * Insere filmes no DOM.
+ * @param {Array} filmes - Array de objetos de filme.
+ * @param {string} elementId - O ID do elemento onde os cards serão inseridos.
+ */
+export function displayMovies(filmes, elementId) {
+    const container = document.getElementById(elementId);
+    if (!container) return;
+
+    if (filmes.length === 0) {
+        container.innerHTML = '<p>Nenhum filme encontrado no momento.</p>';
+    } else {
+        container.innerHTML = filmes.map(createMovieCard).join('');
+    }
+}
+
+/**
+ * Busca filmes de um endpoint da API e os insere no DOM.
+ * @param {string} endpoint - O endpoint da API (ex: '/filmes/em-cartaz').
+ * @param {string} elementId - O ID do elemento onde os cards serão inseridos.
+ */
+export async function fetchAndDisplayMovies(endpoint, elementId) {
+    try {
+        const filmes = await fetchMovies(endpoint);
+        displayMovies(filmes, elementId);
+    } catch (error) {
+        const container = document.getElementById(elementId);
+        if (container) {
+            container.innerHTML = `<p>Não foi possível carregar os filmes. Tente novamente mais tarde.</p>`;
+        }
     }
 }

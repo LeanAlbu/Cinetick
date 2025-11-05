@@ -73,4 +73,8 @@ $router->addRoute('GET', '/filme/{id}', FilmeController::class, 'showFilmeDetail
 // Rotas de Pagamento (API)
 $router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');
 
+// Rotas de Comentários (API)
+$router->addRoute('GET', '/api/filmes/{id}/comments', CommentController::class, 'index');
+$router->addRoute('POST', '/api/filmes/{id}/comments', CommentController::class, 'store');
+
 $router->dispatch();

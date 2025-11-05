@@ -5,6 +5,7 @@ class FilmeController extends ApiController {
 
     public function __construct() {
         $this->filmeModel = new FilmeModel();
+        $this->commentModel = new CommentModel();
     }
 
     private function isAdmin() {
@@ -99,7 +100,10 @@ class FilmeController extends ApiController {
     }
 
     public function showFilmeDetailPage($id) {
-        $this->view('filme/index', ['id' => $id, 'page_script' => 'filme.js']);
+        $filme = $this->filmeModel->getFilmeById($id);
+        $comments = $this->commentModel->getCommentsByFilmeId($id);
+
+        $this->view('filme/index', ['id' => $id, 'filme' => $filme, 'comments' => $comments, 'page_script' => 'filme.js']);
     }
 
 
