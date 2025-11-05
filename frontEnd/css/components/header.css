@@ -77,41 +77,76 @@
     position: relative;
     display: flex;
     align-items: center;
-    cursor: pointer;
 }
 
 .user-avatar {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 2px solid transparent;
     object-fit: cover;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.user-avatar:hover {
+    border-color: var(--accent-color);
 }
 
 .user-dropdown {
     position: absolute;
-    top: 48px;
+    top: calc(100% + 10px);
     right: 0;
-    background: #222;
-    border-radius: 6px;
-    width: 160px;
-    display: none;
-    flex-direction: column;
-    padding: 10px;
-    gap: 8px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
-}
-
-.user-dropdown a, .user-dropdown p {
-    color: #fff;
-    font-size: 14px;
-    text-decoration: none;
-}
-
-.user-dropdown a:hover {
-    text-decoration: underline;
+    background-color: var(--background-color-dark);
+    border-radius: 8px;
+    width: 200px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 0;
+    z-index: 110;
+    
+    /* Animação */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
 }
 
 .user-dropdown.active {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown p {
+    margin: 0;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-color-light);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 8px;
+}
+
+.user-dropdown a {
+    display: block;
+    color: var(--text-color-secondary);
+    font-size: 14px;
+    text-decoration: none;
+    padding: 10px 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.user-dropdown a:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-light);
+}
+
+#logout-link {
+    color: #ff6b6b;
+}
+
+#logout-link:hover {
+    background-color: #ff6b6b;
+    color: #fff;
 }
