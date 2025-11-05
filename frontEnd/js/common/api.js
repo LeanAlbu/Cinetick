@@ -10,7 +10,7 @@ export function createMovieCard(filme) {
     return `
         <a href="filme/${filme.id}" class="movie-card-link">
             <div class="movie-card">
-                <img src="${imageUrl}" alt="Pôster de ${filme.title}">
+                <img src="${imageUrl}" alt="Pôster de ${filme.title}" class="movie-card-poster">
                 <div class="movie-info">
                     <h3>${filme.title}</h3>
                 </div>

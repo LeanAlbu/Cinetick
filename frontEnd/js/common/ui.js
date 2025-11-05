@@ -5,7 +5,7 @@ function createCarouselSlide(filme) {
     return `
         <div class="swiper-slide">
             <a href="filme/${filme.id}">
-                <img src="${imageUrl}" alt="Banner de ${filme.title}">
+                <img src="${imageUrl}" alt="Banner de ${filme.title}" class="carousel-image">
             </a>
         </div>
     `;

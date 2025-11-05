@@ -7,7 +7,9 @@ export function isUserLoggedIn() {
 function handleLogin(form, modal) {
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
-        const errorContainer = form.querySelector('.error-message');
+        const errorContainer = modal.querySelector('.error-message'); // Corrigido para procurar a partir do modal
+        if (!errorContainer) return;
+
         errorContainer.style.display = 'none';
 
         const email = form.querySelector('#email').value;
@@ -53,6 +55,8 @@ function handleLogout(logoutLink) {
 
 export function setupAuthUI() {
     const loginLink = document.getElementById('login-link');
+    if (!loginLink) return; // Adiciona esta verificação de segurança
+
     const loginModal = document.getElementById('login-modal');
     const loginForm = document.getElementById('login-form');
     let user = null;
@@ -70,7 +74,7 @@ export function setupAuthUI() {
         if (user.role === 'admin') {
             const adminNav = document.querySelector('.main-nav');
             const adminLink = document.createElement('a');
-            adminLink.href = `../admin/users`;
+            adminLink.href = `${API_BASE_URL}/admin/users`;
             adminLink.textContent = 'Admin';
             adminNav.appendChild(adminLink);
         }

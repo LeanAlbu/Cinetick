@@ -2,6 +2,7 @@
 
 class FilmeController extends ApiController {
     private $filmeModel;
+    private $commentModel;
 
     public function __construct() {
         $this->filmeModel = new FilmeModel();
@@ -110,13 +111,20 @@ class FilmeController extends ApiController {
     // GET /em-cartaz
     public function emCartaz() {
         try {
-            $currentYear = date('Y');
-            $startYear = $currentYear - 40;
-            $years = range($startYear, $currentYear);
-            $filmes = $this->filmeModel->getFilmesByReleaseYears($years);
+            $filmes = $this->filmeModel->getFilmesEmCartaz();
             $this->sendJsonResponse($filmes);
         } catch (Throwable $e) {
             $this->sendJsonError('Erro ao buscar filmes em cartaz: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function futurosLancamentos() {
+        try {
+            $currentYear = date('Y');
+            $filmes = $this->filmeModel->getFilmesLancamentoMaiorQue($currentYear);
+            $this->sendJsonResponse($filmes);
+        } catch (Throwable $e) {
+            $this->sendJsonError('Erro ao buscar futuros lançamentos: ' . $e->getMessage(), 500);
         }
     }
 

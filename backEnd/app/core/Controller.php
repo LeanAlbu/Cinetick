@@ -5,7 +5,7 @@ class Controller {
         // Extract data to be used in the view
         extract($data);
 
-        $viewPath = BASE_PATH . "/app/Views/{$view}.php";
+        $viewPath = BASE_PATH . "/app/views/{$view}.php";
 
         if (file_exists($viewPath)) {
             require_once $viewPath;
@@ -33,7 +33,7 @@ class Controller {
         // Simple error handling
         error_log($message);
         // You might want to show a generic error page
-        require_once BASE_PATH . '/app/Views/common/error.php';
+        require_once BASE_PATH . '/app/views/common/error.php';
         exit;
     }
 }

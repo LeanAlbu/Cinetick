@@ -67,8 +67,10 @@ class FilmeModel extends Model {
             $uuid_string = Utils::generateUuidV4();
             $binary_uuid = hex2bin(str_replace('-', '', $uuid_string));
 
-            $sql = "INSERT INTO filmes (id, title, release_year, director, description, imagem_url) VALUES (:id, :title, :release_year, :director, :description, :imagem_url)";
+            $sql = "INSERT INTO filmes (id, title, release_year, director, description, imagem_url, em_cartaz) VALUES (:id, :title, :release_year, :director, :description, :imagem_url, :em_cartaz)";
             $stmt = $this->db_connection->prepare($sql);
+
+            $em_cartaz = isset($data['em_cartaz']) && $data['em_cartaz'] ? 1 : 0;
 
             $stmt->bindParam(':id', $binary_uuid);
             $stmt->bindParam(':title', $data['title']);
@@ -76,6 +78,7 @@ class FilmeModel extends Model {
             $stmt->bindParam(':director', $data['director']);
             $stmt->bindParam(':description', $data['description']);
             $stmt->bindParam(':imagem_url', $data['imagem_url']);
+            $stmt->bindParam(':em_cartaz', $em_cartaz, PDO::PARAM_INT);
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -126,7 +129,9 @@ class FilmeModel extends Model {
             // Conversão segura
             $binary_id = hex2bin($clean_id);
 
-            $sql = "UPDATE filmes SET title = :title, release_year = :release_year, director = :director, description = :description, imagem_url = :imagem_url WHERE id = :id";
+            $em_cartaz = isset($data['em_cartaz']) && $data['em_cartaz'] ? 1 : 0;
+
+            $sql = "UPDATE filmes SET title = :title, release_year = :release_year, director = :director, description = :description, imagem_url = :imagem_url, em_cartaz = :em_cartaz WHERE id = :id";
             $stmt = $this->db_connection->prepare($sql);
 
             $stmt->bindParam(':id', $binary_id);
@@ -135,6 +140,7 @@ class FilmeModel extends Model {
             $stmt->bindParam(':director', $data['director']);
             $stmt->bindParam(':description', $data['description']);
             $stmt->bindParam(':imagem_url', $data['imagem_url']);
+            $stmt->bindParam(':em_cartaz', $em_cartaz, PDO::PARAM_INT);
 
             return $stmt->execute();
         } catch (PDOException $e) {
@@ -168,5 +174,20 @@ class FilmeModel extends Model {
             error_log("Error in deleteFilme: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function getFilmesLancamentoMaiorQue($year) {
+        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, title, release_year, director, description, imagem_url, em_cartaz FROM filmes WHERE release_year > :year";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->bindParam(':year', $year, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getFilmesEmCartaz() {
+        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, title, release_year, director, description, imagem_url, em_cartaz FROM filmes WHERE em_cartaz = 1";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

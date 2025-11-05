@@ -49,6 +49,11 @@ $router->addRoute('POST', '/logout', UserController::class, 'logout');
 $router->addRoute('GET', '/profile', UserController::class, 'profile');
 $router->addRoute('GET', '/admin', AdminController::class, 'index');
 $router->addRoute('GET', '/admin/users', AdminController::class, 'users');
+$router->addRoute('GET', '/admin/filmes', AdminController::class, 'filmes');
+$router->addRoute('GET', '/admin/filmes/create', AdminController::class, 'createFilme');
+$router->addRoute('GET', '/admin/filmes/edit/{id}', AdminController::class, 'edit');
+$router->addRoute('POST', '/admin/filmes/update/{id}', AdminController::class, 'update');
+$router->addRoute('POST', '/admin/filmes/delete/{id}', AdminController::class, 'deleteFilme');
 $router->addRoute('POST', '/admin/users/promote', AdminController::class, 'promote');
 
 // Rota principal
@@ -56,8 +61,8 @@ $router->addRoute('GET', '/', HomeController::class, "show_index");
 
 // Rotas de Filmes (API)
 $router->addRoute('GET', '/api/filmes', FilmeController::class, 'index');
-$router->addRoute('GET', '/api/em-cartaz', FilmeController::class, 'emCartaz');
-$router->addRoute('GET', '/api/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
+$router->addRoute('GET', '/api/filmes/em-cartaz', FilmeController::class, 'emCartaz');
+$router->addRoute('GET', '/api/filmes/futuros-lancamentos', FilmeController::class, 'futurosLancamentos');
 $router->addRoute('GET', '/api/filmes/todos', FilmeController::class, 'todos');
 $router->addRoute('GET', '/api/filmes/{id}', FilmeController::class, 'show'); // Rota genérica por último
 $router->addRoute('POST', '/api/filmes', FilmeController::class, 'store');

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `filmes`(
    `director` VARCHAR(255),
    `description` TEXT,
    `imagem_url` VARCHAR(255) NULL,
+   `em_cartaz` BOOLEAN NOT NULL DEFAULT FALSE,
    PRIMARY KEY (id)
 )ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
