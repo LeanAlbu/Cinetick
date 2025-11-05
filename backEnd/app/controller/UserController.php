@@ -65,10 +65,11 @@ class UserController extends ApiController {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_role'] = $user['role'] ?? null;
 
-            $this->sendJsonResponse([
+            $this->sendJsonResponse([header('Content-Type: application/json; charset=utf-8'),
                 'message' => 'Login bem-sucedido.',
                 'user' => [
                     'id' => $user['uuid'],
+                    'email' => $user['email'],
                     'name' => $user['name'],
                     'role' => $user['role'] ?? null
                 ]

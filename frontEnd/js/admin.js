@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             text: 'Você precisa ser um administrador para acessar esta página.',
             allowOutsideClick: false
         }).then(() => {
-            window.location.href = 'index.html';
+            window.location.href = '../prototipos/index.html';
         });
         return;
     }

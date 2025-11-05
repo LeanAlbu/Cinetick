@@ -8,25 +8,36 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-    <header class="main-header">
+   <header class="main-header">
         <a href="index.html" class="logo-container">
-            <img src="img/logo.png" alt="Logo CineTick">
+            <img src="../img/logo.png" alt="Logo CineTick">
             <span>CineTick</span>
         </a>
         
        <nav class="main-nav">
             <a href="index.html">Home</a>
-            <a href="em-cartaz.html">Em Cartaz</a>
+            <a href="em-cartaz.html" >Em Cartaz</a>
             <a href="todos-os-filmes.html" class="active">Todos os Filmes</a>
             <span id="admin-link-placeholder"></span>
         </nav>
-        
+
         <div class="user-login">
             <a href="#" id="login-link">Entrar</a>
+        </div>
+
+        
+        <div class="user-menu">
+                <img id="user-avatar" class="user-avatar" src="../img/jbb.jpg" alt="Avatar">
+            <div class="user-dropdown" id="user-dropdown">
+                <p id="user-name"></p>
+                <a href="perfil.html">Meu Perfil</a>
+                <a href="ingressos.html">Meus ingressos</a>
+                <a href="#" id="logout-link">Sair</a>
+            </div>
         </div>
     </header>
 

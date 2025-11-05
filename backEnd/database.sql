@@ -58,4 +58,4 @@ COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
-(UNHEX(REPLACE(UUID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');
+(UNHEX(REPLACE(ID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');
