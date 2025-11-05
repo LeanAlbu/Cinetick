@@ -1,6 +1,6 @@
 <?php
 
-require_once '../app/core/Utils.php';
+require_once BASE_PATH . '/app/core/Utils.php';
 
 class UserModel extends Model {
     public function saveUser($data) {

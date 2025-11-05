@@ -4,9 +4,13 @@ class HomeController extends Controller{
       $filmeModel = new FilmeModel();
       $emCartaz = $filmeModel->getAllFilmes();
       $futurosLancamentos = $filmeModel->getUpcomingReleases();
-      $this->view('home/index', [
+
+      $data = [
           'emCartaz' => $emCartaz,
-          'futurosLancamentos' => $futurosLancamentos
-      ]);
+          'futurosLancamentos' => $futurosLancamentos,
+          'page_script' => 'home.js' // Adiciona o script específico para a home
+      ];
+
+      $this->view('home/index', $data);
    }
 }

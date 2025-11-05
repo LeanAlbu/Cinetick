@@ -1,0 +1,1 @@
+{"version":2,"defects":{"UserModelTest::testFindByEmailReturnsNullIfNotFound":7},"times":{"UserModelTest::testFindByEmailReturnsUser":0,"UserModelTest::testFindByEmailReturnsNullIfNotFound":0}}

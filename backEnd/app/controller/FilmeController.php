@@ -2,9 +2,11 @@
 
 class FilmeController extends ApiController {
     private $filmeModel;
+    private $commentModel;
 
     public function __construct() {
         $this->filmeModel = new FilmeModel();
+        $this->commentModel = new CommentModel();
     }
 
     private function isAdmin() {
@@ -84,16 +86,45 @@ class FilmeController extends ApiController {
         }
     }
 
+    // VIEW RENDERERS
+
+    public function showEmCartazPage() {
+        $this->view('filme/em-cartaz', ['page_script' => 'em-cartaz.js']);
+    }
+
+    public function showFuturosLancamentosPage() {
+        $this->view('filme/futuros-lancamentos', ['page_script' => 'futuros-lancamentos.js']);
+    }
+
+    public function showTodosPage() {
+        $this->view('filme/todos', ['page_script' => 'todos-os-filmes.js']);
+    }
+
+    public function showFilmeDetailPage($id) {
+        $filme = $this->filmeModel->getFilmeById($id);
+        $comments = $this->commentModel->getCommentsByFilmeId($id);
+
+        $this->view('filme/index', ['id' => $id, 'filme' => $filme, 'comments' => $comments, 'page_script' => 'filme.js']);
+    }
+
+
     // GET /em-cartaz
     public function emCartaz() {
         try {
-            $currentYear = date('Y');
-            $startYear = $currentYear - 40;
-            $years = range($startYear, $currentYear);
-            $filmes = $this->filmeModel->getFilmesByReleaseYears($years);
+            $filmes = $this->filmeModel->getFilmesEmCartaz();
             $this->sendJsonResponse($filmes);
         } catch (Throwable $e) {
             $this->sendJsonError('Erro ao buscar filmes em cartaz: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function futurosLancamentos() {
+        try {
+            $currentYear = date('Y');
+            $filmes = $this->filmeModel->getFilmesLancamentoMaiorQue($currentYear);
+            $this->sendJsonResponse($filmes);
+        } catch (Throwable $e) {
+            $this->sendJsonError('Erro ao buscar futuros lançamentos: ' . $e->getMessage(), 500);
         }
     }
 

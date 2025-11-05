@@ -13,7 +13,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="<?= FRONT_ASSETS_URL ?>/js/scripts.js"></script>
+
+    <!-- Carrega o script principal como um módulo para habilitar import/export -->
+    <script type="module" src="<?= FRONT_ASSETS_URL ?>/js/scripts.js"></script>
+
+    <!-- Carrega um script específico da página, se definido pelo controller -->
+    <?php if (isset($page_script)): ?>
+        <script type="module" src="<?= FRONT_ASSETS_URL ?>/js/<?= $page_script ?>"></script>
+    <?php endif; ?>
     
 </body>
 </html>

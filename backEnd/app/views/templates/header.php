@@ -17,7 +17,7 @@
 <body>
 
     <header class="main-header">
-        <a href="<?= BASE_URL ?>/" class="logo-container">
+        <a href="<?= HOME_URL ?>/" class="logo-container">
             <img src="<?= FRONT_ASSETS_URL ?>/img/logo.png" alt="Logo CineTick">
             <span>CineTick</span>
         </a>
@@ -27,8 +27,8 @@
             $current_page_uri = $_SERVER['REQUEST_URI']; 
             ?>
 
-            <a href="<?= BASE_URL ?>/" class="<?= (str_ends_with($current_page_uri, '/public/') || str_ends_with($current_page_uri, '/public/index.php')) ? 'active' : '' ?>">Home</a>
-            <a href="<?= BASE_URL ?>/em-cartaz" class="<?= (str_ends_with($current_page_uri, '/em-cartaz')) ? 'active' : '' ?>">Em Cartaz</a>
+            <a href="<?= HOME_URL ?>/" class="<?= (str_ends_with($current_page_uri, '/public/') || str_ends_with($current_page_uri, '/public/index.php')) ? 'active' : '' ?>">Home</a>
+            <a href="<?= HOME_URL ?>/em-cartaz.html" class="<?= (str_ends_with($current_page_uri, '/em-cartaz')) ? 'active' : '' ?>">Em Cartaz</a>
 
         </nav>
         

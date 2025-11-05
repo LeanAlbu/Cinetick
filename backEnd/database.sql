@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `filmes`(
    `director` VARCHAR(255),
    `description` TEXT,
    `imagem_url` VARCHAR(255) NULL,
+   `em_cartaz` BOOLEAN NOT NULL DEFAULT FALSE,
    PRIMARY KEY (id)
 )ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -40,9 +41,21 @@ CREATE TABLE IF NOT EXISTS `pagamentos`(
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
-
+CREATE TABLE IF NOT EXISTS `comments`(
+   `id` INT AUTO_INCREMENT NOT NULL,
+   `filme_id` BINARY(16) NOT NULL,
+   `user_id` BINARY(16) NOT NULL,
+   `comment` TEXT NOT NULL,
+   `rating` INT NOT NULL,
+   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (id),
+   FOREIGN KEY (user_id) REFERENCES users(id),
+   FOREIGN KEY (filme_id) REFERENCES filmes(id)
+)ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
 
 
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
-(UNHEX(REPLACE(UUID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');
+(UNHEX(REPLACE(ID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');

@@ -27,7 +27,7 @@ class Router
 
         // Ajusta caso o sistema não esteja na raiz
         $base_path = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-        if ($base_path !== '/') {
+        if ($base_path !== '/' && strpos($request_uri, $base_path) === 0) {
             $request_uri = substr($request_uri, strlen($base_path));
         }
         if (empty($request_uri)) {

@@ -19,42 +19,49 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Lista de Filmes</h1>
-            <div>
-                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                    <a href="/filmes/create" class="add-btn">Adicionar Filme</a>
-                <?php endif; ?>
-                <a href="/logout" class="logout-btn">Logout</a>
-            </div>
+        <div id="movie-detail-container">
+            <!-- Movie details will be rendered here by filme.js -->
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Ano</th>
-                    <th>Diretor</th>
-                    <th>Descrição</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (isset($filmes) && !empty($filmes)): ?>
-                    <?php foreach ($filmes as $filme): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($filme['title']) ?></td>
-                            <td><?= htmlspecialchars($filme['release_year']) ?></td>
-                            <td><?= htmlspecialchars($filme['director']) ?></td>
-                            <td><?= htmlspecialchars($filme['description']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4">Nenhum filme encontrado.</td>
-                    </tr>
+        <div class="comments-section">
+            <h2>Comentários e Avaliações</h2>
+
+            <div id="comments-list">
+                <?php if (isset($comments) && !empty($comments)):
+                    foreach ($comments as $comment):
+                 ?>
+                        <div class="comment">
+                            <p class="comment-author"><strong><?= htmlspecialchars($comment['user_name']) ?></strong></p>
+                            <p class="comment-rating">Nota: <?= htmlspecialchars($comment['rating']) ?>/5</p>
+                            <p class="comment-text"><?= htmlspecialchars($comment['comment']) ?></p>
+                            <p class="comment-date"><em><?= date('d/m/Y H:i', strtotime($comment['created_at'])) ?></em></p>
+                        </div>
+                <?php 
+                    endforeach;
+                else: ?>
+                    <p>Ainda não há comentários para este filme.</p>
                 <?php endif; ?>
-            </tbody>
-        </table>
+            </div>
+
+            <div class="add-comment-form">
+                <h3>Deixe seu comentário</h3>
+                <form id="comment-form">
+                    <input type="hidden" name="filme_id" value="<?= $id ?>">
+                    <div class="form-group">
+                        <label for="rating">Nota (1 a 5):</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comentário:</label>
+                        <textarea id="comment" name="comment" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Enviar Comentário</button>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <script src="/frontEnd/js/filme.js"></script>
+    <script src="/frontEnd/js/comments.js"></script>
 </body>
 </html>

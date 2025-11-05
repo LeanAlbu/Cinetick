@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         showConfirmButton: true
                     });
                     // Redireciona para a página inicial após o SweetAlert
-                    window.location.href = 'index.html';
+                    window.location.href = '../prototipos/index.html';
                 }
             } catch (error) {
                 console.error('Falha ao registrar:', error);

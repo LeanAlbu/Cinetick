@@ -28,10 +28,21 @@
             <a href="todos-os-filmes.html">Todos os Filmes</a>
             <span id="admin-link-placeholder"></span>
         </nav>
-        
+
         <div class="user-login">
             <a href="#" id="login-link">Entrar</a>
         </div>
+
+        
+    <div class="user-menu">
+        <img id="user-avatar" class="user-avatar" alt="Avatar">
+        <div class="user-dropdown" id="user-dropdown">
+        <p id="user-name"></p>
+        <a href="perfil.html">Meu Perfil</a>
+        <a href="ingressos.html">Meus ingressos</a>
+        <a href="#" id="logout-link">Sair</a>
+    </div>
+</div>
     </header>
 
     <main>
@@ -60,7 +71,7 @@
 
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
-            <button class="modal-close">&times;</button>
+            <button id="close-login" class="modal-close">&times;</button>
             <h2>Acessar o CineTick</h2>
             <form id="login-form">
                 <div class="form-group">
@@ -71,9 +82,9 @@
                     <label for="password">Senha</label>
                     <input type="password" id="password" name="password" required>
                 </div>
+                <p id="login-error" class="error-message" style="display: none;"></p>
                 <button type="submit" class="btn btn-primary">Acessar por E-mail</button>
             </form>
-            <p id="login-error" class="error-message" style="display: none;"></p>
             <p class="signup-link">
                 Não tem conta? <a href="cadastro.html">Crie uma agora</a>
             </p>
@@ -82,7 +93,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/scripts.js"></script>
+    <script type="module" src="js/scripts.js"></script>
+    <script type="module" src="js/home.js"></script>
     
 </body>
 </html>
