@@ -56,7 +56,16 @@ CREATE TABLE IF NOT EXISTS `comments`(
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
-
+CREATE TABLE IF NOT EXISTS `banners`(
+   `id` BINARY(16) NOT NULL,
+   `title` VARCHAR(255) NOT NULL,
+   `imagem_path` VARCHAR(255) NOT NULL,
+   `link_url` VARCHAR(255) NULL,
+   `ativo` BOOLEAN NOT NULL DEFAULT FALSE,
+   PRIMARY KEY (id)
+)ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (UNHEX(REPLACE(UUID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');
