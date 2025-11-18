@@ -76,7 +76,7 @@ function renderProfile(user) {
                     <button type="submit">Salvar Alterações</button>
                     <div class="feedback-message" style="display: none;"></div>
                 </form>
-                <a href="change-password.html">Mudar Senha</a>
+                <a href="change-password.html" class="password-change-link">Mudar Senha</a>
             </div>
         </div>
     `;
