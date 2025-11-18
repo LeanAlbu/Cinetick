@@ -93,6 +93,17 @@ class UserController extends ApiController {
             exit;
         }
 
-        $this->renderView('user/profile');
+        $userModel = new UserModel();
+        $user = $userModel->findById($_SESSION['user_id']);
+
+        if (!$user) {
+            // Handle case where user is not found, maybe redirect to login or show an error
+            $_SESSION = [];
+            session_destroy();
+            header('Location: ' . BASE_URL . '/login');
+            exit;
+        }
+
+        $this->renderView('user/profile', ['user' => $user]);
     }
 }
