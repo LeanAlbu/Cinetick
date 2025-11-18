@@ -1,67 +1,82 @@
-import { fetchAndDisplayMovies } from './api.js';
+// js/common/ui.js
 
-function createCarouselSlide(filme) {
-    const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
-    return `
-        <div class="swiper-slide">
-            <a href="filme/${filme.id}">
-                <img src="${imageUrl}" alt="Banner de ${filme.title}" class="carousel-image">
-            </a>
-        </div>
-    `;
-}
+import { isUserLoggedIn, handleLogout, handleLogin } from './auth.js';
 
-async function fetchCarouselMovies(swiperInstance) {
-    const carouselWrapper = document.querySelector('.banner-carousel .swiper-wrapper');
-    if (!carouselWrapper) return;
+export function setupUserMenu() {
+    const user = isUserLoggedIn() ? JSON.parse(localStorage.getItem('cinetick_user')) : null;
+    const userMenu = document.querySelector('.user-menu');
+    if (!userMenu) return;
 
-    try {
-        const response = await fetch('../backEnd/public/api/filmes/todos');
-        const result = await response.json();
+    const avatar = userMenu.querySelector('#user-avatar');
+    const dropdown = userMenu.querySelector('#user-dropdown');
 
-        if (response.ok && result.length > 0) {
-            carouselWrapper.innerHTML = result.map(createCarouselSlide).join('');
-            swiperInstance.update();
+    if (!avatar || !dropdown) return;
+
+    let dropdownHtml = '';
+
+    if (user) {
+        // User is logged in
+        avatar.src = user.profile_picture_url ? `${API_BASE_URL}${user.profile_picture_url}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=444&color=fff`;
+        dropdownHtml = `
+            <p>${user.name}</p>
+            <a href="perfil.html">Meu Perfil</a>
+            <a href="ingressos.html">Meus Ingressos</a>
+            <a href="#" id="logout-link">Sair</a>
+        `;
+        dropdown.innerHTML = dropdownHtml;
+        
+        const logoutLink = dropdown.querySelector('#logout-link');
+        if (logoutLink) {
+            handleLogout(logoutLink);
         }
-    } catch (error) { 
-        console.error(`Falha ao buscar filmes para o carrossel:`, error.message);
-    }
-}
 
-export function initializeCarousels() {
-    const bannerSwiper = new Swiper('.banner-carousel', {
-        loop: true,
-        effect: 'fade',
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
+        if (user.role === 'admin') {
+            const adminNav = document.querySelector('.main-nav');
+            if (adminNav && !adminNav.querySelector('a[href*="admin"]')) {
+                const adminLink = document.createElement('a');
+                adminLink.href = `http://localhost/Cinetick/backEnd/public/admin`;
+                adminLink.textContent = 'Admin';
+                adminNav.appendChild(adminLink);
+            }
+        }
+
+    } else {
+        // User is logged out
+        avatar.src = 'img/avatar-placeholder.svg'; // Placeholder icon
+        dropdownHtml = `<a href="#" id="login-link">Entrar</a>`;
+        dropdown.innerHTML = dropdownHtml;
+
+        const loginLink = dropdown.querySelector('#login-link');
+        const loginModal = document.getElementById('login-modal');
+        const loginForm = document.getElementById('login-form');
+
+        if (loginLink && loginModal) {
+            loginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginModal.classList.add('active');
+            });
+        }
+        
+        const closeLogin = document.getElementById('close-login');
+        if (closeLogin && loginModal) {
+            closeLogin.addEventListener('click', () => {
+                loginModal.classList.remove('active');
+            });
+        }
+
+        if (loginForm && loginModal) {
+            handleLogin(loginForm, loginModal);
+        }
+    }
+
+    avatar.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
     });
 
-    fetchCarouselMovies(bannerSwiper);
-}
-
-export function initializeLoginModal() {
-    const loginModal = document.getElementById('login-modal');
-    if (!loginModal) return;
-
-    const closeModalButton = loginModal.querySelector('.modal-close');
-    
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', () => loginModal.classList.remove('active'));
-    }
-
-    loginModal.addEventListener('click', (event) => {
-        if (event.target === loginModal) {
-            loginModal.classList.remove('active');
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.user-menu')) {
+            dropdown.classList.remove('active');
         }
     });
 }

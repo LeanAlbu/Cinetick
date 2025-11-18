@@ -12,21 +12,7 @@
 </head>
 <body>
 
-    <header class="main-header">
-        <a href="index.html" class="logo-container">
-            <img src="img/logo.png" alt="Logo CineTick">
-            <span>CineTick</span>
-        </a>
-        <nav class="main-nav">
-            <a href="index.html">Home</a>
-            <a href="em-cartaz.html">Em Cartaz</a>
-            <a href="todos-os-filmes.html">Todos os Filmes</a>
-            <span id="admin-link-placeholder"></span>
-        </nav>
-        <div class="user-login">
-            <a href="#" id="login-link">Entrar</a>
-        </div>
-    </header>
+    <header class="main-header"></header>
 
     <main>
         <div class="content-wrapper" id="movie-detail-container">
@@ -34,28 +20,7 @@
         </div>
     </main>
 
-    <!-- Modal de Login (reutilizado de outros scripts) -->
-    <div id="login-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <h2>Acessar o CineTick</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Acessar por E-mail</button>
-            </form>
-            <p id="login-error" class="error-message" style="display: none;"></p>
-            <p class="signup-link">
-                Não tem conta? <a href="cadastro.html">Crie uma agora</a>
-            </p>
-        </div>
-    </div>
+    <div id="login-modal-container"></div>
 
     <!-- Modal de Pagamento -->
     <div id="payment-modal" class="modal-overlay">

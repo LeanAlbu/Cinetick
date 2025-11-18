@@ -42,10 +42,49 @@ class UserModel extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findById($id) {
+        $binary_uuid = hex2bin(str_replace('-', '', $id));
+        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, name, email FROM users WHERE id = :id";
+        $stmt = $this->db_connection->prepare($sql);
+        $stmt->bindParam(':id', $binary_uuid);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function promoteUser($userId) {
         $sql = "UPDATE users SET role = 'admin' WHERE id = UNHEX(REPLACE(:id, '-', ''))";
         $stmt = $this->db_connection->prepare($sql);
         $stmt->bindParam(':id', $userId);
         return $stmt->execute();
+    }
+
+    public function updateUser($userId, $data) {
+        $fields = [];
+        $params = [];
+
+        $allowed_fields = ['name', 'email', 'password', 'profile_picture_url'];
+
+        foreach ($allowed_fields as $field) {
+            if (isset($data[$field])) {
+                $fields[] = "{$field} = :{$field}";
+                if ($field === 'password') {
+                    $params[":{$field}"] = password_hash($data[$field], PASSWORD_DEFAULT);
+                } else {
+                    $params[":{$field}"] = $data[$field];
+                }
+            }
+        }
+
+        if (empty($fields)) {
+            return false; // No fields to update
+        }
+
+        $binary_uuid = hex2bin(str_replace('-', '', $userId));
+        $params[':id'] = $binary_uuid;
+
+        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = :id";
+        $stmt = $this->db_connection->prepare($sql);
+
+        return $stmt->execute($params);
     }
 }

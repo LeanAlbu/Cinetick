@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `users`(
    `email` VARCHAR(255) NOT NULL,
    `password` VARCHAR(255) NOT NULL,
    `role` VARCHAR(255) NOT NULL DEFAULT 'user',
+   `profile_picture_url` VARCHAR(255) NULL,
    PRIMARY KEY (id)
 )ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -58,4 +59,4 @@ COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
-(UNHEX(REPLACE(ID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');
+(UNHEX(REPLACE(UUID(),'-','')), 'admin', 'admin@cinetick.com', '$2y$12$Zt2TvC7fRQURKN3ZIe3ABOI9hokUJX.MeNV3NDmGRyZuwqSrjEulm', 'admin');

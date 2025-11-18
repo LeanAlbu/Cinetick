@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    loadHeaderAndFooter();
 
     const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
 
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         showConfirmButton: true
                     });
                     // Redireciona para a página inicial após o SweetAlert
-                    window.location.href = '../prototipos/index.html';
+                    window.location.href = 'index.html';
                 }
             } catch (error) {
                 console.error('Falha ao registrar:', error);
@@ -59,3 +60,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+async function loadHeaderAndFooter() {
+    const headerContainer = document.querySelector('.main-header');
+    const modalContainer = document.getElementById('login-modal-container');
+
+    try {
+        const headerResponse = await fetch('templates/header.html');
+        const headerHtml = await headerResponse.text();
+        headerContainer.innerHTML = headerHtml;
+
+        const modalResponse = await fetch('templates/login-modal.html');
+        const modalHtml = await modalResponse.text();
+        modalContainer.innerHTML = modalHtml;
+
+        const { setupUserMenu } = await import('./common/ui.js');
+        setupUserMenu();
+    } catch (error) {
+        console.error('Erro ao carregar o cabeçalho ou rodapé:', error);
+    }
+}
