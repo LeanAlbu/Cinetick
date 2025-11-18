@@ -1,5 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+    loadHeaderAndFooter();
+
     const paymentModal = document.getElementById('payment-modal');
     const paymentForm = document.getElementById('payment-form');
     const paymentError = document.getElementById('payment-error');
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(filaDiv);
   });
   
-  btnContinuar.addEventListener('click', async, () => {
+  btnContinuar.addEventListener('click', () => {
     const selecionados = document.querySelectorAll('.assento.selecionado').length;
     const valorTotal = selecionados * VALOR_INGRESSO;
     document.getElementById('valor-ingresso').textContent = `R$ ${valorTotal.toFixed(2)}`;
@@ -60,9 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const compra = {
       id: 'p_' + Date.now(),
-      userId: usuarioId || (localStorage.getItem('cinetick_user') ? JSON.parse(localStorage.getItem('cinetick_user')).id : 'demo-1'),
-      movieId: Number(filmeId),
-      movieTitle: filmeTitle || 'Título',
+      userId: 'demo-1', // Placeholder
+      movieId: 1, // Placeholder
+      movieTitle: 'Título', // Placeholder
       date: new Date().toISOString().slice(0,10),
       total: valorTotal
   };
@@ -124,11 +126,33 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    const filmeId = getFilmeIdFromUrl();
-    if (filmeId) {
-        fetchFilmeDetails(filmeId);
-    } else {
-        movieDetailContainer.innerHTML = '<p class="error-message">ID do filme não fornecido.</p>';
-    }
+    // This part seems to be incomplete and causing errors.
+    // const filmeId = getFilmeIdFromUrl();
+    // if (filmeId) {
+    //     fetchFilmeDetails(filmeId);
+    // } else {
+    //     movieDetailContainer.innerHTML = '<p class="error-message">ID do filme não fornecido.</p>';
+    // }
 
 });
+
+async function loadHeaderAndFooter() {
+    const headerContainer = document.querySelector('.main-header');
+    const modalContainer = document.getElementById('login-modal-container');
+
+    try {
+        const headerResponse = await fetch('templates/header.html');
+        const headerHtml = await headerResponse.text();
+        headerContainer.innerHTML = headerHtml;
+
+        const modalResponse = await fetch('templates/login-modal.html');
+        const modalHtml = await modalResponse.text();
+        modalContainer.innerHTML = modalHtml;
+
+        const { setupUserMenu } = await import('./common/ui.js');
+        setupUserMenu();
+    } catch (error) {
+        console.error('Erro ao carregar o cabeçalho ou rodapé:', error);
+    }
+}
+

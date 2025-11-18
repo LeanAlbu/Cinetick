@@ -104,6 +104,118 @@ class UserController extends ApiController {
             exit;
         }
 
-        $this->renderView('user/profile', ['user' => $user]);
+        $this->view('user/profile', ['user' => $user]);
+    }
+
+    public function getProfile() {
+        if (!isset($_SESSION['user_id'])) {
+            $this->sendJsonError('Não autorizado', 401);
+            return;
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->findById($_SESSION['user_id']);
+
+        if (!$user) {
+            $this->sendJsonError('Usuário não encontrado', 404);
+            return;
+        }
+
+        $this->sendJsonResponse($user);
+    }
+
+    public function updateProfile() {
+        if (!isset($_SESSION['user_id'])) {
+            $this->sendJsonError('Não autorizado', 401);
+            return;
+        }
+
+        $data = $this->getJsonInput();
+        $name = $data['name'] ?? null;
+        $email = $data['email'] ?? null;
+
+        if (!$name || !$email) {
+            $this->sendJsonError('Nome e email são obrigatórios', 400);
+            return;
+        }
+
+        $userModel = new UserModel();
+        $success = $userModel->updateUser($_SESSION['user_id'], ['name' => $name, 'email' => $email]);
+
+        if ($success) {
+            // Also update the user in the session
+            $_SESSION['user_name'] = $name;
+            $this->sendJsonResponse(['message' => 'Perfil atualizado com sucesso.']);
+        } else {
+            $this->sendJsonError('Erro ao atualizar o perfil.', 500);
+        }
+    }
+
+    public function updateProfilePicture() {
+        if (!isset($_SESSION['user_id'])) {
+            $this->sendJsonError('Não autorizado', 401);
+            return;
+        }
+
+        if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
+            $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
+            if (in_array($_FILES['profile_picture']['type'], $allowed_mime_types)) {
+                $upload_dir = BASE_PATH . '/public/uploads/avatars/';
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+                $filename = $_SESSION['user_id'] . '_' . time() . '.' . pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
+                $filepath = $upload_dir . $filename;
+                $file_url = '/uploads/avatars/' . $filename;
+
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $filepath)) {
+                    $userModel = new UserModel();
+                    $userModel->updateUser($_SESSION['user_id'], ['profile_picture_url' => $file_url]);
+                    $this->sendJsonResponse(['message' => 'Foto de perfil atualizada com sucesso.', 'profile_picture_url' => $file_url]);
+                } else {
+                    $this->sendJsonError('Erro ao mover o arquivo.', 500);
+                }
+            } else {
+                $this->sendJsonError('Tipo de arquivo inválido.', 400);
+            }
+        } else {
+            $this->sendJsonError('Nenhum arquivo enviado ou erro no upload.', 400);
+        }
+    }
+
+    public function showPasswordChangeForm() {
+        if (!isset($_SESSION['user_id'])) {
+            $this->redirect('/login');
+        }
+        $this->view('user/change-password');
+    }
+
+    public function changePassword() {
+        if (!isset($_SESSION['user_id'])) {
+            $this->sendJsonError('Não autorizado', 401);
+            return;
+        }
+
+        $data = $this->getJsonInput();
+        $old_password = $data['old_password'] ?? null;
+        $new_password = $data['new_password'] ?? null;
+        $confirm_password = $data['confirm_password'] ?? null;
+
+        if (!$old_password || !$new_password || !$confirm_password || $new_password !== $confirm_password) {
+            $this->sendJsonError('Dados inválidos.', 400);
+            return;
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->findById($_SESSION['user_id']);
+        
+        $full_user = $userModel->findByEmail($user['email']);
+
+        if ($full_user && password_verify($old_password, $full_user['password'])) {
+            $userModel->updateUser($_SESSION['user_id'], ['password' => $new_password]);
+            $this->sendJsonResponse(['message' => 'Senha alterada com sucesso.']);
+        } else {
+            $this->sendJsonError('Senha antiga incorreta.', 401);
+        }
     }
 }

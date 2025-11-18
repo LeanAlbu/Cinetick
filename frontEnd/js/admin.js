@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
+    loadHeaderAndFooter();
+    initializeAdminPage();
+});
+
+async function loadHeaderAndFooter() {
+    const headerContainer = document.querySelector('.main-header');
+    const modalContainer = document.getElementById('login-modal-container');
+
+    try {
+        const headerResponse = await fetch('templates/header.html');
+        const headerHtml = await headerResponse.text();
+        headerContainer.innerHTML = headerHtml;
+
+        const modalResponse = await fetch('templates/login-modal.html');
+        const modalHtml = await modalResponse.text();
+        modalContainer.innerHTML = modalHtml;
+
+        const { setupUserMenu } = await import('./common/ui.js');
+        setupUserMenu();
+    } catch (error) {
+        console.error('Erro ao carregar o cabeçalho ou rodapé:', error);
+    }
+}
+
+function initializeAdminPage() {
     const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
     const user = JSON.parse(localStorage.getItem('cinetick_user'));
 
@@ -10,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             text: 'Você precisa ser um administrador para acessar esta página.',
             allowOutsideClick: false
         }).then(() => {
-            window.location.href = '../prototipos/index.html';
+            window.location.href = 'index.html';
         });
         return;
     }
@@ -44,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function loadMovies() {
         try {
-            const response = await fetch(`${API_BASE_URL}/filmes`);
+            const response = await fetch(`${API_BASE_URL}/api/filmes`);
             moviesData = await response.json();
             movieGridContainer.innerHTML = moviesData.map(createAdminMovieCard).join('');
         } catch (error) {
@@ -91,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         const isEditing = !!movieId;
-        const url = isEditing ? `${API_BASE_URL}/filmes/${movieId}` : `${API_BASE_URL}/filmes`;
+        const url = isEditing ? `${API_BASE_URL}/api/filmes/${movieId}` : `${API_BASE_URL}/api/filmes`;
         const method = isEditing ? 'PUT' : 'POST';
 
         try {
@@ -134,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/filmes/${movieId}`, {
+                    const response = await fetch(`${API_BASE_URL}/api/filmes/${movieId}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) {
@@ -154,4 +179,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 4. CARREGAMENTO INICIAL
     loadMovies();
-});
+}

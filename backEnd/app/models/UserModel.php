@@ -57,4 +57,34 @@ class UserModel extends Model {
         $stmt->bindParam(':id', $userId);
         return $stmt->execute();
     }
+
+    public function updateUser($userId, $data) {
+        $fields = [];
+        $params = [];
+
+        $allowed_fields = ['name', 'email', 'password', 'profile_picture_url'];
+
+        foreach ($allowed_fields as $field) {
+            if (isset($data[$field])) {
+                $fields[] = "{$field} = :{$field}";
+                if ($field === 'password') {
+                    $params[":{$field}"] = password_hash($data[$field], PASSWORD_DEFAULT);
+                } else {
+                    $params[":{$field}"] = $data[$field];
+                }
+            }
+        }
+
+        if (empty($fields)) {
+            return false; // No fields to update
+        }
+
+        $binary_uuid = hex2bin(str_replace('-', '', $userId));
+        $params[':id'] = $binary_uuid;
+
+        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = :id";
+        $stmt = $this->db_connection->prepare($sql);
+
+        return $stmt->execute($params);
+    }
 }

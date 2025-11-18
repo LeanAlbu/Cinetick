@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    loadHeaderAndFooter();
+
     const movieDetailContainer = document.getElementById('movie-detail-container');
     const paymentModal = document.getElementById('payment-modal');
     const paymentForm = document.getElementById('payment-form');
@@ -9,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const VALOR_INGRESSO = 25.00;
 
     const getFilmeIdFromUrl = () => {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('id');
+        const pathParts = window.location.pathname.split('/');
+        return pathParts[pathParts.length - 1];
     };
 
     const fetchFilmeDetails = async (id) => {
         try {
-            const response = await fetch(`../backEnd/public/filmes/${id}`);
+            const response = await fetch(`../backEnd/public/api/filmes/${id}`);
             if (!response.ok) {
                 throw new Error('Filme não encontrado.');
             }
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderFilmeDetails = (filme) => {
         movieDetailContainer.innerHTML = `
             <div class="movie-detail-card">
-                <img src="${filme.imagem_url}" alt="Pôster de ${filme.title}" class="movie-detail-poster">
+                <img src="../${filme.imagem_url}" alt="Pôster de ${filme.title}" class="movie-detail-poster">
                 <div class="movie-detail-info">
                     <h1>${filme.title}</h1>
                     <p><strong>Ano de Lançamento:</strong> ${filme.release_year}</p>
@@ -42,17 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         const buyTicketBtn = document.getElementById('buy-ticket-btn');
-        buyTicketBtn.addEventListener('click', handleBuyTicketClick);
-    };
-
-    const handleBuyTicketClick = () => {
-        if (isUserLoggedIn()) {
-            window.location.href = 'assentos-cinema.html';
-        } else {
-            // Reutiliza a lógica do modal de login do script.js
-            const loginModal = document.getElementById('login-modal');
-            loginModal.classList.add('active');
-        }
+        buyTicketBtn.addEventListener('click', () => {
+            window.location.href = `../assentos-cinema.html?filmeId=${currentFilmeId}`;
+        });
     };
 
     paymentForm.addEventListener('submit', async (e) => {
@@ -109,3 +103,24 @@ document.addEventListener('DOMContentLoaded', () => {
         movieDetailContainer.innerHTML = '<p class="error-message">ID do filme não fornecido.</p>';
     }
 });
+
+async function loadHeaderAndFooter() {
+    const headerContainer = document.querySelector('.main-header');
+    const modalContainer = document.getElementById('login-modal-container');
+
+    try {
+        const headerResponse = await fetch('../templates/header.html');
+        const headerHtml = await headerResponse.text();
+        headerContainer.innerHTML = headerHtml;
+
+        const modalResponse = await fetch('../templates/login-modal.html');
+        const modalHtml = await modalResponse.text();
+        if(modalContainer) modalContainer.innerHTML = modalHtml;
+
+        const { setupUserMenu } = await import('./common/ui.js');
+        setupUserMenu();
+    } catch (error) {
+        console.error('Erro ao carregar o cabeçalho ou rodapé:', error);
+    }
+}
+
