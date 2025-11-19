@@ -74,15 +74,14 @@ class BannerController extends ApiController {
 
         $data = $_POST;
         $required_fields = ['title'];
-        foreach ($required_fields as $field) {
-            if (empty($data[$field])) {
-                $this->sendJsonError("O campo '{$field}' é obrigatório.");
-                return;
-            }
-        }
-
         if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
             $uploadDir = BASE_PATH . '/public/uploads/banners/';
+            if (!is_dir($uploadDir)) {
+                if (!mkdir($uploadDir, 0777, true)) {
+                    $this->sendJsonError('Falha ao criar o diretório de uploads.', 500);
+                    return;
+                }
+            }
             $fileName = uniqid() . '-' . basename($_FILES['imagem']['name']);
             $uploadFile = $uploadDir . $fileName;
 
@@ -128,6 +127,12 @@ class BannerController extends ApiController {
         
         if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
             $uploadDir = BASE_PATH . '/public/uploads/banners/';
+            if (!is_dir($uploadDir)) {
+                if (!mkdir($uploadDir, 0777, true)) {
+                    $this->sendJsonError('Falha ao criar o diretório de uploads.', 500);
+                    return;
+                }
+            }
             $fileName = uniqid() . '-' . basename($_FILES['imagem']['name']);
             $uploadFile = $uploadDir . $fileName;
 

@@ -10,21 +10,55 @@ document.addEventListener('DOMContentLoaded', function() {
     const imagemInput = document.getElementById('imagem');
     const imagemPreview = document.getElementById('imagem-preview');
 
+    // --- FUNÇÃO AUXILIAR PARA REQUISIÇÕES SEGURAS ---
+    // Esta função evita o erro "JSON.parse" lendo o texto antes
+    async function safeFetch(url, options = {}) {
+        const response = await fetch(url, options);
+        const responseText = await response.text();
+
+        // Debug: Mostra no console exatamente o que o servidor mandou
+        // Se houver erro de PHP, vai aparecer aqui entre as linhas vermelhas
+        if (!response.ok || !responseText.startsWith('{') && !responseText.startsWith('[')) {
+            console.log("🔴 --- RESPOSTA DO SERVIDOR (DEBUG) --- 🔴");
+            console.log(responseText);
+            console.log("🔴 ------------------------------------ 🔴");
+        }
+
+        try {
+            const data = JSON.parse(responseText);
+            
+            if (!response.ok) {
+                throw new Error(data.message || data.error || `Erro HTTP: ${response.status}`);
+            }
+            
+            return data;
+        } catch (e) {
+            // Se falhar ao converter para JSON, lança um erro com o texto original
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+            throw new Error(`Resposta inválida do servidor: ${responseText.substring(0, 100)}... (Veja o console)`);
+        }
+    }
+
     async function fetchBanners() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/banners`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const banners = await response.json();
+            const banners = await safeFetch(`${API_BASE_URL}/api/banners`, { 
+                credentials: 'include' 
+            });
             renderBanners(banners);
         } catch (error) {
             console.error('Erro ao buscar banners:', error);
+            // Não vamos alertar na busca para não travar a tela, apenas logar
         }
     }
 
     function renderBanners(banners) {
         bannersTbody.innerHTML = '';
+        if (!Array.isArray(banners)) {
+            console.error('Formato de banners inválido:', banners);
+            return;
+        }
         banners.forEach(banner => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -47,9 +81,15 @@ document.addEventListener('DOMContentLoaded', function() {
         bannerIdInput.value = banner.id;
         document.getElementById('title').value = banner.title;
         document.getElementById('link_url').value = banner.link_url;
-        document.getElementById('ativo').checked = banner.ativo;
-        imagemPreview.src = banner.imagem_url;
-        imagemPreview.style.display = 'block';
+        document.getElementById('ativo').checked = banner.ativo == 1 || banner.ativo == '1' || banner.ativo === true;
+        
+        if (banner.imagem_url) {
+            imagemPreview.src = banner.imagem_url;
+            imagemPreview.style.display = 'block';
+        } else {
+            imagemPreview.style.display = 'none';
+        }
+        
         modal.style.display = 'block';
     }
 
@@ -88,26 +128,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const id = bannerIdInput.value;
         const formData = new FormData(bannerForm);
         
-        // The checkbox value is only sent if it's checked.
-        // To ensure we always send a boolean, we can do this.
-        formData.set('ativo', document.getElementById('ativo').checked);
+        // Checkbox handling
+        formData.set('ativo', document.getElementById('ativo').checked ? 'true' : 'false');
 
         const url = id ? `${API_BASE_URL}/api/banners/update/${id}` : `${API_BASE_URL}/api/banners`;
-        const method = 'POST'; // Always POST for multipart/form-data
+        // Nota: Em algumas configurações de servidor, UPDATE com multipart/form-data pode exigir POST com _method
+        const method = 'POST'; 
 
         try {
-            const response = await fetch(url, {
+            await safeFetch(url, {
                 method: method,
+                credentials: 'include',
                 body: formData,
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-            }
-
             modal.style.display = 'none';
             fetchBanners();
+            alert('Banner salvo com sucesso!');
         } catch (error) {
             console.error('Erro ao salvar banner:', error);
             alert(`Erro ao salvar banner: ${error.message}`);
@@ -120,35 +157,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (target.classList.contains('btn-edit')) {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/banners/${id}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const banner = await response.json();
+                const banner = await safeFetch(`${API_BASE_URL}/api/banners/${id}`, { 
+                    credentials: 'include' 
+                });
                 openModalForEdit(banner);
             } catch (error) {
                 console.error('Erro ao buscar banner para edição:', error);
+                alert('Erro ao carregar dados do banner. Veja o console.');
             }
         }
 
         if (target.classList.contains('btn-delete')) {
             if (confirm('Tem certeza que deseja deletar este banner?')) {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/api/banners/${id}`, {
+                    await safeFetch(`${API_BASE_URL}/api/banners/${id}`, {
                         method: 'DELETE',
+                        credentials: 'include',
                     });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
                     fetchBanners();
                 } catch (error) {
                     console.error('Erro ao deletar banner:', error);
+                    alert(`Erro ao deletar: ${error.message}`);
                 }
             }
         }
     });
 
+    // Carregar banners ao iniciar
     fetchBanners();
 });

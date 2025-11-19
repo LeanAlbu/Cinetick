@@ -1,13 +1,20 @@
 :root {
+    /* Variáveis de Cores e Fontes */
     --primary-color: #2b1d44;
-    --accent-color: #ffc107;
+    --accent-color: #ffc107; /* Amarelo */
     --text-color-light: #f0f0f0;
     --text-color-dark: #333;
     --background-color: #121212;
     --surface-color: #1e1e1e;
+    
+    /* Configurações Gerais */
     --border-radius: 8px;
     --font-family-headings: 'Fjalla One', sans-serif;
     --font-family-body: 'Roboto', sans-serif;
+
+    /* Configuração nativa do Swiper para usar a cor do seu tema */
+    --swiper-theme-color: var(--accent-color);
+    --swiper-navigation-size: 35px; /* Tamanho das setas */
 }
 
 body {
@@ -19,12 +26,14 @@ body {
     line-height: 1.6;
 }
 
+/* --- Layout Geral --- */
 .content-wrapper {
     max-width: 1300px;
     margin: 40px auto;
     padding: 0 40px;
 }
 
+/* --- Mensagens de Erro --- */
 .error-message {
     color: #ff4d4d;
     background-color: rgba(255, 77, 77, 0.1);
@@ -35,9 +44,88 @@ body {
     font-size: 0.9rem;
 }
 
-/* RESPONSIVE ADJUSTMENTS */
+/* --- Estilos do Banner Principal (Carrossel) --- */
+.banner-principal {
+    width: 100%;
+    height: 500px; /* Altura fixa para desktop */
+    position: relative;
+    background-color: #000; /* Fundo preto para evitar flashes brancos */
+}
+
+.banner-carousel {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Link que envolve a imagem (opcional) */
+.banner-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cobre toda a área sem distorcer */
+    object-position: center;
+    display: block;
+}
+
+/* --- Personalização dos Controles do Swiper --- */
+
+/* Setas de navegação */
+.swiper-button-prev,
+.swiper-button-next {
+    color: var(--accent-color);
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8); /* Sombra para ver a seta em imagens claras */
+    transition: transform 0.2s ease;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    transform: scale(1.1); /* Leve zoom ao passar o mouse */
+}
+
+/* Bolinhas de paginação */
+.swiper-pagination-bullet {
+    background-color: #fff; /* Cor das bolinhas inativas */
+    opacity: 0.5;
+    width: 10px;
+    height: 10px;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: var(--accent-color); /* Cor da bolinha ativa */
+    opacity: 1;
+    width: 12px; /* Leve destaque de tamanho */
+    height: 12px;
+}
+
+/* --- Responsividade --- */
+
+/* Tablets e telas médias */
 @media (max-width: 992px) {
     .content-wrapper {
         padding: 0 20px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 768px) {
+    .banner-principal {
+        height: 300px; /* Altura menor para não ocupar toda a tela do celular */
+    }
+    
+    /* Ajuste opcional para as setas ficarem menores no mobile */
+    :root {
+        --swiper-navigation-size: 25px;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 class ApiController extends Controller {
+
     /**
      * Envia uma resposta JSON padronizada.
      *
@@ -8,10 +9,25 @@ class ApiController extends Controller {
      * @param int $statusCode O código de status HTTP.
      */
     protected function sendJsonResponse($data, $statusCode = 200) {
-        header('Content-Type: application/json');
+        // --- FIX CRÍTICO: LIMPEZA DE BUFFER ---
+        // Se houver qualquer "lixo" (espaços, enters, warnings) acumulado no buffer,
+        // esta função joga fora para garantir que o JSON saia limpo.
+        if (ob_get_length()) {
+            ob_clean();
+        }
+        // --------------------------------------
+
+        // Define o cabeçalho como JSON e charset UTF-8
+        header('Content-Type: application/json; charset=utf-8');
         http_response_code($statusCode);
+
+        // Log para debug (mantido do seu código original)
         error_log("ApiController::sendJsonResponse - Data: " . json_encode($data));
+
+        // Envia o JSON
         echo json_encode($data);
+        
+        // Encerra o script imediatamente para evitar que mais nada seja impresso
         exit;
     }
 
@@ -22,6 +38,8 @@ class ApiController extends Controller {
      * @param int $statusCode O código de status HTTP.
      */
     protected function sendJsonError($message, $statusCode = 400) {
+        // Padroniza o erro num array. Note que usei 'message' ou 'error' dependendo do que seu front espera.
+        // No seu código anterior estava 'error', mantive assim.
         $this->sendJsonResponse(['error' => $message], $statusCode);
     }
 
@@ -31,6 +49,7 @@ class ApiController extends Controller {
      * @return array|null
      */
     protected function getJsonInput() {
-        return json_decode(file_get_contents('php://input'), true);
+        $input = file_get_contents('php://input');
+        return json_decode($input, true);
     }
 }
