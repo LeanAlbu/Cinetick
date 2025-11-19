@@ -87,4 +87,15 @@ $router->addRoute('POST', '/pagamentos', PagamentoController::class, 'store');
 $router->addRoute('GET', '/api/filmes/{id}/comments', CommentController::class, 'index');
 $router->addRoute('POST', '/api/filmes/{id}/comments', CommentController::class, 'store');
 
+// Rotas de Banners (API)
+$router->addRoute('GET', '/api/banners', BannerController::class, 'index');
+$router->addRoute('GET', '/api/active-banners', BannerController::class, 'activeBanners');
+$router->addRoute('GET', '/api/banners/{id}', BannerController::class, 'show');
+$router->addRoute('POST', '/api/banners', BannerController::class, 'store');
+$router->addRoute('POST', '/api/banners/update/{id}', BannerController::class, 'update');
+$router->addRoute('DELETE', '/api/banners/{id}', BannerController::class, 'destroy');
+
+// Rota de Banners (Admin View)
+$router->addRoute('GET', '/admin/banners', BannerController::class, 'adminBanners');
+
 $router->dispatch();

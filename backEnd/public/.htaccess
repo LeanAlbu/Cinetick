@@ -1,7 +1,34 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    RewriteEngine On
 
-# Se o arquivo ou diretório solicitado não existir, 
-# redireciona a requisição para o index.php
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . index.php [L]
+    # ----------------------------------------------------------------------
+    # 1. CORREÇÃO DE CORS (Opcional, mas recomendado para API)
+    # ----------------------------------------------------------------------
+    # Isso ajuda a evitar bloqueios quando o Front tenta acessar imagens ou API
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    </IfModule>
+
+    # ----------------------------------------------------------------------
+    # 2. CORREÇÃO DE AUTHORIZATION (Para Login/Tokens)
+    # ----------------------------------------------------------------------
+    # Alguns servidores Apache removem o header Authorization. Isso conserta.
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # ----------------------------------------------------------------------
+    # 3. A REGRA DE OURO (ROTEAMENTO)
+    # ----------------------------------------------------------------------
+    
+    # Se o arquivo solicitado EXISTE fisicamente (!-f), NÃO faça nada (entregue o arquivo).
+    # Isso faz suas imagens em /uploads/banners/ funcionarem!
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    # Se o diretório solicitado EXISTE fisicamente (!-d), NÃO faça nada.
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Se não é arquivo nem pasta real, manda para o index.php tratar a rota.
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
