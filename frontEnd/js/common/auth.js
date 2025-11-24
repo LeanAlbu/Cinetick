@@ -43,7 +43,7 @@ export function handleLogout(logoutLink) {
     logoutLink.addEventListener('click', async (e) => {
         e.preventDefault();
         try {
-            await fetch(`${API_BASE_URL}/logout`, { method: 'POST' });
+            await fetch(`${API_BASE_URL}/logout`, { method: 'POST', credentials: 'include' });
         } catch(err) {
             console.error("API de logout falhou, mas o logout prosseguirá no front-end.", err);
         } finally {

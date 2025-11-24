@@ -6,13 +6,18 @@ const API_BASE_URL = '../backEnd/public';
  * @returns {string} - A string HTML do card.
  */
 export function createMovieCard(filme) {
-    const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
+    const imageUrl = filme.imagem_url ? `${API_BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
     return `
-        <a href="filme/${filme.id}" class="movie-card-link">
+        <a href="filme.html?id=${filme.id}" class="movie-card-link">
             <div class="movie-card">
                 <img src="${imageUrl}" alt="Pôster de ${filme.title}" class="movie-card-poster">
                 <div class="movie-info">
                     <h3>${filme.title}</h3>
+                    <div class="movie-showtimes">
+                        <span class="showtime-tag">14:00</span>
+                        <span class="showtime-tag">17:00</span>
+                        <span class="showtime-tag">20:00</span>
+                    </div>
                 </div>
             </div>
         </a>

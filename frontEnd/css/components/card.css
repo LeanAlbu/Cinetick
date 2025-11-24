@@ -69,6 +69,37 @@
     text-overflow: ellipsis;
 }
 
+.movie-info {
+    padding: 15px;
+}
+
+.movie-info h3 {
+    font-family: var(--font-family-body);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 0 0 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-showtimes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.showtime-tag {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 @media (max-width: 992px) {
     .movie-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
