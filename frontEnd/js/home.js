@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function loadHeaderAndFooter() {
-    // ... seu código de header continua igual ...
     const headerContainer = document.querySelector('.main-header');
     const modalContainer = document.getElementById('login-modal-container');
 
@@ -51,12 +50,23 @@ async function loadBanners() {
 
         // 2. Cria os slides HTML
         banners.forEach(banner => {
-            // Link opcional: se tiver link, usa <a>, senão div
+            // --- LÓGICA INTELIGENTE DE URL (CORREÇÃO AQUI) ---
+            // Pega o caminho que veio do banco (pode ser 'imagem_path' ou 'imagem_url' dependendo do controller)
+            let rawImage = banner.imagem_path || banner.imagem_url;
+            let imageUrl = rawImage;
+
+            // Se existir imagem e NÃO começar com http (é arquivo local), adiciona o caminho do servidor
+            if (imageUrl && !imageUrl.startsWith('http')) {
+                imageUrl = `${API_BASE_URL}/uploads/banners/${imageUrl}`;
+            }
+            // --------------------------------------------------
+
+            // Link opcional: se tiver link, usa <a>, senão apenas a imagem
             const conteudo = banner.link_url 
                 ? `<a href="${banner.link_url}" target="_blank" class="banner-link">
-                     <img src="${banner.imagem_url}" alt="${banner.title}" class="banner-img">
+                     <img src="${imageUrl}" alt="${banner.title}" class="banner-img">
                    </a>`
-                : `<img src="${banner.imagem_url}" alt="${banner.title}" class="banner-img">`;
+                : `<img src="${imageUrl}" alt="${banner.title}" class="banner-img">`;
 
             const slide = document.createElement('div');
             slide.classList.add('swiper-slide'); // Classe obrigatória do Swiper
@@ -90,7 +100,7 @@ function initSwiper() {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
-        // Efeito de transição (opcional, pode remover se não gostar)
+        // Efeito de transição
         effect: 'fade', 
         fadeEffect: {
             crossFade: true

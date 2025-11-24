@@ -51,7 +51,7 @@ function initializeAdminPage() {
     // 2. FUNÇÕES DE RENDERIZAÇÃO E API
 
     function createAdminMovieCard(filme) {
-        const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
+        const imageUrl = filme.imagem_url ? `${API_BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
         return `
             <div class="movie-card" data-id="${filme.id}">
                 <img src="${imageUrl}" alt="Pôster de ${filme.title}">
@@ -69,7 +69,7 @@ function initializeAdminPage() {
 
     async function loadMovies() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/filmes`);
+            const response = await fetch(`${API_BASE_URL}/api/filmes`, { credentials: 'include' });
             moviesData = await response.json();
             movieGridContainer.innerHTML = moviesData.map(createAdminMovieCard).join('');
         } catch (error) {
@@ -123,7 +123,8 @@ function initializeAdminPage() {
             const response = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(movieData)
+                body: JSON.stringify(movieData),
+                credentials: 'include'
             });
 
             if (!response.ok) {
@@ -160,7 +161,8 @@ function initializeAdminPage() {
             if (result.isConfirmed) {
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/filmes/${movieId}`, {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        credentials: 'include'
                     });
                     if (!response.ok) {
                         const errorData = await response.json();

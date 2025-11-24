@@ -1,90 +1,142 @@
 <?php
 
-require_once BASE_PATH . '/app/core/Utils.php';
-
 class UserModel extends Model {
-    public function saveUser($data) {
-        try {
-            $uuid_string = Utils::generateUuidV4();
-            $binary_uuid = hex2bin(str_replace('-', '', $uuid_string));
 
-            $sql = "INSERT INTO users (id, name, email, password) VALUES (:id, :name, :email, :password)";
-            $stmt = $this->db_connection->prepare($sql);
-
-            // Hash da senha
-            $password_hash = password_hash($data['password'], PASSWORD_DEFAULT);
-
-            // Bind dos parâmetros
-            $stmt->bindParam(':id', $binary_uuid);
-            $stmt->bindParam(':name', $data['name']);
-            $stmt->bindParam(':email', $data['email']);
-            $stmt->bindParam(':password', $password_hash);
-
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("Error saving user: " . $e->getMessage());
-            return false; // Return false on error
-        }
-    }
+    // --- ADMIN METHODS ---
 
     public function getAllUsers() {
-        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, name, email FROM users";
-        $stmt = $this->db_connection->prepare($sql);
+        // Busca todos os usuários convertendo ID binário para texto
+        $sql = "SELECT LOWER(HEX(id)) as id, name, email, role, profile_picture_url FROM users";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function promoteUser($userId) {
+        try {
+            $sql = "UPDATE users SET role = 'admin' WHERE id = UNHEX(:id)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $userId);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error promoting user: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // --- AUTH & PROFILE METHODS ---
+
+    // Nome antigo: saveUser (era createUser)
+    public function saveUser($data) {
+        try {
+            $sql = "INSERT INTO users (id, name, email, password, role) 
+                    VALUES (UNHEX(REPLACE(UUID(),'-','')), :name, :email, :password, 'user')";
+            
+            $stmt = $this->db->prepare($sql); 
+
+            $password_hash = password_hash($data['password'], PASSWORD_DEFAULT);
+
+            $stmt->bindParam(':name', $data['name']);
+            $stmt->bindParam(':email', $data['email']);
+            $stmt->bindParam(':password', $password_hash);
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error saving user: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Nome antigo: findByEmail
     public function findByEmail($email) {
-        $sql = "SELECT *, LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as uuid FROM users WHERE email = :email";
-        $stmt = $this->db_connection->prepare($sql);
+        $sql = "SELECT LOWER(HEX(id)) as id, name, email, password, role, profile_picture_url 
+                FROM users WHERE email = :email";
+        
+        $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Nome antigo: findById
     public function findById($id) {
-        $binary_uuid = hex2bin(str_replace('-', '', $id));
-        $sql = "SELECT LOWER(CONCAT(SUBSTR(HEX(id), 1, 8), '-', SUBSTR(HEX(id), 9, 4), '-', SUBSTR(HEX(id), 13, 4), '-', SUBSTR(HEX(id), 17, 4), '-', SUBSTR(HEX(id), 21))) as id, name, email FROM users WHERE id = :id";
-        $stmt = $this->db_connection->prepare($sql);
-        $stmt->bindParam(':id', $binary_uuid);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $sql = "SELECT LOWER(HEX(id)) as id, name, email, password, role, profile_picture_url 
+                    FROM users 
+                    WHERE id = UNHEX(:id)";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error finding user by ID: " . $e->getMessage());
+            return false;
+        }
     }
 
-    public function promoteUser($userId) {
-        $sql = "UPDATE users SET role = 'admin' WHERE id = UNHEX(REPLACE(:id, '-', ''))";
-        $stmt = $this->db_connection->prepare($sql);
-        $stmt->bindParam(':id', $userId);
-        return $stmt->execute();
-    }
+    public function updateUser($id, $data) {
+        try {
+            $fields = [];
+            $params = [];
 
-    public function updateUser($userId, $data) {
-        $fields = [];
-        $params = [];
+            // Adaptação para aceitar array $data ou parâmetros soltos
+            $name = $data['name'] ?? null;
+            $email = $data['email'] ?? null;
+            $password = $data['password'] ?? null;
 
-        $allowed_fields = ['name', 'email', 'password', 'profile_picture_url'];
-
-        foreach ($allowed_fields as $field) {
-            if (isset($data[$field])) {
-                $fields[] = "{$field} = :{$field}";
-                if ($field === 'password') {
-                    $params[":{$field}"] = password_hash($data[$field], PASSWORD_DEFAULT);
-                } else {
-                    $params[":{$field}"] = $data[$field];
-                }
+            if ($name) {
+                $fields[] = "name = :name";
+                $params[':name'] = $name;
             }
+            if ($email) {
+                $fields[] = "email = :email";
+                $params[':email'] = $email;
+            }
+            if ($password) {
+                $fields[] = "password = :password";
+                $params[':password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+
+            if (empty($fields)) {
+                return true; 
+            }
+
+            $params[':id'] = $id;
+
+            $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = UNHEX(:id)";
+            $stmt = $this->db->prepare($sql);
+
+            return $stmt->execute($params);
+
+        } catch (PDOException $e) {
+            error_log("Error updating user: " . $e->getMessage());
+            return false;
         }
+    }
 
-        if (empty($fields)) {
-            return false; // No fields to update
+    public function updateProfilePicture($id, $path) {
+        try {
+            $sql = "UPDATE users SET profile_picture_url = :path WHERE id = UNHEX(:id)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':path', $path);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error updating profile picture: " . $e->getMessage());
+            return false;
         }
-
-        $binary_uuid = hex2bin(str_replace('-', '', $userId));
-        $params[':id'] = $binary_uuid;
-
-        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = :id";
-        $stmt = $this->db_connection->prepare($sql);
-
-        return $stmt->execute($params);
+    }
+    
+    public function verifyPassword($password, $hash) {
+        return password_verify($password, $hash);
+    }
+    
+    // Compatibilidade
+    public function getUserById($id) {
+        return $this->findById($id);
+    }
+    public function getUserByEmail($email) {
+        return $this->findByEmail($email);
     }
 }
