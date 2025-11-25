@@ -24,6 +24,8 @@ $current_page = basename($_SERVER['REQUEST_URI']);
                 <li><a href="<?= BASE_URL ?>/admin" class="<?= ($current_page === 'admin') ? 'active' : '' ?>">Dashboard</a></li>
                 <li><a href="<?= BASE_URL ?>/admin/users" class="<?= ($current_page === 'users') ? 'active' : '' ?>">Usuários</a></li>
                 <li><a href="<?= BASE_URL ?>/admin/filmes" class="<?= ($current_page === 'filmes') ? 'active' : '' ?>">Filmes</a></li>
+                <li><a href="<?= BASE_URL ?>/admin/bomboniere" class="<?= ($current_page === 'bomboniere') ? 'active' : '' ?>">Bomboniere</a></li>
+                <li><a href="<?= BASE_URL ?>/admin/banners" class="<?= ($current_page === 'banners') ? 'active' : '' ?>">Banners</a></li>
                 <li><a href="<?= HOME_URL ?>" target="_blank">Ver Site</a></li>
             </ul>
         </nav>

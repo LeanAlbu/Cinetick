@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
+    loadHeaderAndFooter();
 
     const registerForm = document.getElementById('register-form');
     const registerError = document.getElementById('register-error');
@@ -16,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/users`, {
+                const response = await fetch(`${window.API_BASE_URL}/users`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         showConfirmButton: true
                     });
                     // Redireciona para a página inicial após o SweetAlert
-                    window.location.href = '../prototipos/index.html';
+                    window.location.href = 'index.html';
                 }
             } catch (error) {
                 console.error('Falha ao registrar:', error);
@@ -59,3 +58,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+async function loadHeaderAndFooter() {
+    const headerContainer = document.querySelector('.main-header');
+    const modalContainer = document.getElementById('login-modal-container');
+
+    try {
+        const headerResponse = await fetch('templates/header.html');
+        const headerHtml = await headerResponse.text();
+        headerContainer.innerHTML = headerHtml;
+
+        const modalResponse = await fetch('templates/login-modal.html');
+        const modalHtml = await modalResponse.text();
+        modalContainer.innerHTML = modalHtml;
+
+        const { setupUserMenu } = await import('./common/ui.js');
+        setupUserMenu();
+    } catch (error) {
+        console.error('Erro ao carregar o cabeçalho ou rodapé:', error);
+    }
+}

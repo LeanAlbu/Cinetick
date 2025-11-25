@@ -7,7 +7,7 @@ class Router
     /**
      * Adiciona uma rota
      */
-    public function addRoute($method, $path, $controller, $action)
+    public function addRoute($method, $path, $controller, $action = null)
     {
         $this->routes[] = [
             'path' => $path,
@@ -43,6 +43,12 @@ class Router
             if (preg_match($route_pattern, $request_uri, $matches) && $request_method === $route['method']) {
                 $controller_name = $route['controller'];
                 $action = $route['action'];
+                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+
+                if ($controller_name instanceof Closure) {
+                    call_user_func_array($controller_name, array_values($params));
+                    return;
+                }
 
                 // Valida controller
                 if (!class_exists($controller_name)) {
@@ -59,7 +65,6 @@ class Router
                 }
 
                 // Remove os índices numéricos dos matches e chama a action
-                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
                 call_user_func_array([$controller, $action], array_values($params));
                 return;
             }

@@ -1,5 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
+    loadHeaderAndFooter();
+    initializeAdminPage();
+});
+
+async function loadHeaderAndFooter() {
+    const headerContainer = document.querySelector('.main-header');
+    const modalContainer = document.getElementById('login-modal-container');
+
+    try {
+        const headerResponse = await fetch('templates/header.html');
+        const headerHtml = await headerResponse.text();
+        headerContainer.innerHTML = headerHtml;
+
+        const modalResponse = await fetch('templates/login-modal.html');
+        const modalHtml = await modalResponse.text();
+        modalContainer.innerHTML = modalHtml;
+
+        const { setupUserMenu } = await import('./common/ui.js');
+        setupUserMenu();
+    } catch (error) {
+        console.error('Erro ao carregar o cabeçalho ou rodapé:', error);
+    }
+}
+
+function initializeAdminPage() {
     const user = JSON.parse(localStorage.getItem('cinetick_user'));
 
     // 1. VERIFICAÇÃO DE SEGURANÇA
@@ -10,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             text: 'Você precisa ser um administrador para acessar esta página.',
             allowOutsideClick: false
         }).then(() => {
-            window.location.href = '../prototipos/index.html';
+            window.location.href = 'index.html';
         });
         return;
     }
@@ -26,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. FUNÇÕES DE RENDERIZAÇÃO E API
 
     function createAdminMovieCard(filme) {
-        const imageUrl = filme.imagem_url ? filme.imagem_url : 'img/filme-placeholder.png';
+        const imageUrl = filme.imagem_url ? `${window.BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
         return `
             <div class="movie-card" data-id="${filme.id}">
                 <img src="${imageUrl}" alt="Pôster de ${filme.title}">
@@ -44,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function loadMovies() {
         try {
-            const response = await fetch(`${API_BASE_URL}/filmes`);
+            const response = await fetch(`${window.API_BASE_URL}/filmes`, { credentials: 'include' });
             moviesData = await response.json();
             movieGridContainer.innerHTML = moviesData.map(createAdminMovieCard).join('');
         } catch (error) {
@@ -91,14 +115,15 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         const isEditing = !!movieId;
-        const url = isEditing ? `${API_BASE_URL}/filmes/${movieId}` : `${API_BASE_URL}/filmes`;
+        const url = isEditing ? `${window.API_BASE_URL}/filmes/${movieId}` : `${window.API_BASE_URL}/filmes`;
         const method = isEditing ? 'PUT' : 'POST';
 
         try {
             const response = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(movieData)
+                body: JSON.stringify(movieData),
+                credentials: 'include'
             });
 
             if (!response.ok) {
@@ -119,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const movieId = target.dataset.id;
 
         if (target.classList.contains('btn-edit')) {
-            populateFormForEdit(movieId);
+            populateFormForEdit( movieId);
         } else if (target.classList.contains('btn-delete')) {
             const result = await Swal.fire({
                 title: 'Você tem certeza?',
@@ -134,8 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/filmes/${movieId}`, {
-                        method: 'DELETE'
+                    const response = await fetch(`${window.API_BASE_URL}/filmes/${movieId}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
@@ -149,9 +175,3 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
-    cancelEditButton.addEventListener('click', resetForm);
-
-    // 4. CARREGAMENTO INICIAL
-    loadMovies();
-});

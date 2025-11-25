@@ -3,15 +3,19 @@
 <section class="banner-principal">
     <div class="swiper banner-carousel">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="<?= FRONT_ASSETS_URL ?>/img/banner.png" alt="Banner de filme 1">
-            </div>
-            <div class="swiper-slide">
-                <img src="<?= FRONT_ASSETS_URL ?>/img/filme1.png" alt="Banner de filme 2">
-            </div>
-            <div class="swiper-slide">
-                <img src="<?= FRONT_ASSETS_URL ?>/img/filme2.png" alt="Banner de filme 3">
-            </div>
+            <?php if (isset($data['banners']) && !empty($data['banners'])): ?>
+                <?php foreach ($data['banners'] as $banner): ?>
+                    <div class="swiper-slide">
+                        <a href="<?= htmlspecialchars($banner['link_url']) ?>">
+                            <img src="<?= htmlspecialchars($banner['imagem_url']) ?>" alt="<?= htmlspecialchars($banner['title']) ?>">
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="swiper-slide">
+                    <img src="<?= FRONT_ASSETS_URL ?>/img/banner.png" alt="Banner padrão">
+                </div>
+            <?php endif; ?>
         </div>
         <div class="swiper-pagination"></div>
 

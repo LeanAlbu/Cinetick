@@ -7,44 +7,17 @@
 </head>
 <body>
 
-<header class="main-header">
-    <a href="index.html" class="logo-container">
-        <img src="img/logo.png" alt="Logo CineTick">
-        <span>CineTick</span>
-    </a>
-</header>
+<header class="main-header"></header>
 
 <main class="container">
     <h2>Meus Ingressos</h2>
     <div id="lista-ingressos" class="tickets-list"></div>
 </main>
 
-<script type="module">
-    const user = JSON.parse(localStorage.getItem('cinetick_user'));
+<div id="login-modal-container"></div>
 
-    if (!user) {
-        document.getElementById('lista-ingressos').innerHTML =
-            `<p>Você precisa estar logado para ver seus ingressos.</p>`;
-        return;
-    }
-
-    const allPurchases = JSON.parse(localStorage.getItem('cinetick_purchases') || '[]');
-    const userPurchases = allPurchases.filter(p => p.userId === user.id);
-
-    const container = document.getElementById('lista-ingressos');
-
-    if (userPurchases.length === 0) {
-        container.innerHTML = `<p>Você ainda não possui ingressos.</p>`;
-    } else {
-        container.innerHTML = userPurchases.map(p => `
-            <div class="ticket-card">
-                <strong>${p.movieTitle}</strong><br>
-                Data: ${p.date}<br>
-                Valor: R$ ${p.total.toFixed(2)}
-            </div>
-        `).join('');
-    }
-</script>
+<script src="js/config.js"></script>
+<script type="module" src="js/ingressos.js"></script>
 
 </body>
 </html>

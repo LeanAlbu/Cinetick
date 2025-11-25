@@ -7,6 +7,7 @@ define('DB_PASS', '');
 define('DB_NAME', 'cinetickDB');
 
 // Lógica para criar URLs dinâmicas
+// rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/') remove o caminho relativo do script.
 $project_path = rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/');
 
 // URL base da API (aponta para a pasta public do backend)
@@ -17,3 +18,4 @@ define('HOME_URL', 'http://' . $_SERVER['HTTP_HOST'] . $project_path . '/frontEn
 
 // URL base para os assets do frontend (CSS, JS, Imagens)
 define('FRONT_ASSETS_URL', 'http://' . $_SERVER['HTTP_HOST'] . $project_path . '/frontEnd');
+
