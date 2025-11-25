@@ -72,25 +72,46 @@ Nesta iteração, visamos trazer uma versão próxima da final das funcionalidad
 
 **Funcionalidades entregues:**
 * Sistema de login avançado
-* Padronização estética final
+* Padronização estética - FINAL
 * Compra de ingressos - FINAL
 * Filmes em cartaz - FINAL
 * Banco de dados de filmes
+  
+### Sprint 3: Implementações avançadas
 
-## 🎨 Prototipagem de Telas
+Adicionadas funções que complementam as da iteração 2, agora o usuário tem acesso ao seu perfil, pode selecionar poltronas, horáriosm trocar senha e afins.
 
-* **Pasta com as imagens:** [Pasta no Google Drive](https://drive.google.com/drive/folders/1QUQp6o_sqK3ZljZPdDeQPoNkRcLKIEXP?usp=sharing)
-* **Projeto no Figma:** [Projeto do Figma](https://www.figma.com/design/AJ6SrO6CvY9dV4dTysk0dP/CineTick?m=auto&t=Z47WNdKymiDz6cau-1)
+**Funcionalidades entregues:**
+* Painel de ADM - FINAL
+* Controle de sessões - FINAL
+* Alocação de Poltronas - FINAL
+* Recuperação de senha - FINAL
+
+### Sprint 4: Testes Unitários
+
+Adicionados testes unitários para front e back end.
+
+**Funcionalidades entregues:**
+* Teste unitário PHP - FINAL
+* Teste unitário JS - FINAL
+
+
+### Sprint 5: Bombiniere e finalização
+
+Nesta iteração adicionamos finalmente o serviço de bombinere e fizemos os ultimos ajustes para releaser final.
+
+**Funcionalidades entregues:**
+* Repaginação sistema de banners
+* Sistema de bomboniere - FINAL
+* Sistema de alocação de rotas em banners melhorado.
+
 
 ## 👥 Integrantes da Equipe
 
 | Nome | Matrícula | GitHub User |
 | :--- | :--- | :--- |
 | André Victor Carvalho Alves | 2022114738 | [@Andr206](https://github.com/Andr206) |
-| Eduardo Alves Silva | 2023110516 | [@dudupn](https://github.com/dudupn) |
 | Lean de Albuquerque Pereira | [Matrícula] | [@LeanAlbu](https://github.com/LeanAlbu) |
-| Maria Fernanda Gomes Mendonça | 2021112536 | [@mafezzzz](https://github.com/mafezzzz) |
-| Murilo Bezerra Valiati | [Matrícula] | [@Murilo-Valiati](https://github.com/Murilo-Valiati)|
 
 ## 📄 Licença
 
@@ -100,7 +121,7 @@ Este projeto foi desenvolvido para fins acadêmicos como parte da disciplina de 
 
 Para dúvidas ou sugestões sobre o CineTick, entre em contato com a equipe:
 
-* 📧 Email: [email-do-grupo@mail.uft.edu.br]
+* 📧 Email: [leandealbuquerque@gmail.com]
 * 🐙 GitHub: [CineTick Repository](https://github.com/LeanAlbu/CineTick)
 
 ---
