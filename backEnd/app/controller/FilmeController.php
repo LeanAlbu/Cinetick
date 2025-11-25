@@ -112,8 +112,10 @@ class FilmeController extends ApiController {
     public function emCartaz() {
         try {
             $filmes = $this->filmeModel->getFilmesEmCartaz();
+            error_log("Filmes em cartaz: " . print_r($filmes, true));
             $this->sendJsonResponse($filmes);
         } catch (Throwable $e) {
+            error_log("Erro ao buscar filmes em cartaz: " . $e->getMessage());
             $this->sendJsonError('Erro ao buscar filmes em cartaz: ' . $e->getMessage(), 500);
         }
     }

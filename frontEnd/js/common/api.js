@@ -1,12 +1,10 @@
-const API_BASE_URL = '../backEnd/public';
-
 /**
  * Cria o HTML para um card de filme.
  * @param {object} filme - O objeto do filme vindo da API.
  * @returns {string} - A string HTML do card.
  */
 export function createMovieCard(filme) {
-    const imageUrl = filme.imagem_url ? `${API_BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
+    const imageUrl = filme.imagem_url ? `${window.BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
     return `
         <a href="filme.html?id=${filme.id}" class="movie-card-link">
             <div class="movie-card">
@@ -31,7 +29,7 @@ export function createMovieCard(filme) {
  */
 export async function fetchMovies(endpoint) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api${endpoint}`);
+        const response = await fetch(`${window.API_BASE_URL}${endpoint}`);
         const result = await response.json();
 
         if (!response.ok) {

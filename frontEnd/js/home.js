@@ -1,8 +1,5 @@
 import { fetchAndDisplayMovies } from './common/api.js';
 
-// URL base da API
-const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
-
 document.addEventListener('DOMContentLoaded', () => {
     loadHeaderAndFooter();
     loadBanners(); // Carrega os banners do Swiper
@@ -40,7 +37,7 @@ async function loadBanners() {
 
     try {
         // 1. Busca os dados na API
-        const response = await fetch(`${API_BASE_URL}/api/active-banners`);
+        const response = await fetch(`${window.API_BASE_URL}/active-banners`);
         if (!response.ok) throw new Error('Erro ao buscar banners');
         
         const banners = await response.json();
@@ -50,16 +47,7 @@ async function loadBanners() {
 
         // 2. Cria os slides HTML
         banners.forEach(banner => {
-            // --- LÓGICA INTELIGENTE DE URL (CORREÇÃO AQUI) ---
-            // Pega o caminho que veio do banco (pode ser 'imagem_path' ou 'imagem_url' dependendo do controller)
-            let rawImage = banner.imagem_path || banner.imagem_url;
-            let imageUrl = rawImage;
-
-            // Se existir imagem e NÃO começar com http (é arquivo local), adiciona o caminho do servidor
-            if (imageUrl && !imageUrl.startsWith('http')) {
-                imageUrl = `${API_BASE_URL}/uploads/banners/${imageUrl}`;
-            }
-            // --------------------------------------------------
+            const imageUrl = banner.imagem_path ? `${window.BASE_URL}/uploads/banners/${banner.imagem_path}` : '';
 
             // Link opcional: se tiver link, usa <a>, senão apenas a imagem
             const conteudo = banner.link_url 

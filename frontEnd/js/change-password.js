@@ -43,7 +43,7 @@ async function handleChangePassword(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/password/change`, {
+        const response = await fetch(`${window.API_BASE_URL}/password/change`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ old_password, new_password, confirm_password }),

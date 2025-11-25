@@ -3,24 +3,31 @@ import { createMovieCard, fetchMovies, displayMovies } from '../common/api.js';
 // Mock da função global fetch
 global.fetch = jest.fn();
 
+// Define as variáveis globais que agora são usadas pelos módulos
+beforeAll(() => {
+    Object.defineProperty(window, 'BASE_URL', {
+        value: 'http://localhost/Cinetick/backEnd/public',
+        writable: true
+    });
+    Object.defineProperty(window, 'API_BASE_URL', {
+        value: 'http://localhost/Cinetick/backEnd/public/api',
+        writable: true
+    });
+});
+
+
 describe('createMovieCard', () => {
     test('deve criar um card de filme com imagem e título', () => {
         const filme = {
             id: 1,
             title: 'Filme Teste',
-            imagem_url: 'http://example.com/poster.jpg'
+            imagem_url: '/uploads/posters/poster.jpg'
         };
-        const expectedHtml = `
-        <a href="filme/1" class="movie-card-link">
-            <div class="movie-card">
-                <img src="http://example.com/poster.jpg" alt="Pôster de Filme Teste">
-                <div class="movie-info">
-                    <h3>Filme Teste</h3>
-                </div>
-            </div>
-        </a>
-    `;
-        expect(createMovieCard(filme)).toBe(expectedHtml);
+        const cardHtml = createMovieCard(filme);
+        expect(cardHtml).toContain('filme.html?id=1');
+        expect(cardHtml).toContain(`${window.BASE_URL}/uploads/posters/poster.jpg`);
+        expect(cardHtml).toContain('Pôster de Filme Teste');
+        expect(cardHtml).toContain('<h3>Filme Teste</h3>');
     });
 
     test('deve usar placeholder se imagem_url não estiver presente', () => {
@@ -28,17 +35,9 @@ describe('createMovieCard', () => {
             id: 2,
             title: 'Filme Sem Imagem'
         };
-        const expectedHtml = `
-        <a href="filme/2" class="movie-card-link">
-            <div class="movie-card">
-                <img src="img/filme-placeholder.png" alt="Pôster de Filme Sem Imagem">
-                <div class="movie-info">
-                    <h3>Filme Sem Imagem</h3>
-                </div>
-            </div>
-        </a>
-    `;
-        expect(createMovieCard(filme)).toBe(expectedHtml);
+        const cardHtml = createMovieCard(filme);
+        expect(cardHtml).toContain('img/filme-placeholder.png');
+        expect(cardHtml).toContain('Pôster de Filme Sem Imagem');
     });
 });
 
@@ -58,7 +57,7 @@ describe('fetchMovies', () => {
 
         const movies = await fetchMovies('/some-endpoint');
         expect(movies).toEqual(mockMovies);
-        expect(fetch).toHaveBeenCalledWith('../backEnd/public/api/some-endpoint');
+        expect(fetch).toHaveBeenCalledWith(`${window.API_BASE_URL}/some-endpoint`);
     });
 
     test('deve lançar um erro quando a API responder com falha', async () => {

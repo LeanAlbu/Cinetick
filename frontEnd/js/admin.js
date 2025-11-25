@@ -24,7 +24,6 @@ async function loadHeaderAndFooter() {
 }
 
 function initializeAdminPage() {
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
     const user = JSON.parse(localStorage.getItem('cinetick_user'));
 
     // 1. VERIFICAÇÃO DE SEGURANÇA
@@ -51,7 +50,7 @@ function initializeAdminPage() {
     // 2. FUNÇÕES DE RENDERIZAÇÃO E API
 
     function createAdminMovieCard(filme) {
-        const imageUrl = filme.imagem_url ? `${API_BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
+        const imageUrl = filme.imagem_url ? `${window.BASE_URL}/${filme.imagem_url}` : 'img/filme-placeholder.png';
         return `
             <div class="movie-card" data-id="${filme.id}">
                 <img src="${imageUrl}" alt="Pôster de ${filme.title}">
@@ -69,7 +68,7 @@ function initializeAdminPage() {
 
     async function loadMovies() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/filmes`, { credentials: 'include' });
+            const response = await fetch(`${window.API_BASE_URL}/filmes`, { credentials: 'include' });
             moviesData = await response.json();
             movieGridContainer.innerHTML = moviesData.map(createAdminMovieCard).join('');
         } catch (error) {
@@ -116,7 +115,7 @@ function initializeAdminPage() {
         };
 
         const isEditing = !!movieId;
-        const url = isEditing ? `${API_BASE_URL}/api/filmes/${movieId}` : `${API_BASE_URL}/api/filmes`;
+        const url = isEditing ? `${window.API_BASE_URL}/filmes/${movieId}` : `${window.API_BASE_URL}/filmes`;
         const method = isEditing ? 'PUT' : 'POST';
 
         try {
@@ -145,7 +144,7 @@ function initializeAdminPage() {
         const movieId = target.dataset.id;
 
         if (target.classList.contains('btn-edit')) {
-            populateFormForEdit(movieId);
+            populateFormForEdit( movieId);
         } else if (target.classList.contains('btn-delete')) {
             const result = await Swal.fire({
                 title: 'Você tem certeza?',
@@ -160,7 +159,7 @@ function initializeAdminPage() {
 
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/api/filmes/${movieId}`, {
+                    const response = await fetch(`${window.API_BASE_URL}/filmes/${movieId}`, {
                         method: 'DELETE',
                         credentials: 'include'
                     });
@@ -176,9 +175,3 @@ function initializeAdminPage() {
             }
         }
     });
-
-    cancelEditButton.addEventListener('click', resetForm);
-
-    // 4. CARREGAMENTO INICIAL
-    loadMovies();
-}

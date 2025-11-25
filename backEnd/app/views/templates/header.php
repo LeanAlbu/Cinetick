@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineTick</title>
+    <script>
+        window.API_BASE_URL = '<?= BASE_URL ?>/api';
+        window.BASE_URL = '<?= BASE_URL ?>';
+    </script>
     <link rel="icon" type="image/png" href="<?= FRONT_ASSETS_URL ?>/img/favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +33,7 @@
 
             <a href="<?= HOME_URL ?>/" class="<?= (str_ends_with($current_page_uri, '/public/') || str_ends_with($current_page_uri, '/public/index.php')) ? 'active' : '' ?>">Home</a>
             <a href="<?= HOME_URL ?>/em-cartaz.html" class="<?= (str_ends_with($current_page_uri, '/em-cartaz')) ? 'active' : '' ?>">Em Cartaz</a>
+            <a href="<?= BASE_URL ?>/bomboniere" class="<?= (str_ends_with($current_page_uri, '/bomboniere')) ? 'active' : '' ?>">Bomboniere</a>
 
         </nav>
         

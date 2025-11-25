@@ -1,7 +1,5 @@
 import { isUserLoggedIn } from './common/auth.js';
 
-const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
-
 document.addEventListener('DOMContentLoaded', () => {
     // Verificação local básica
     if (!isUserLoggedIn()) {
@@ -36,7 +34,7 @@ async function loadProfileData() {
 
     try {
         // 1. ADICIONADO: credentials: 'include' é OBRIGATÓRIO para sessões PHP
-        const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
+        const response = await fetch(`${window.API_BASE_URL}/user/profile`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -87,7 +85,7 @@ function renderProfile(user) {
     if (user.profile_picture_url) {
         imageUrl = user.profile_picture_url.startsWith('http') 
             ? user.profile_picture_url 
-            : `${API_BASE_URL}${user.profile_picture_url}`;
+            : `${window.BASE_URL}${user.profile_picture_url}`;
     }
 
     const profileHtml = `
@@ -144,7 +142,7 @@ async function handlePictureUpdate(event) {
 
     try {
         // POST com imagem
-        const response = await fetch(`${API_BASE_URL}/profile/update-picture`, {
+        const response = await fetch(`${window.API_BASE_URL}/profile/update-picture`, {
             method: 'POST',
             body: formData,
             credentials: 'include' // <--- IMPORTANTE
@@ -167,7 +165,7 @@ async function handlePictureUpdate(event) {
         // Atualiza a imagem na hora
         let newImageUrl = result.profile_picture_url;
         if (!newImageUrl.startsWith('http')) {
-            newImageUrl = API_BASE_URL + newImageUrl;
+            newImageUrl = window.BASE_URL + newImageUrl;
         }
         
         // Força recarregar a imagem adicionando um timestamp para evitar cache
@@ -193,7 +191,7 @@ async function handleDetailsUpdate(event) {
     const email = document.getElementById('email').value;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/profile/update`, {
+        const response = await fetch(`${window.API_BASE_URL}/profile/update`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email }),

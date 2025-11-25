@@ -26,10 +26,6 @@ class BannerController extends ApiController {
             return;
         }
         $banners = $this->bannerModel->getAllBanners();
-        foreach ($banners as &$banner) {
-            $banner['imagem_url'] = $this->getFullImageUrl($banner['imagem_path']);
-        }
-        error_log("BannerController::index response: " . json_encode($banners));
         $this->sendJsonResponse($banners);
     }
 
@@ -37,10 +33,6 @@ class BannerController extends ApiController {
     public function activeBanners() {
         error_log("BannerController::activeBanners called");
         $banners = $this->bannerModel->getActiveBanners();
-        foreach ($banners as &$banner) {
-            $banner['imagem_url'] = $this->getFullImageUrl($banner['imagem_path']);
-        }
-        error_log("BannerController::activeBanners response: " . json_encode($banners));
         $this->sendJsonResponse($banners);
     }
 
@@ -53,8 +45,6 @@ class BannerController extends ApiController {
         }
         $banner = $this->bannerModel->getBannerById($id);
         if ($banner) {
-            $banner['imagem_url'] = $this->getFullImageUrl($banner['imagem_path']);
-            error_log("BannerController::show response: " . json_encode($banner));
             $this->sendJsonResponse($banner);
         } else {
             $this->sendJsonError('Banner não encontrado.', 404);

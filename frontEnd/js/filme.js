@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchFilmeDetails = async (id) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/filmes/${id}`);
+            const response = await fetch(`${window.API_BASE_URL}/filmes/${id}`);
             if (!response.ok) {
                 throw new Error('Filme não encontrado.');
             }
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderFilmeDetails = (filme) => {
         movieDetailContainer.innerHTML = `
             <div class="movie-detail-card">
-                <img src="${API_BASE_URL}/${filme.imagem_url}" alt="Pôster de ${filme.title}" class="movie-detail-poster">
+                <img src="${window.BASE_URL}/${filme.imagem_url}" alt="Pôster de ${filme.title}" class="movie-detail-poster">
                 <div class="movie-detail-info">
                     <h1>${filme.title}</h1>
                     <p><strong>Ano de Lançamento:</strong> ${filme.release_year}</p>
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch(`${API_BASE_URL}/pagamentos`, {
+            const response = await fetch(`${window.API_BASE_URL}/pagamentos`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
