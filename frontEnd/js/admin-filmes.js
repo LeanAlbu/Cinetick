@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
-
     loadHeaderAndFooter();
     fetchAndDisplayFilmes();
 
@@ -9,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!container) return;
 
         try {
-            const response = await fetch(`${API_BASE_URL}/admin/filmes`);
+            const response = await fetch(`${window.BASE_URL}/admin/filmes`);
             const result = await response.text(); // Get the raw HTML response
 
             if (!response.ok) {

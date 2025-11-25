@@ -21,11 +21,13 @@ class ApiController extends Controller {
         header('Content-Type: application/json; charset=utf-8');
         http_response_code($statusCode);
 
-        // Log para debug (mantido do seu código original)
-        error_log("ApiController::sendJsonResponse - Data: " . json_encode($data));
-
-        // Envia o JSON
-        echo json_encode($data);
+        try {
+            // Envia o JSON
+            echo json_encode($data, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'JSON encoding error: ' . $e->getMessage()]);
+        }
         
         // Encerra o script imediatamente para evitar que mais nada seja impresso
         exit;

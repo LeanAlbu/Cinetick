@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const VALOR_INGRESSO = 25.00;
 
     const getFilmeIdFromUrl = () => {
-        const pathParts = window.location.pathname.split('/');
-        return pathParts[pathParts.length - 1];
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
     };
 
     const fetchFilmeDetails = async (id) => {
         try {
-            const response = await fetch(`../backEnd/public/api/filmes/${id}`);
+            const response = await fetch(`${window.API_BASE_URL}/filmes/${id}`);
             if (!response.ok) {
                 throw new Error('Filme não encontrado.');
             }
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderFilmeDetails = (filme) => {
         movieDetailContainer.innerHTML = `
             <div class="movie-detail-card">
-                <img src="../${filme.imagem_url}" alt="Pôster de ${filme.title}" class="movie-detail-poster">
+                <img src="${window.BASE_URL}/${filme.imagem_url}" alt="Pôster de ${filme.title}" class="movie-detail-poster">
                 <div class="movie-detail-info">
                     <h1>${filme.title}</h1>
                     <p><strong>Ano de Lançamento:</strong> ${filme.release_year}</p>
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('../backEnd/public/pagamentos', {
+            const response = await fetch(`${window.API_BASE_URL}/pagamentos`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,11 +109,11 @@ async function loadHeaderAndFooter() {
     const modalContainer = document.getElementById('login-modal-container');
 
     try {
-        const headerResponse = await fetch('../templates/header.html');
+        const headerResponse = await fetch('templates/header.html');
         const headerHtml = await headerResponse.text();
         headerContainer.innerHTML = headerHtml;
 
-        const modalResponse = await fetch('../templates/login-modal.html');
+        const modalResponse = await fetch('templates/login-modal.html');
         const modalHtml = await modalResponse.text();
         if(modalContainer) modalContainer.innerHTML = modalHtml;
 

@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS `pagamentos`;
 DROP TABLE IF EXISTS `banners`;
 DROP TABLE IF EXISTS `filmes`;
 DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `bomboniere_items`;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ========================================================
@@ -81,6 +82,18 @@ CREATE TABLE `comments`(
    PRIMARY KEY (id),
    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
    FOREIGN KEY (filme_id) REFERENCES filmes(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ========================================================
+-- 6. TABELA DE ITENS DA BOMBONIERE
+-- ========================================================
+CREATE TABLE `bomboniere_items`(
+   `id` BINARY(16) NOT NULL,
+   `name` VARCHAR(255) NOT NULL,
+   `description` TEXT,
+   `price` DECIMAL(10, 2) NOT NULL,
+   `image_url` VARCHAR(255) NULL,
+   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ========================================================

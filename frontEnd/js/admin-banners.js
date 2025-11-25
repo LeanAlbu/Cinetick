@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
     const modal = document.getElementById('banner-modal');
     const modalTitle = document.getElementById('modal-title');
     const bannerForm = document.getElementById('banner-form');
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchBanners() {
         try {
-            const banners = await safeFetch(`${API_BASE_URL}/api/banners`, { 
+            const banners = await safeFetch(`${window.API_BASE_URL}/banners`, { 
                 credentials: 'include' 
             });
             renderBanners(banners);
@@ -60,10 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         banners.forEach(banner => {
+            const imageUrl = banner.imagem_path ? `${window.BASE_URL}/uploads/banners/${banner.imagem_path}` : '';
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${banner.title}</td>
-                <td><img src="${banner.imagem_url}" alt="${banner.title}" width="100"></td>
+                <td><img src="${imageUrl}" alt="${banner.title}" width="100"></td>
                 <td><a href="${banner.link_url}" target="_blank">${banner.link_url}</a></td>
                 <td>${banner.ativo ? 'Sim' : 'Não'}</td>
                 <td>
@@ -83,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('link_url').value = banner.link_url;
         document.getElementById('ativo').checked = banner.ativo == 1 || banner.ativo == '1' || banner.ativo === true;
         
-        if (banner.imagem_url) {
-            imagemPreview.src = banner.imagem_url;
+        if (banner.imagem_path) {
+            imagemPreview.src = `${window.BASE_URL}/uploads/banners/${banner.imagem_path}`;
             imagemPreview.style.display = 'block';
         } else {
             imagemPreview.style.display = 'none';
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Checkbox handling
         formData.set('ativo', document.getElementById('ativo').checked ? 'true' : 'false');
 
-        const url = id ? `${API_BASE_URL}/api/banners/update/${id}` : `${API_BASE_URL}/api/banners`;
+        const url = id ? `${window.API_BASE_URL}/banners/update/${id}` : `${window.API_BASE_URL}/banners`;
         // Nota: Em algumas configurações de servidor, UPDATE com multipart/form-data pode exigir POST com _method
         const method = 'POST'; 
 
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (target.classList.contains('btn-edit')) {
             try {
-                const banner = await safeFetch(`${API_BASE_URL}/api/banners/${id}`, { 
+                const banner = await safeFetch(`${window.API_BASE_URL}/banners/${id}`, { 
                     credentials: 'include' 
                 });
                 openModalForEdit(banner);
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (target.classList.contains('btn-delete')) {
             if (confirm('Tem certeza que deseja deletar este banner?')) {
                 try {
-                    await safeFetch(`${API_BASE_URL}/api/banners/${id}`, {
+                    await safeFetch(`${window.API_BASE_URL}/banners/${id}`, {
                         method: 'DELETE',
                         credentials: 'include',
                     });

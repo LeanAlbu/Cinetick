@@ -16,6 +16,8 @@
     flex: 2;
 }
 
+
+
 @media (max-width: 992px) {
     .admin-section {
         flex-direction: column;

@@ -1,7 +1,5 @@
 <?php
 
-require_once '../app/core/Utils.php';
-
 class FilmeModel extends Model {
 
     /**

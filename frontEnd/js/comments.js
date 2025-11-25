@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filmeId = formData.get('filme_id');
 
         try {
-            const response = await fetch(`../backEnd/public/filmes/${filmeId}/comments`, {
+            const response = await fetch(`${window.API_BASE_URL}/filmes/${filmeId}/comments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

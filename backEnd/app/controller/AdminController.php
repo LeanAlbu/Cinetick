@@ -28,6 +28,12 @@ class AdminController extends Controller {
         $this->view('admin/filmes', ['filmes' => $filmes]);
     }
 
+    public function bomboniere() {
+        $bomboniereModel = new BomboniereModel();
+        $items = $bomboniereModel->getAllItems();
+        $this->view('admin/bomboniere', ['items' => $items]);
+    }
+
     public function createFilme() {
         $this->view('filme/form');
     }
@@ -68,6 +74,45 @@ class AdminController extends Controller {
             }
         }
         header('Location: ' . BASE_URL . '/admin/users');
+        exit;
+    }
+
+    public function createBomboniereItem() {
+        $this->view('bomboniere/form');
+    }
+
+    public function editBomboniereItem($id) {
+        $bomboniereModel = new BomboniereModel();
+        $item = $bomboniereModel->getItemById($id);
+        if ($item) {
+            $this->view('bomboniere/form', ['item' => $item]);
+        } else {
+            $this->view('common/error', ['message' => 'Item não encontrado.']);
+        }
+    }
+
+    public function storeBomboniereItem() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $bomboniereModel = new BomboniereModel();
+            $bomboniereModel->saveItem($_POST);
+        }
+        header('Location: ' . BASE_URL . '/admin/bomboniere');
+        exit;
+    }
+
+    public function updateBomboniereItem($id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $bomboniereModel = new BomboniereModel();
+            $bomboniereModel->updateItem($id, $_POST);
+        }
+        header('Location: ' . BASE_URL . '/admin/bomboniere');
+        exit;
+    }
+
+    public function deleteBomboniereItem($id) {
+        $bomboniereModel = new BomboniereModel();
+        $bomboniereModel->deleteItem($id);
+        header('Location: ' . BASE_URL . '/admin/bomboniere');
         exit;
     }
 }

@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadHeaderAndFooter();
 
-    const API_BASE_URL = 'http://localhost/Cinetick/backEnd/public';
-
     const registerForm = document.getElementById('register-form');
     const registerError = document.getElementById('register-error');
 
@@ -17,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/users`, {
+                const response = await fetch(`${window.API_BASE_URL}/users`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

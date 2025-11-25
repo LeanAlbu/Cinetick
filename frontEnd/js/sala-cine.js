@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
     try {
-            const response = await fetch('../backEnd/public/pagamentos', {
+            const response = await fetch(`${window.API_BASE_URL}/pagamentos`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
