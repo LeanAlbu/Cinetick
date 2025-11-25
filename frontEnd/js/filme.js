@@ -1,3 +1,5 @@
+const API_BASE_URL = '../backEnd/public';
+
 document.addEventListener('DOMContentLoaded', () => {
     loadHeaderAndFooter();
 
