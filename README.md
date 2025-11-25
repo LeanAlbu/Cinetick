@@ -1,7 +1,6 @@
 # CineTick
 
-O CineTick é uma plataforma voltada para a implementação do ambiente virtual de franquias de cinema. O sistema foca amplamente na interação com o usuário, permitindo que este veja os filmes e...
-
+O CineTick é uma plataforma voltada para a implementação do ambiente virtual de franquias de cinema. 
 A plataforma oferece um catálogo abrangente de filmes em cartaz, permitindo que os clientes escolham e comprem seus ingressos de forma prática e segura, com um sistema de pagamento online integrado.
 
 ### [Repositório Github](https://github.com/LeanAlbu/CineTick)
