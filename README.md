@@ -110,4 +110,53 @@ Siga os passos abaixo para rodar o ambiente de desenvolvimento localmente com to
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/LeanAlbu/CineTick.git](https://github.com/LeanAlbu/CineTick.git)
+   git clone [https://github.com/LeanAlbu/Cinetick.git](https://github.com/LeanAlbu/Cinetick.git)
+   ```
+
+2. **Mova os arquivos para o servidor:**
+   * Copie a pasta `Cinetick` clonada.
+   * Cole a pasta dentro do diretório raiz do XAMPP (geralmente em `C:\xampp\htdocs`).
+
+3. **Inicie os serviços:**
+   * Abra o **XAMPP Control Panel**.
+   * Inicie os módulos **Apache** e **MySQL** clicando no botão "Start".
+
+4. **Configure o Banco de Dados:**
+   * Acesse `http://localhost/phpmyadmin` no seu navegador.
+   * Crie um novo banco de dados com o nome: `cinetick`.
+   * Clique na aba **Importar**.
+   * Selecione o arquivo `.sql` localizado na pasta `database` ou `sql` dentro do projeto clonado.
+   * Execute a importação.
+
+5. **Acesse o Projeto:**
+   * Abra o navegador e digite:
+     ```
+     http://localhost/Cinetick
+     ```
+
+> **Nota:** Verifique se o arquivo de conexão com o banco de dados (ex: `conexao.php`) está configurado com as credenciais padrão do seu XAMPP (geralmente `user: root` e `password: vazio`).
+
+---
+
+## 👥 Equipe de Desenvolvimento
+
+Este projeto foi desenvolvido pela equipe da disciplina de Engenharia de Software:
+
+| Nome | GitHub | Função |
+| :--- | :--- | :--- |
+| **Leandro Albuquerque** | [@LeanAlbu](https://github.com/LeanAlbu) | Full Stack Dev |
+| **[Nome do Aluno 2]** | [@usuario](https://github.com) | [Função] |
+| **[Nome do Aluno 3]** | [@usuario](https://github.com) | [Função] |
+| **[Nome do Aluno 4]** | [@usuario](https://github.com) | [Função] |
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+<br>
+
+<div align="center">
+  <sub>Desenvolvido com 💙 para a disciplina de Engenharia de Software - UFT 2025</sub>
+</div>
