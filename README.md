@@ -142,12 +142,11 @@ Siga os passos abaixo para rodar o ambiente de desenvolvimento localmente com to
 
 Este projeto foi desenvolvido pela equipe da disciplina de Engenharia de Software:
 
-| Nome | GitHub | Função |
-| :--- | :--- | :--- |
-| **Leandro Albuquerque** | [@LeanAlbu](https://github.com/LeanAlbu) | Full Stack Dev |
-| **[Nome do Aluno 2]** | [@usuario](https://github.com) | [Função] |
-| **[Nome do Aluno 3]** | [@usuario](https://github.com) | [Função] |
-| **[Nome do Aluno 4]** | [@usuario](https://github.com) | [Função] |
+| Nome | GitHub |
+| :--- | :--- | 
+| **Lean Albuquerque** | [@LeanAlbu](https://github.com/LeanAlbu) |  
+| **Andre Victor Carvalho** | [@Andr206](https://github.com/Andr206) |
+
 
 ---
 
